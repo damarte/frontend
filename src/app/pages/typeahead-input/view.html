@@ -1,0 +1,18 @@
+<!--<input class='prompt' type='text' placeholder='Begin typing a gadget name' [(ngModel)]=query (keyup)=filter()>-->
+<mat-form-field class="full-width">
+    <input matInput placeholder={{placeHolderText}} [(ngModel)]='query' (keyup)=filter()>
+    <mat-icon matSuffix *ngIf="!query"> search</mat-icon>
+    <button mat-button *ngIf="query" matSuffix mat-icon-button aria-label="Clear" (click)="query=''">
+        <mat-icon>clear</mat-icon>
+    </button>
+</mat-form-field>
+
+
+<div class='suggestions' *ngIf='filteredList.length > 0'>
+
+    <ul style='list-style-type:none; background: white; border-radius: 7px;'>
+        <li style='padding:5px' *ngFor='let item of filteredList'>
+            <a (click)='select(item)'>{{item}}</a>
+        </li>
+    </ul>
+</div>

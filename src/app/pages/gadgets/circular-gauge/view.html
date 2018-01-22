@@ -1,0 +1,37 @@
+<div class="ui center aligned segment gadget" dnd-draggable [dragEnabled]="true" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
+
+                <app-gadget-header (mouseover)="showGadgetControls(true)" (mouseleave)="showGadgetControls(true)" [title]="title" [inRun]="inRun"
+                        [inConfig]="inConfig" [actionInitiated]="actionInitiated" [showOperationControls]="false" [gadgetHasOperationControls]="gadgetHasOperationControls"
+                        [showConfigurationControl]="showConfigurationControl" [showControls]="showControls" (toggleConfigModeEvent)="toggleConfigMode()"
+                        (removeEvent)="remove()">
+                </app-gadget-header>
+        
+                <div *ngIf="!inConfig">
+                        <dx-circular-gauge id="gauge" [value]="25" [subvalues]="[25,26]">
+                                <dxo-subvalue-indicator type="textcloud">
+                                        <dxo-text [customizeText]="customizeText">
+                                                <dxo-format type="" [precision]="1"></dxo-format>
+                                        </dxo-text>
+                                </dxo-subvalue-indicator>
+                                <dxo-scale [startValue]="0" [endValue]="100" [tickInterval]="10">
+                                        <dxo-label [customizeText]="customizeText"></dxo-label>
+                                </dxo-scale>
+                                <dxo-export [enabled]="true"></dxo-export>
+                                <dxo-title text="Sensor 1528">
+                                        <dxo-font [size]="22"></dxo-font>
+                                </dxo-title>
+                        </dx-circular-gauge>
+                </div>
+        
+                <app-dynamic-form *ngIf="inConfig" [propertyPages]="propertyPages" [instanceId]="instanceId" (updatePropertiesEvent)="updateProperties($event)">
+        
+                </app-dynamic-form>
+        
+                <app-error-handler [errorObject]="errorObject" [errorExists]="errorExists">
+                </app-error-handler>
+        
+        
+        
+        
+        
+        </div>

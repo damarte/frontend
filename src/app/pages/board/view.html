@@ -1,0 +1,74 @@
+<!--<div [@accordion2]="detailMenuOpen" class="ui menu sticky" #stickymenu_tag></div>-->
+
+
+<!-- <app-typeahead-input style="width:25%; padding-bottom:0" class="item"
+                         [searchList]="searchList"
+                         [placeHolderText]="placeHolderText"
+                         (ArtificialIntelligenceEventEmitter)="gadgetGrid.addGadgetUsingArtificialIntelligence($event)">
+    </app-typeahead-input>-->
+
+    <div class="right-actions">
+            <a class="item" (click)="addGadgetModal.showComponentLibraryModal('Add Gadget')">
+                <button mat-raised-button color="primary">Add Widget</button>
+            </a>
+        
+           <!-- <a class="item" (click)="toggleLayoutSideBar()">
+                <i class="large grey grid layout icon"></i>
+            </a>-->
+        
+            <a class="item" (click)="boardConfigModal.showBoardConfigurationModal('Configuration')">
+                <!--<i class="large grey setting icon"></i>-->
+                <button mat-raised-button color="accent">Add Dashboard</button>
+            </a>
+        </div>
+        
+        <div class="ui secondary pointing menu board">
+            <a *ngFor="let board of dashboardList; let i = index" class="item" [ngClass]="{'active':board == selectedBoard}" (click)="gadgetGrid.loadBoard(board)"
+                (click)="selectBoard(board)">
+                {{board}}
+            </a>
+        </div>
+        
+        
+        <div class="right menu">
+        
+            <!-- <a class="item"
+                   (click)="toggleNotificationSideBar()">
+                    <i class="large grey alarm icon"></i>
+                    <div class="floating ui red label"><span style="font-size: 1.2em; font-weight: normal">4</span></div>
+                </a>-->
+           
+        
+            <!--<a class="item"><i
+                        class="large grey chevron icon" (click)="toggleAcordion()"
+                        [ngClass]="{'up':detailMenuOpen == 'in', 'down': detailMenuOpen=='out'}"></i>
+                </a>-->
+        </div>
+        
+        
+        <br>
+        
+        <!-- the modal will emit an event and call the grid component to add the requested cell to the board -->
+        <app-add-gadget-modal #addGadgetModal (addGadgetEvent)="gadgetGrid.addGadget($event)">
+        </app-add-gadget-modal>
+        
+        <!-- the grid component will create the requested gadget dynamically -->
+        <app-grid-component #gadgetGrid (boardUpdateEvent)="updateDashboardMenu($event)">
+        </app-grid-component>
+        
+        <app-board-configuration-modal #boardConfigModal (dashboardCreateEvent)="gadgetGrid.createBoard($event)" (dashboardEditEvent)="gadgetGrid.editBoard($event)"
+            (dashboardDeleteEvent)="gadgetGrid.deleteBoard($event)" [dashboardList]="dashboardList">
+        
+        
+        </app-board-configuration-modal>
+        
+        
+        <!-- side bar content -->
+        <div class="ui sidebar inverted right vertical menu" #notificationSideBar_tag>
+            <app-notification-modal></app-notification-modal>
+        </div>
+        
+        <div class="ui sidebar inverted right vertical menu" #layoutSideBar_tag>
+            <app-board-layout-manager-modal (boardLayoutChangeEvent)="gadgetGrid.updateBoardLayout($event)">
+            </app-board-layout-manager-modal>
+        </div>

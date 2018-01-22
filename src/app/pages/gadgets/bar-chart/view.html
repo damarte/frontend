@@ -1,0 +1,69 @@
+<div class="ui  center aligned segment gadget" dnd-draggable
+     [dragEnabled]="true" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']"> 
+
+    <app-gadget-header (mouseover)="showGadgetControls(true)"
+                       (mouseleave)="showGadgetControls(true)"
+            [title]="title"
+            [inRun]="inRun"
+            [inConfig]="inConfig"
+            [actionInitiated]="actionInitiated"
+            [showOperationControls]="showOperationControls"
+            [gadgetHasOperationControls]="false"
+            [showConfigurationControl]="showConfigurationControl"
+            [showControls]="showControls"
+            (toggleConfigModeEvent)="toggleConfigMode()"
+            (removeEvent)="remove()">
+    </app-gadget-header>
+
+
+                <div *ngIf="!inConfig">
+                        <dx-chart
+                        id="chart"
+                        [dataSource]="countriesInfo">
+                        <dxi-series valueField="hydro" name="Hydro-electric"></dxi-series>
+                        <dxi-series valueField="oil" name="Oil"></dxi-series>
+                        <dxi-series valueField="gas" name="Natural gas"></dxi-series>
+                        <dxi-series valueField="coal" name="Coal"></dxi-series>
+                        <dxi-series valueField="nuclear" name="Nuclear"></dxi-series>
+                        <dxo-common-series-settings
+                            argumentField="country"
+                            type="fullStackedBar">
+                        </dxo-common-series-settings>
+                        <dxo-legend
+                            verticalAlignment="top"
+                            horizontalAlignment="center"
+                            itemTextPosition="right">
+                        </dxo-legend>
+                        <dxo-title text="Energy Consumption in 2004">
+                                <dxo-font [size]="22"></dxo-font>
+                            <dxo-subtitle text="(Millions of Tons, Oil Equivalent)"></dxo-subtitle>
+                        </dxo-title>
+                        <dxo-export [enabled]="true"></dxo-export>
+                        <dxo-tooltip
+                            [enabled]="true"
+                            [customizeTooltip]="customizeTooltip">
+                        </dxo-tooltip>
+                    </dx-chart>
+            </div>
+
+
+    <app-dynamic-form *ngIf="inConfig"
+                  [propertyPages]="propertyPages"
+                  [instanceId]="instanceId"
+                  (updatePropertiesEvent)="updateProperties($event)">
+    </app-dynamic-form>
+
+    <app-error-handler
+            [errorObject]="errorObject"
+            [errorExists]="errorExists">
+    </app-error-handler>
+
+    <app-vis-drill-down-modal #drillDownPopUp></app-vis-drill-down-modal>
+
+    <div class="ui bottom attached" *ngIf="actionInitiated">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+</div>
+
+

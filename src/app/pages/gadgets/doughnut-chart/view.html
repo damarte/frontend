@@ -1,0 +1,70 @@
+<div  class="ui left aligned segment gadget" dnd-draggable [dragEnabled]="true"
+     [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
+
+
+    <app-gadget-header (mouseover)="showGadgetControls(true)"
+                       (mouseleave)="showGadgetControls(true)"
+            [title]="title"
+            [inRun]="inRun"
+            [inConfig]="inConfig"
+            [actionInitiated]="actionInitiated"
+            [showOperationControls]="false"
+            [gadgetHasOperationControls]="false"
+            [showConfigurationControl]="showConfigurationControl"
+            [showControls]="showControls"
+            (toggleConfigModeEvent)="toggleConfigMode()"
+            (removeEvent)="remove()"
+            (runEvent)="run()"
+            (stopEvent)="stop()">
+    </app-gadget-header>
+
+
+    <div *ngIf="!inConfig">
+
+            <dx-pie-chart
+            id="pie"
+            type="doughnut"
+            title="Air Quality"
+            palette="Soft Pastel"
+            [dataSource]="internetLanguages">
+            <dxo-export [enabled]="true"></dxo-export>
+            <dxo-legend
+                horizontalAlignment="center"
+                verticalAlignment="bottom"></dxo-legend>
+            <dxi-series        
+                argumentField="language"
+                valueField="percent">
+                <dxo-small-values-grouping
+                    mode="topN"
+                    [topCount]="3"></dxo-small-values-grouping>
+                <dxo-label
+                    [visible]="true"
+                    format="fixedPoint"
+                    [customizeText]="customizeLabel">
+                    <dxo-connector
+                        [visible]="true"
+                        [width]="1"></dxo-connector>
+                </dxo-label>
+            </dxi-series>
+        </dx-pie-chart>
+          
+           
+    </div>
+    <app-dynamic-form *ngIf="inConfig"
+                      [propertyPages]="propertyPages"
+                      [instanceId]="instanceId"
+                      (updatePropertiesEvent)="updateProperties($event)">
+    </app-dynamic-form>
+
+    <app-error-handler
+            [errorObject]="errorObject"
+            [errorExists]="errorExists">
+    </app-error-handler>
+
+    <app-vis-drill-down-modal #drillDownPopUp></app-vis-drill-down-modal>
+
+    <div class="ui bottom attached" *ngIf="inRun">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+</div>

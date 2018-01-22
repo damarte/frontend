@@ -1,0 +1,95 @@
+<div class="ui center aligned segment gadget" dnd-draggable
+     [dragEnabled]="true" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
+
+    <app-gadget-header (mouseover)="showGadgetControls(true)"
+                       (mouseleave)="showGadgetControls(true)"
+            [title]="title"
+            [inRun]="inRun"
+            [inConfig]="inConfig"
+            [actionInitiated]="actionInitiated"
+            [showOperationControls]="false"
+            [gadgetHasOperationControls]="false"
+            [showConfigurationControl]="showConfigurationControl"
+            [showControls]="showControls"
+            (toggleConfigModeEvent)="toggleConfigMode()"
+            (removeEvent)="remove()"           
+            (helpEvent)="helpModal.showHelp()">
+    </app-gadget-header>
+
+    <div *ngIf="!inConfig">
+            <div id="chart-demo">
+                    <dx-chart
+                        [dataSource]="chartDataSource"
+                        title="Temperature in Barcelona, 2012"
+                        [valueAxis]="{
+                            valueType: 'numeric',
+                            grid: {
+                                opacity: 0.2
+                            },
+                            label: {
+                                customizeText: customizeText
+                            }
+                        }"
+                    >
+                        <dxo-size [height]="420"></dxo-size>
+                        <dxi-series
+                            argumentField="Number"
+                            valueField="Temperature"
+                            type="spline"
+                        ></dxi-series>
+                        <dxo-legend [visible]="false"></dxo-legend>
+                        <dxo-common-pane-settings>
+                            <dxo-border
+                                [visible]="true"
+                                [width]="2"
+                                [top]="false"
+                                [right]="false"
+                            ></dxo-border>
+                        </dxo-common-pane-settings>
+                        <dxo-export [enabled]="true"></dxo-export>
+                        <dxo-tooltip
+                            [enabled]="true"
+                            [customizeTooltip]="customizeTooltip"
+                        ></dxo-tooltip>
+                        <dxo-argument-axis type="discrete">
+                            <dxo-grid [visible]="true" [opacity]="0.5"></dxo-grid>
+                        </dxo-argument-axis>
+                    </dx-chart>
+                    <div class="action">
+                        <dx-select-box
+                            id="selectbox"
+                            [items]="months"
+                            [width]="150"
+                            [value]="1"
+                            valueExpr="id"
+                            displayExpr="name"
+                            (onValueChanged)="onValueChanged($event)"
+                        ></dx-select-box>
+                        <div class="label">Choose a month:</div>
+                    </div>
+                </div>
+    </div>
+
+    <app-dynamic-form *ngIf="inConfig"
+                  [propertyPages]="propertyPages"
+                  [instanceId]="instanceId"
+                  (updatePropertiesEvent)="updateProperties($event)">
+    </app-dynamic-form>
+
+    <app-error-handler
+            [errorObject]="errorObject"
+            [errorExists]="errorExists">
+    </app-error-handler>
+
+    <app-vis-drill-down-modal #drillDownPopUp></app-vis-drill-down-modal>
+
+    <app-help-modal #helpModal [topic]="topic"></app-help-modal>
+
+    <div class="ui bottom attached" *ngIf="actionInitiated">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+
+</div>
+
+

@@ -1,0 +1,35 @@
+<div class="ui   segment left aligned gadget" dnd-draggable [dragEnabled]="true" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
+
+    <app-gadget-header (mouseover)="showGadgetControls(true)" (mouseleave)="showGadgetControls(true)" [title]="title" [inRun]="inRun"
+        [inConfig]="inConfig" [actionInitiated]="actionInitiated" [showOperationControls]="showOperationControls" [gadgetHasOperationControls]="false"
+        [showConfigurationControl]="showConfigurationControl" [showControls]="showControls" (toggleConfigModeEvent)="toggleConfigMode()"
+        (removeEvent)="remove()">
+    </app-gadget-header>
+
+    <div *ngIf="!inConfig">
+        <dx-linear-gauge id="gauge" [value]="17" [subvalues]="[5, 25]">
+            <dxo-subvalue-indicator [offset]="-15"></dxo-subvalue-indicator>
+            <dxo-value-indicator [offset]="20"></dxo-value-indicator>
+            <dxo-range-container [offset]="10">
+                <dxi-range [startValue]="0" [endValue]="5" color="#92000A"></dxi-range>
+                <dxi-range [startValue]="5" [endValue]="20" color="#E6E200"></dxi-range>
+                <dxi-range [startValue]="20" [endValue]="30" color="#77DD77"></dxi-range>
+            </dxo-range-container>
+            <dxo-scale [startValue]="0" [endValue]="30" [tickInterval]="5">
+                <dxo-tick color="#536878"></dxo-tick>
+                <dxo-label [indentFromTick]="-3"></dxo-label>
+            </dxo-scale>
+            <dxo-export [enabled]="true"></dxo-export>
+            <dxo-title text="Humidity from sensor 999">
+                <dxo-font [size]="22"></dxo-font>
+            </dxo-title>
+        </dx-linear-gauge>
+    </div>
+
+    <app-dynamic-form *ngIf="inConfig" [propertyPages]="propertyPages" [instanceId]="instanceId" (updatePropertiesEvent)="updateProperties($event)">
+    </app-dynamic-form>
+
+    <app-error-handler [errorObject]="errorObject" [errorExists]="errorExists">
+    </app-error-handler>
+
+</div>

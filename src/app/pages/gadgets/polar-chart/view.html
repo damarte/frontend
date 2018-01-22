@@ -1,0 +1,55 @@
+<div class="ui center aligned  segment gadget" dnd-draggable
+     [dragEnabled]="true" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
+
+   <app-gadget-header (mouseover)="showGadgetControls(true)"
+                       (mouseleave)="showGadgetControls(true)"
+            [title]="title"
+            [inRun]="inRun"
+            [inConfig]="inConfig"
+            [actionInitiated]="actionInitiated"
+            [showOperationControls]="false"
+            [gadgetHasOperationControls]="false"
+            [showConfigurationControl]="showConfigurationControl"
+            [showControls]="showControls"
+            (toggleConfigModeEvent)="toggleConfigMode()"
+            (removeEvent)="remove()"            
+            (helpEvent)="helpModal.showHelp()">
+    </app-gadget-header>
+
+  
+            <div *ngIf="!inConfig">
+
+                    <dx-polar-chart
+                    id="chart"
+                    [useSpiderWeb]="true"
+                    title="Energy Consumed in 2017"
+                    [dataSource]="productionData">
+                    <dxi-series valueField="apples" name="Coffe Maker"></dxi-series>
+                    <dxi-series valueField="grapes" name="Tv"></dxi-series>
+                    <dxi-series valueField="lemons" name="Air"></dxi-series>
+                    <dxi-series valueField="oranges" name="Oven"></dxi-series>
+                    <dxo-common-series-settings type="line"></dxo-common-series-settings>
+                    <dxo-export [enabled]="true"></dxo-export>
+                    <dxo-tooltip [enabled]="true"></dxo-tooltip>
+                    <dxo-font [size]="16"></dxo-font>
+                </dx-polar-chart>
+
+            </div>
+     
+
+    <app-dynamic-form *ngIf="inConfig"
+                  [propertyPages]="propertyPages"
+                  [instanceId]="instanceId"
+                  (updatePropertiesEvent)="updateProperties($event)">
+    </app-dynamic-form>
+
+    <app-error-handler
+            [errorObject]="errorObject"
+            [errorExists]="errorExists">
+    </app-error-handler>
+
+    <app-help-modal #helpModal [topic]="topic"></app-help-modal>
+
+    <br>    
+</div>
+
