@@ -14,9 +14,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ThemeModule } from './@theme/theme.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ApiModule, Configuration, ConfigurationParameters } from 'dv_jig_test';
-import { ApiModule as UmApiModule } from 'um_jig_test';
-import { ApiModule as IotModule } from 'iot_jig_test';
+import { ApiModule, Configuration, ConfigurationParameters } from 'dv_fiwoo';
+import { ApiModule as UmApiModule } from 'um_fiwoo';
+import { ApiModule as IotModule } from 'iot_devices_fiwoo';
 import { NbAuthModule } from './auth/auth.module';
 import { NbEmailPassAuthProvider } from './auth/providers/email-pass-auth.provider';
 

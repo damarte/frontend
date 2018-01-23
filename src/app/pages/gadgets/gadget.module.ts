@@ -37,7 +37,7 @@ import {PolarChartService} from './polar-chart/service';
 import {APITokenService} from '../api-token/api-token.service';
 import {FacetModule} from '../facet/facet.module';
 import {TypeAheadInputModule} from '../typeahead-input/typeahead-input.module';
-import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectBoxModule, DxSliderModule,DxCheckBoxModule, DxPieChartModule, DxChartModule, DxChartComponent, DxPolarChartModule, DxMapModule, DxTextBoxModule, DxTemplateModule } from 'devextreme-angular';
+import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectBoxModule, DxSliderModule,DxCheckBoxModule, DxPieChartModule, DxChartModule, DxChartComponent, DxPolarChartModule, DxMapModule, DxTextBoxModule, DxTemplateModule, DxRangeSelectorModule } from 'devextreme-angular';
 
 
 
@@ -70,7 +70,8 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         DxMapModule,
         DxPolarChartModule,
         DxTextBoxModule, 
-        DxTemplateModule
+        DxTemplateModule,
+        DxRangeSelectorModule
     ],
     declarations: [
         CPUGadgetComponent,

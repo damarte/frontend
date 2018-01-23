@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 //import { SmartTableService } from '../../../@core/data/smart-table.service';
-import { DevicesService } from 'iot_jig_test';
+import { DevicesService } from 'iot_devices_fiwoo';
 import { isDevMode } from '@angular/core';
 
 

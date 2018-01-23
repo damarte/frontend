@@ -1,14 +1,15 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {GadgetInstanceService} from '../../board/grid/grid.service';
 import {RuntimeService} from '../../services/runtime.service';
 import {GadgetPropertyService} from '../_common/gadget-property.service';
 import {EndPointService} from '../../configuration/tab-endpoint/endpoint.service';
 import {GadgetBase} from '../_common/gadget-base';
-import {LineChartService} from './service';
+import {LineChartService, Coordinate} from './service';
 import {Observable} from 'rxjs/Observable';
-import {Month, Service } from './service';
-import DataSource from 'devextreme/data/data_source'; 
-import 'devextreme/data/odata/store';
+import { DevicesService, Device } from 'iot_devices_fiwoo';
+import { DxChartModule, DxChartComponent, DxRangeSelectorModule } from 'devextreme-angular';
+import { forEach } from '@angular/router/src/utils/collection';
+
 
 declare var d3: any;
 
@@ -16,61 +17,75 @@ declare var d3: any;
     selector: 'app-dynamic-component', 
     moduleId: module.id,
     templateUrl: './view.html',
-    providers: [Service],
     styleUrls: ['../_common/styles-gadget.css']
 })
 
 export class LineChartComponent extends GadgetBase {
-
-    months: Month[];
+    
+    @ViewChild(DxChartComponent) chart: DxChartComponent;
+    
+    
     chartDataSource: any;
-
-    topic: any;
-
-    // chart options
-    showXAxis  = true;
-    showYAxis  = true;
-    gradient  = true;
-    showLegend  = true;
-    showXAxisLabel  = true;
-    showYAxisLabel  = true;
-    yAxisLabel  = 'IOPS';
-    xAxisLabel  = 'Time';
+    sensorsDataSource: any;
+    currentDevice: any;
+    coordinates: Coordinate[];     
+    
     autoScale = true;
-    view: any[];
-    colorScheme: any = {
-        domain: ['#2185D0', '#0AFF16']
-    };
-
-    d3 = d3;
-    multi: any[] = [];
-
     collectors: Array<string> = [];
-
     eventTimerSubscription: any;
 
-    constructor(protected _lineChartService: LineChartService,
+    constructor(protected _trendLineService: LineChartService,
                 protected _runtimeService: RuntimeService,
                 protected _gadgetInstanceService: GadgetInstanceService,
                 protected _propertyService: GadgetPropertyService,
                 protected _endPointService: EndPointService,
-                protected _changeDetectionRef: ChangeDetectorRef, service: Service) {
+                protected _changeDetectionRef: ChangeDetectorRef,
+                public deviceService: DevicesService) {
         super(_runtimeService,
             _gadgetInstanceService,
             _propertyService,
             _endPointService,
-            _changeDetectionRef);
+            _changeDetectionRef);                   
 
-            this.months = service.getMonths();
-            this.chartDataSource = new DataSource({
-                store: {
-                    type: 'odata',
-                    url: 'https://js.devexpress.com/Demos/WidgetsGallery/odata/WeatherItems'
-                },
-                postProcess: (results) => { return results[0].DayItems },
-                expand: 'DayItems',
-                filter: ['Id', '=', 1]
+             
+
+            this.deviceService.listDevices().subscribe(res => {
+                this.sensorsDataSource = res;
+                if (res.length > 0){
+                    var thisDevice:any = res[0];
+                    this.currentDevice = thisDevice._id;
+                    this.loadData(thisDevice.entity_name, 'temperature', '17-01-2018T02:18:13', '17-01-2018T10:10:13');                    
+                }
+                
             });
+
+    }
+
+    private getEntityNameByDeviceId(deviceId) {
+        var result = null;
+        if (this.sensorsDataSource != null){
+            this.sensorsDataSource.forEach(element => {
+                if (element._id === deviceId){
+                    result = element.entity_name;
+                }
+            });
+        }
+        return result;
+    }
+
+    private loadData(deviceId, attribute, from, to){
+        this.chartDataSource = this.deviceService.getHistorics(deviceId, attribute, from, to).subscribe(res => {
+            console.log(res);
+            if (res instanceof Array){
+                this.coordinates = new  Array<Coordinate>();
+                var i = 0;
+                res.forEach(element => {
+                    this.coordinates.push({ arg: element.recvTime, val: parseInt(element.attrValue, 10)});
+                    i++;
+                });
+            }
+            
+        });
     }
 
     customizeTooltip(arg) {
@@ -82,53 +97,32 @@ export class LineChartComponent extends GadgetBase {
         return arg.valueText + '&#176C';
     }
     onValueChanged(data) {
-        this.chartDataSource.filter(['Id', '=', data.value]);
-        this.chartDataSource.load();
+        console.log(data);        
+    }
+
+    onDeviceChanged(data) {
+        console.log(data);
+        var entityName = this.getEntityNameByDeviceId(data.value);
+        this.loadData(entityName, 'temperature', '17-01-2018T02:18:13', '17-01-2018T10:10:13');        
+    }
+
+    valueChanged(arg: any) {
+        this.chart.instance.zoomArgument(arg.value[0], arg.value[1]);
     }
     
     public preRun(): void {
-
-        this.setHelpTopic();
-        /**
-         * todo - get collectors from property page data
-         * @type {[string,string]}
-         */
-        this.collectors = ['read', 'write'];
-
-        for (let y = 0; y < this.collectors.length; y++) {
-
-            this.multi[y] = {
-                'name': this.collectors[y],
-                'series': LineChartService.seedData()
-            };
-        }
+       
     }
 
-    public run() {
-        this.initializeRunState(true);
-        this.updateData();
+    public run() {      
 
     }
 
-    public stop() {
-        this.setStopState(false);
-        this._lineChartService.stop(this.eventTimerSubscription);
+    public stop() {        
     }
 
     public updateData() {
-
-        this.eventTimerSubscription = this._lineChartService.get(this.collectors).subscribe(data => {
-
-                for (let x = 0; x < this.collectors.length; x++) {
-
-                    this.multi[x].series.shift();
-                    this.multi[x].series.push(data[x]);
-
-                }
-
-                this.multi = [...this.multi];
-            },
-            error => this.handleError(error));
+      
     }
 
 
@@ -163,30 +157,7 @@ export class LineChartComponent extends GadgetBase {
         });
 
         this.title = updatedPropsObject.title;
-        this.showXAxis = updatedPropsObject.chart_properties;
-        this.showYAxis = updatedPropsObject.chart_properties;
-        this.gradient = updatedPropsObject.chart_properties;
-        this.showLegend = updatedPropsObject.chart_properties;
-        this.showXAxisLabel = updatedPropsObject.chart_properties;
-        this.showYAxisLabel = updatedPropsObject.chart_properties;
-
-        this.setEndPoint(updatedPropsObject.endpoint);
-
-        this.showOperationControls = true;
-
-        /**
-         * todo - adjust collectors from property page data
-         * @type {[string,string]}
-         */
-
+        this.showOperationControls = true;       
     }
-
-    private setHelpTopic() {
-        this._lineChartService.getHelpTopic().subscribe(data => {
-
-            this.topic = data;
-
-        });
-    }
-
+    
 }
