@@ -6,7 +6,8 @@ import {EndPointService} from '../../configuration/tab-endpoint/endpoint.service
 import {GadgetBase} from '../_common/gadget-base';
 import {Observable} from 'rxjs/Observable';
 import {ObservableWebSocketService} from '../../services/websocket-service';
-import { Product, Service } from './service';
+import { Product, Service, DeviceData } from './service';
+import { DevicesService, Device } from 'iot_devices_fiwoo';
 
 @Component({
     selector: 'app-dynamic-component',
@@ -20,8 +21,13 @@ export class BarGaugeComponent extends GadgetBase implements OnDestroy {
 
     // chart options
     input: number;
-    products: Product[];
-    values: Product[]; 
+    devices: any[];
+    deviceData: DeviceData[];
+    valuesDevices: DeviceData[];
+
+    startValue = 0;
+    endValue = 100;
+
 
 
     view: any[];
@@ -40,30 +46,65 @@ export class BarGaugeComponent extends GadgetBase implements OnDestroy {
                 protected _endPointService: EndPointService,
                 private _changeDetectionRef: ChangeDetectorRef,
                 private _webSocketService: ObservableWebSocketService,
-                private service: Service) {
+                private service: Service, public deviceService: DevicesService) {
         super(_runtimeService,
             _gadgetInstanceService,
             _propertyService,
             _endPointService,
             _changeDetectionRef);
 
-            this.products = service.getProducts();
-            this.productsToValues();    
+            this.deviceService.listDevices().subscribe(res => {
+                this.devices = res;
+                this.deviceData = new Array<DeviceData>();
+                this.loadDataGeneral();
+            });
 
     }
 
-    productsToValues() {
+    devicesToValues() {
         let values = [];
 
-        this.products.forEach(function (product) {
-            if (product.active) {
-                values.push(product.count);
+        this.deviceData.forEach(function (device) {
+            if (device.active) {
+                values.push(device.value);
             }
         })
 
-        this.values = values;
+        this.valuesDevices = values;
     }
 
+    private loadDataGeneral (){
+        this.devices.forEach(device => {
+            this.deviceService.getHistorics(device.entity_name, "temperature").subscribe(res => {
+                if (res instanceof Array){
+                    var element = res[res.length - 1];
+                    if (element != null){
+                        var result = parseInt(element.attrValue, 10);
+                        if (result < this.startValue){
+                            this.startValue = result;
+                        }
+                        if (result > this.endValue){
+                            this.endValue = result;
+                        }
+                        console.log(device.name, result);
+                        this.deviceData.push(
+                            {"name": device.name,
+                            "value": result,
+                            "active": true});
+                    }
+                }
+                this.devicesToValues();
+            });
+            
+        });   
+    }
+
+
+    customizeTooltip(arg) {
+        return {
+            text: arg.valueText + " ºC"
+        };       
+    }
     public preRun(): void {
     }
 

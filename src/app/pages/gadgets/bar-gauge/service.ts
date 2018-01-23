@@ -32,3 +32,9 @@ export class Service {
         return products;
     }
 }
+
+export class DeviceData {
+    name: string;
+    value: number;
+    active: boolean;
+}

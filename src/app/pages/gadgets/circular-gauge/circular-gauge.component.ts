@@ -9,6 +9,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
 
 
+
 declare var d3: any;
 
 @Component({

@@ -17,7 +17,7 @@ declare var d3: any;
     selector: 'app-dynamic-component', 
     moduleId: module.id,
     templateUrl: './view.html',
-    styleUrls: ['../_common/styles-gadget.css']
+    styleUrls: ['./line-chart.component.css']
 })
 
 export class LineChartComponent extends GadgetBase {
@@ -29,6 +29,11 @@ export class LineChartComponent extends GadgetBase {
     sensorsDataSource: any;
     currentDevice: any;
     coordinates: Coordinate[];     
+
+    fromDate:Date;
+    toDate = new Date();
+    minDate = new Date(2017, 0, 1);
+    maxDate = new Date();
     
     autoScale = true;
     collectors: Array<string> = [];
@@ -47,14 +52,16 @@ export class LineChartComponent extends GadgetBase {
             _endPointService,
             _changeDetectionRef);                   
 
-             
+            
+            this.fromDate = new Date();
+            this.fromDate.setDate(this.fromDate.getDate()-7);
 
             this.deviceService.listDevices().subscribe(res => {
                 this.sensorsDataSource = res;
                 if (res.length > 0){
                     var thisDevice:any = res[0];
                     this.currentDevice = thisDevice._id;
-                    this.loadData(thisDevice.entity_name, 'temperature', '17-01-2018T02:18:13', '17-01-2018T10:10:13');                    
+                    this.loadData(thisDevice.entity_name, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));                    
                 }
                 
             });
@@ -102,9 +109,25 @@ export class LineChartComponent extends GadgetBase {
 
     onDeviceChanged(data) {
         console.log(data);
-        var entityName = this.getEntityNameByDeviceId(data.value);
-        this.loadData(entityName, 'temperature', '17-01-2018T02:18:13', '17-01-2018T10:10:13');        
+        this.currentDevice = data.value;
+        var entityName = this.getEntityNameByDeviceId(this.currentDevice);
+        this.loadData(entityName, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));
     }
+
+    onDateFromChanged(data) {
+        console.log(data);
+        this.fromDate = data.value;
+        var entityName = this.getEntityNameByDeviceId(this.currentDevice);
+        this.loadData(entityName, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));
+    }
+
+    onDateToChanged(data) {
+        console.log(data);
+        this.toDate = data.value;
+        var entityName = this.getEntityNameByDeviceId(this.currentDevice);
+        this.loadData(entityName, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));
+    }
+
 
     valueChanged(arg: any) {
         this.chart.instance.zoomArgument(arg.value[0], arg.value[1]);
@@ -158,6 +181,27 @@ export class LineChartComponent extends GadgetBase {
 
         this.title = updatedPropsObject.title;
         this.showOperationControls = true;       
+    }
+
+    private changeDate (date: Date){
+        var days:string;
+        var months:string;
+        var dd = date.getDate();
+
+        var mm = date.getMonth()+1; 
+        var yyyy = date.getFullYear();
+        
+        days = dd + '';
+        months = mm + '';
+
+        if(dd<10){
+            days ='0'+ dd;
+        }
+
+        if(mm<10){
+            months = '0'+ mm;
+        }
+        return days + '-' + months + '-' + yyyy + 'T00:00:00';
     }
     
 }

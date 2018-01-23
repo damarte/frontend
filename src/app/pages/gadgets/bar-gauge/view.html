@@ -20,22 +20,26 @@
             <div *ngIf="!inConfig" style="min-height: 275px">              
                 <div id="gauge-demo">
                     <dx-bar-gauge id="gauge"
-                        [startValue]="0"
-                        [endValue]="50"
-                        [values]="values">
+                        [startValue]="startValue"
+                        [endValue]="endValue"
+                        [values]="valuesDevices">
                         <dxo-label>
                             <dxo-format
                                 type="fixedPoint"
                                 [precision]="0">
                             </dxo-format>
                         </dxo-label>
+                        <dxo-tooltip
+                            [enabled]="true"
+                            [customizeTooltip]="customizeTooltip"
+                        ></dxo-tooltip>
                         <dxo-export [enabled]="true"></dxo-export>
                     </dx-bar-gauge>
                     <div id="panel">
-                        <dx-check-box *ngFor="let product of products"
-                            [text]="product.name"
-                            [(value)]="product.active"
-                            (onValueChanged)="productsToValues()"
+                        <dx-check-box *ngFor="let device of deviceData"
+                            [text]="device.name"
+                            [(value)]="device.active"
+                            (onValueChanged)="devicesToValues()"
                         ></dx-check-box>                       
                     </div>
                 </div>

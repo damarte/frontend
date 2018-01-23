@@ -1,23 +1,10 @@
-<!--<div [@accordion2]="detailMenuOpen" class="ui menu sticky" #stickymenu_tag></div>-->
-
-
-<!-- <app-typeahead-input style="width:25%; padding-bottom:0" class="item"
-                         [searchList]="searchList"
-                         [placeHolderText]="placeHolderText"
-                         (ArtificialIntelligenceEventEmitter)="gadgetGrid.addGadgetUsingArtificialIntelligence($event)">
-    </app-typeahead-input>-->
-
-    <div class="right-actions">
+   <div class="right-actions">
             <a class="item" (click)="addGadgetModal.showComponentLibraryModal('Add Gadget')">
                 <button mat-raised-button color="primary">Add Widget</button>
             </a>
         
-           <!-- <a class="item" (click)="toggleLayoutSideBar()">
-                <i class="large grey grid layout icon"></i>
-            </a>-->
-        
-            <a class="item" (click)="boardConfigModal.showBoardConfigurationModal('Configuration')">
-                <!--<i class="large grey setting icon"></i>-->
+          
+            <a class="item" (click)="boardConfigModal.showBoardConfigurationModal('Configuration')">               
                 <button mat-raised-button color="accent">Add Dashboard</button>
             </a>
         </div>
@@ -27,23 +14,8 @@
                 (click)="selectBoard(board)">
                 {{board}}
             </a>
-        </div>
-        
-        
-        <div class="right menu">
-        
-            <!-- <a class="item"
-                   (click)="toggleNotificationSideBar()">
-                    <i class="large grey alarm icon"></i>
-                    <div class="floating ui red label"><span style="font-size: 1.2em; font-weight: normal">4</span></div>
-                </a>-->
-           
-        
-            <!--<a class="item"><i
-                        class="large grey chevron icon" (click)="toggleAcordion()"
-                        [ngClass]="{'up':detailMenuOpen == 'in', 'down': detailMenuOpen=='out'}"></i>
-                </a>-->
-        </div>
+        </div>  
+       
         
         
         <br>

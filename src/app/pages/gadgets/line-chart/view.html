@@ -1,4 +1,4 @@
-<div class="ui center aligned segment gadget" dnd-draggable
+    <div class="ui center aligned segment gadget" dnd-draggable
      [dragEnabled]="true" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
 
     <app-gadget-header (mouseover)="showGadgetControls(true)"
@@ -12,14 +12,12 @@
             [showConfigurationControl]="showConfigurationControl"
             [showControls]="showControls"
             (toggleConfigModeEvent)="toggleConfigMode()"
-            (removeEvent)="remove()"           
-            (helpEvent)="helpModal.showHelp()">
+            (removeEvent)="remove()" >
     </app-gadget-header>
 
     <div *ngIf="!inConfig">
         <div id="chart-demo">
             <dx-chart
-                id="zoomedChart"
                 [dataSource]="coordinates"
                 [useAggregation]="true">
                 <dxi-series>
@@ -32,7 +30,9 @@
                         <dxo-format type="fixedPoint"></dxo-format>
                     </dxo-label>
                 </dxi-value-axis>
-                <dxo-legend [visible]="false"></dxo-legend>
+                <dxo-legend [visible]="false"></dxo-legend>  
+                <dxo-size [height]="320"></dxo-size>
+                <dxo-adaptive-layout [width]="450"></dxo-adaptive-layout>             
             </dx-chart>
             <dx-range-selector
                 id="range-selector"
@@ -53,17 +53,54 @@
                 <dxo-chart [useAggregation]="true">
                     <dxi-series></dxi-series>
                 </dxo-chart>
-            </dx-range-selector>     
+                <hr>
+            </dx-range-selector>
             <div class="action">
-                <dx-select-box
-                    id="selectbox"
-                    [items]="sensorsDataSource"
-                    [width]="150"
-                    [value]="currentDevice"
-                    valueExpr="_id"
-                    displayExpr="name"
-                    (onValueChanged)="onDeviceChanged($event)"
-                ></dx-select-box>                
+                <div class="dx-field">
+                    <div class="dx-field-label">Choose a device:</div>
+                    <div class="dx-field-value">
+                        <dx-select-box
+                        id="selectbox"
+                        [items]="sensorsDataSource"
+                        [width]="150"
+                        [value]="currentDevice"
+                        valueExpr="_id"
+                        displayExpr="name"
+                        (onValueChanged)="onDeviceChanged($event)"
+                    ></dx-select-box>  
+                    </div>
+                </div>
+                    <div class="dx-fieldset">
+                        <div class="dx-field">
+                            <div class="dx-field-label">From</div>
+                            <div class="dx-field-value">
+                                <dx-date-box id="data-from"
+                                    [min]="minDate"
+                                    [max]="maxDate"
+                                    [(value)]="fromDate"
+                                    (onValueChanged)="onDateFromChanged($event)">
+                                </dx-date-box>
+                            </div>
+                        </div>
+                        <div class="dx-field">
+                            <div class="dx-field-label">To</div>
+                            <div class="dx-field-value">
+                                <dx-date-box id="data-to"
+                                [min]="minDate"
+                                [max]="maxDate"
+                                [(value)]="toDate"
+                                (onValueChanged)="onDateToChanged($event)">
+                            </dx-date-box>    
+                            </div>
+                        </div>
+</div>
+
+
+
+
+
+
+
             </div>
             
         </div>
