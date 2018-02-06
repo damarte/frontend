@@ -1,11 +1,8 @@
-/**
- * Created by jayhamilton on 2/7/17.
- */
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {defaultBoard} from '../board/models/board-default';
-import {sampleBoardCollection} from '../board/models/board-collection-sample';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { defaultBoard } from '../dashboard/models/dashboard-default';
+import { sampleBoardCollection } from '../dashboard/models/dashboard-collection-sample';
 
 
 @Injectable()

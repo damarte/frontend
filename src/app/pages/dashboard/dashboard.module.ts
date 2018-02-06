@@ -1,49 +1,56 @@
 import { NgModule } from '@angular/core';
-import { NgxEchartsModule } from 'ngx-echarts';
-
-import { ThemeModule } from '../../@theme/theme.module';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule, MatIconModule, MatInputModule } from '@angular/material';
+import { DndModule } from 'ng2-dnd';
+import { WidgetsModule } from '../widgets/widgets.module';
+import { GridModule } from './grid/grid.module';
+import { ConfigurationModule } from '../configuration/configuration.module';
+import { AddWidgetsModule } from '../add-widgets/add-widgets.module';
+import { WidgetsPropertyService } from '../widgets/_common/widgets-property.service';
+import { ConfigurationService } from '../services/configuration.service';
+import { RuntimeService } from '../services/runtime.service';
 import { DashboardComponent } from './dashboard.component';
-import { StatusCardComponent } from './status-card/status-card.component';
-import { ContactsComponent } from './contacts/contacts.component';
-import { RoomsComponent } from './rooms/rooms.component';
-import { RoomSelectorComponent } from './rooms/room-selector/room-selector.component';
-import { TemperatureComponent } from './temperature/temperature.component';
-import { TemperatureDraggerComponent } from './temperature/temperature-dragger/temperature-dragger.component';
-import { TeamComponent } from './team/team.component';
-import { KittenComponent } from './kitten/kitten.component';
-import { SecurityCamerasComponent } from './security-cameras/security-cameras.component';
-import { ElectricityComponent } from './electricity/electricity.component';
-import { ElectricityChartComponent } from './electricity/electricity-chart/electricity-chart.component';
-import { WeatherComponent } from './weather/weather.component';
-import { SolarComponent } from './solar/solar.component';
-import { PlayerComponent } from './rooms/player/player.component';
-import { TrafficComponent } from './traffic/traffic.component';
-import { TrafficChartComponent } from './traffic/traffic-chart.component';
+import { BarChartComponent } from '../widgets/bar-chart/bar-chart.component';
+import { LinearGaugeComponent } from '../widgets/linear-gauge/linear-gauge.component';
+import { LineChartComponent } from '../widgets/line-chart/line-chart.component';
+import { CircularGaugeComponent } from '../widgets/circular-gauge/circular-gauge.component';
+import { BarGaugeComponent } from '../widgets/bar-gauge/bar-gauge.component';
+import { ObservableWebSocketService } from '../services/websocket-service';
+import { DoughnutChartComponent } from '../widgets/doughnut-chart/doughnut-chart.component';
+import { TypeAheadInputModule } from '../typeahead-input/typeahead-input.module';
+import { PolarChartComponent } from '../widgets/polar-chart/polar-chart.component';
+import { ToastModule } from '../toast/toast.module';
 
 
 @NgModule({
-  imports: [
-    ThemeModule,
-    NgxEchartsModule,
-  ],
-  declarations: [
-    DashboardComponent,
-    StatusCardComponent,
-    TemperatureDraggerComponent,
-    ContactsComponent,
-    RoomSelectorComponent,
-    TemperatureComponent,
-    RoomsComponent,
-    TeamComponent,
-    KittenComponent,
-    SecurityCamerasComponent,
-    ElectricityComponent,
-    ElectricityChartComponent,
-    WeatherComponent,
-    PlayerComponent,
-    SolarComponent,
-    TrafficComponent,
-    TrafficChartComponent,
-  ],
+    imports: [
+        CommonModule,        
+        AddWidgetsModule,
+        ConfigurationModule,
+        TypeAheadInputModule,
+        ToastModule,
+        GridModule.withComponents([
+            BarGaugeComponent,            
+            CircularGaugeComponent,
+            LineChartComponent,
+            LinearGaugeComponent,
+            BarChartComponent,
+            DoughnutChartComponent,
+            PolarChartComponent
+
+        ]),
+        WidgetsModule,
+        DndModule.forRoot(),
+        MatButtonModule, MatIconModule,MatInputModule
+    ],
+    providers: [ RuntimeService,
+        ConfigurationService,
+        WidgetsPropertyService,
+        ObservableWebSocketService
+    ],
+    declarations: [
+        DashboardComponent
+    ]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}

@@ -1,0 +1,3 @@
+interface WidgetsLibraryResponse {
+    library: any[];
+}

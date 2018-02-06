@@ -1,6 +1,3 @@
-/**
- * Created by jayhamilton on 2/3/17.
- */
 export class PropertyBase<T> {
     value: T;
     key: string;

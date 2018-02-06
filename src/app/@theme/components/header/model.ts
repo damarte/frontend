@@ -1,6 +1,3 @@
-/**
- * Created by jayhamilton on 1/31/17.
- */
 export const boardLayouts = [
 
 

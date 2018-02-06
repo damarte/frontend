@@ -1,11 +1,6 @@
 import { Component, EventEmitter, Output} from '@angular/core';
+import { style, trigger, animate, transition } from '@angular/animations';
 
-import {
-    style, trigger, animate, transition
-} from '@angular/animations';
-/**
- * Created by jayhamilton on 6/27/17.
- */
 @Component({
     moduleId: module.id,
     selector: 'app-filter-tag',
@@ -18,7 +13,7 @@ import {
             </div>
         </div>
     `,
-    styleUrls: ['../gadgets/_common/styles-gadget.css'],
+    styleUrls: ['../widgets/_common/styles-widgets.css'],
     animations: [
         trigger(
             'showHideAnimation',

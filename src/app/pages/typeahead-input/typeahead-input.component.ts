@@ -1,9 +1,6 @@
-import {Component, ElementRef, EventEmitter, Input, Output} from '@angular/core';
-import {RuntimeService} from "../services/runtime.service";
+import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { RuntimeService } from "../services/runtime.service";
 
-/**
- * Created by jayhamilton on 2/26/17.
- */
 
 @Component({
     moduleId: module.id,

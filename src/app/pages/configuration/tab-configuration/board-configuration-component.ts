@@ -11,7 +11,7 @@ import {
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/take';
-import {tabsModel} from '../../board/models/board-configtabs.model';
+import {tabsModel} from '../../dashboard/models/dashboard-configtabs.model';
 import {ConfigurationService} from '../../services/configuration.service';
 
 

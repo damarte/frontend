@@ -1,11 +1,8 @@
-/**
- * Created by jayhamilton on 1/18/17.
- */
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
-import {Observable} from 'rxjs/Observable';
-import {ErrorHandler} from '../error/error-handler';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { ErrorHandler } from '../error/error-handler';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 
 
 @Injectable()

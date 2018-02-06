@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 //import { SmartTableService } from '../../../@core/data/smart-table.service';
 import { DevicesService } from 'iot_devices_fiwoo';
-import { isDevMode } from '@angular/core';
+//import { isDevMode } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -16,6 +17,7 @@ import { isDevMode } from '@angular/core';
       transform: translate3d(0, 0, 0);
     }
   `],
+  providers: [DatePipe]
 })
 export class DevicesComponent {
 
@@ -62,17 +64,29 @@ export class DevicesComponent {
       createdAt: {
         title: 'Created',
         type: 'number',
+        valuePrepareFunction: (date) => { 
+          var raw = new Date(date);  
+          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
+          return formatted; 
+        }
       }, 
       updatedAt: {
         title: 'Updated',
         type: 'number',
+        valuePrepareFunction: (date) => { 
+          var raw = new Date(date);  
+          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
+          return formatted; 
+        }
       }   
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private devicesService: DevicesService) {
+  constructor(private devicesService: DevicesService,
+              private datePipe: DatePipe
+             ) {
     //const data = this.service.getData();
     const data = this.devicesService.listDevices().subscribe(res => {     
       this.source.load(res);

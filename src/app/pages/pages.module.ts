@@ -1,29 +1,35 @@
 import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
-import { BoardModule } from './board/board.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { DevicesComponent } from './devices/devices.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
-
+import { UsersComponent } from "./users/users.component";
+import { TemplatesComponent } from './templates/templates.component';
+import { AddDevicesComponent } from './devices/add-devices/add-devices.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
 ];
 
-@NgModule({
+@NgModule({ 
   imports: [
     PagesRoutingModule,
-    ThemeModule,
+    ThemeModule,    
     DashboardModule,
-    BoardModule,
-    Ng2SmartTableModule    
+    Ng2SmartTableModule            
+  ],
+  providers: [
+    
   ],
   declarations: [
-    ...PAGES_COMPONENTS,
-    DevicesComponent,
+    ...PAGES_COMPONENTS, 
+    DevicesComponent, 
+    UsersComponent,
+    TemplatesComponent,
+    AddDevicesComponent   
   ],
 })
 export class PagesModule {

@@ -1,10 +1,7 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {AddGadgetService} from '../add-gadget/service';
-import {Facet, Tag} from './facet-model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AddWidgetsService } from '../add-widgets/service';
+import { Facet, Tag } from './facet-model';
 
-/**
- * Created by jayhamilton on 6/27/17.
- */
 @Component({
     moduleId: module.id,
     selector: 'app-filter-list',

@@ -1,14 +1,7 @@
-/**
- * Created by jayhamilton on 2/5/17.
- */
-import {Component, Input} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {PropertyBase} from './property-base';
-import {EndPointService} from '../configuration/tab-endpoint/endpoint.service';
-
-import {
-    style, trigger, animate, transition
-} from '@angular/animations';
+import { Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { PropertyBase } from './property-base';
+import { style, trigger, animate, transition } from '@angular/animations';
 
 @Component({
     moduleId: module.id,
@@ -40,17 +33,9 @@ export class DynamicFormPropertyComponent {
         return this.form.controls[this.property.key].valid;
     }
 
-    constructor(private endPointService: EndPointService) {
-
-        this.updateEndPointList();
+    constructor() {
+      
     }
 
-    updateEndPointList() {
-
-        this.endPointService.getEndPoints().subscribe(data => {
-
-            this.endPoints = data['endPoint'];
-
-        });
-    }
+    
 }

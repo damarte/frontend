@@ -1,8 +1,5 @@
-/**
- * Created by jayhamilton on 2/3/17.
- */
-import {Injectable} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { Injectable } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable()
 export class PropertyControlService {

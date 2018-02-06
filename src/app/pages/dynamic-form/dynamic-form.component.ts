@@ -1,21 +1,9 @@
-/**
- * Created by jayhamilton on 2/5/17.
- */
-import {
-    Component, Input, OnInit, Output, EventEmitter,
-    ChangeDetectorRef, AfterViewInit
-} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { style, state, trigger, animate, transition } from '@angular/animations';
+import { FormGroup } from '@angular/forms';
+import { PropertyControlService } from './property-control.service';
+import { ConfigurationService } from '../services/configuration.service';
 
-import {
-    style, state, trigger, animate, transition
-} from '@angular/animations';
-
-import {FormGroup} from '@angular/forms';
-
-import {PropertyControlService} from './property-control.service';
-import {ConfigurationService} from '../services/configuration.service';
-import {EndPointService} from '../configuration/tab-endpoint/endpoint.service';
-import {EndPoint} from '../configuration/tab-endpoint/endpoint.model';
 
 
 @Component({
@@ -56,8 +44,7 @@ export class DynamicFormComponent implements OnInit, AfterViewInit {
     @Input() propertyPages: any[];
     @Input() instanceId: number;
     @Output() updatePropertiesEvent: EventEmitter<any> = new EventEmitter(true);
-    currentTab = 'run';
-    endPoints: EndPoint[];
+    currentTab = 'run';    
     state = 'inactive';
     lastActiveTab = {};
 
@@ -66,19 +53,13 @@ export class DynamicFormComponent implements OnInit, AfterViewInit {
     showMessage = false;
 
     constructor(private pcs: PropertyControlService,
-                private configService: ConfigurationService,
-                private endPointService: EndPointService,
+                private configService: ConfigurationService,                
                 private changeDetectionRef: ChangeDetectorRef) {
 
-        this.updateEndPointList();
+        
     }
 
-    updateEndPointList() {
-
-        this.endPointService.getEndPoints().subscribe(data => {
-            this.endPoints = data['endPoint'];
-        });
-    }
+    
 
     /* better solution that solves error: Expression has changed after it was checked exception resolution*/
     ngAfterViewInit(): void {
