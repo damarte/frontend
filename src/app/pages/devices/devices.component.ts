@@ -95,11 +95,21 @@ export class DevicesComponent {
     //console.log(isDevMode());
   } 
 
+  onModalHidden(reload){
+    //Recargamos los templates
+    if (reload){
+      const data = this.devicesService.listDevices().subscribe(res => {     
+        this.source.load(res);
+        //console.log(res);
+      });
+    }
+  }
+
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
       //Call service to delete this device
-      this.devicesService.deleteDevice(event.data._id).subscribe(res => {
+      this.devicesService.deleteDevice(event.data.entity_name).subscribe(res => {
         console.log(res);
       });
     } else {

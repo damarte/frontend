@@ -3,6 +3,10 @@
     Templates
   </nb-card-header>
 
+  <a class="item" (click)="addTemplateModal.showModal()">
+      <button mat-raised-button color="primary">Add Template</button>
+  </a>
+
   <nb-card-body>
     <ng2-smart-table 
               [settings]="settings" 
@@ -13,4 +17,8 @@
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>
+
+<!-- the modal will emit an event and call the grid component to add the requested cell to the board -->
+<app-add-template #addTemplateModal (onHidden)="onModalHidden($event)">
+</app-add-template>
  

@@ -10,6 +10,13 @@ import { UsersComponent } from "./users/users.component";
 import { TemplatesComponent } from './templates/templates.component';
 import { AddDevicesComponent } from './devices/add-devices/add-devices.component';
 
+import { MatButtonModule, MatSelectModule, MatSlideToggleModule, MatCardModule,
+MatIconModule, MatInputModule, MatListModule, MatRadioModule, MatChipsModule, MatDialogModule } from '@angular/material';
+
+import { DialogOverviewExampleDialog } from './templates/add-template/add-template.component';
+
+import { AddTemplateComponent } from './templates/add-template/add-template.component';
+
 const PAGES_COMPONENTS = [
   PagesComponent,
 ];
@@ -19,7 +26,17 @@ const PAGES_COMPONENTS = [
     PagesRoutingModule,
     ThemeModule,    
     DashboardModule,
-    Ng2SmartTableModule            
+    Ng2SmartTableModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatRadioModule,
+    MatChipsModule,
+    MatDialogModule,
   ],
   providers: [
     
@@ -29,8 +46,11 @@ const PAGES_COMPONENTS = [
     DevicesComponent, 
     UsersComponent,
     TemplatesComponent,
-    AddDevicesComponent   
+    AddDevicesComponent,
+    AddTemplateComponent,
+    DialogOverviewExampleDialog
   ],
+  entryComponents: [DialogOverviewExampleDialog],
 })
 export class PagesModule {
 }

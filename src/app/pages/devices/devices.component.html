@@ -13,5 +13,5 @@
 </nb-card>
 
 <!-- the modal will emit an event and call the grid component to add the requested cell to the board -->
-<app-add-devices #addDeviceModal >
+<app-add-devices #addDeviceModal (onHidden)="onModalHidden($event)">
 </app-add-devices>
