@@ -594,7 +594,7 @@ var FooterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/@theme/components/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"header-container\"\n     [class.left]=\"position === 'normal'\"\n     [class.right]=\"position === 'inverse'\">\n  <div class=\"logo-containter\">\n    <a (click)=\"toggleSidebar()\" href=\"#\" class=\"navigation\"><i class=\"nb-menu\"></i></a>\n    <div class=\"logo\" (click)=\"goToHome()\" style=\"background-image:url('/assets/images/logo.png');\"></div>\n  </div>\n</div>\n\n<nb-actions\n  size=\"medium\"\n  class=\"header-container\"\n  [class.right]=\"position === 'normal'\"\n  [class.left]=\"position === 'inverse'\">\n  <nb-action icon=\"nb-grid-b\" class=\"toggle-layout\" (click)=\"toggleSettings()\"></nb-action>\n  <nb-action class=\"control-item\">\n    <nb-search type=\"rotate-layout\" (click)=\"startSearch()\"></nb-search> \n  </nb-action>\n  <nb-action>  \n  <nb-user [menu]=\"userMenu\" [name]=\"user?.name\" [picture]=\"user?.picture\"></nb-user>\n  </nb-action>\n  <nb-action class=\"control-item\" icon=\"nb-notifications\" href=\"/pages/components/notifications\" (click)=\"goToNotifications()\"></nb-action>\n  <nb-action class=\"control-item\" icon=\"ion-ionic\"></nb-action>\n</nb-actions>\n\n\n"
+module.exports = "<div class=\"header-container\"\r\n     [class.left]=\"position === 'normal'\"\r\n     [class.right]=\"position === 'inverse'\">\r\n  <div class=\"logo-containter\">\r\n    <a (click)=\"toggleSidebar()\" href=\"#\" class=\"navigation\"><i class=\"nb-menu\"></i></a>\r\n    <div class=\"logo\" (click)=\"goToHome()\" style=\"background-image:url('/assets/images/logo.png');\"></div>\r\n  </div>\r\n</div>\r\n\r\n<nb-actions\r\n  size=\"medium\"\r\n  class=\"header-container\"\r\n  [class.right]=\"position === 'normal'\"\r\n  [class.left]=\"position === 'inverse'\">\r\n  <nb-action icon=\"nb-grid-b\" class=\"toggle-layout\" (click)=\"toggleSettings()\"></nb-action>\r\n  <nb-action class=\"control-item\">\r\n    <nb-search type=\"rotate-layout\" (click)=\"startSearch()\"></nb-search> \r\n  </nb-action>\r\n  <nb-action>  \r\n  <nb-user [menu]=\"userMenu\" [name]=\"user?.name\" [picture]=\"user?.picture\"></nb-user>\r\n  </nb-action>\r\n  <nb-action class=\"control-item\" icon=\"nb-notifications\" href=\"/pages/components/notifications\" (click)=\"goToNotifications()\"></nb-action>\r\n  <nb-action class=\"control-item\" icon=\"ion-ionic\"></nb-action>\r\n</nb-actions>\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -1827,6 +1827,7 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_um_fiwoo__ = __webpack_require__("../../../../um_fiwoo/dist/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_iot_devices_fiwoo__ = __webpack_require__("../../../../iot_devices_fiwoo/dist/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1838,6 +1839,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
+
 
 
 
@@ -1874,7 +1876,8 @@ var AppModule = /** @class */ (function () {
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]],
             providers: [
-                { provide: __WEBPACK_IMPORTED_MODULE_0__angular_common__["APP_BASE_HREF"], useValue: '/' }
+                { provide: __WEBPACK_IMPORTED_MODULE_0__angular_common__["APP_BASE_HREF"], useValue: '/' },
+                { provide: __WEBPACK_IMPORTED_MODULE_15__angular_material__["b" /* MAT_DIALOG_DEFAULT_OPTIONS */], useValue: { hasBackdrop: false } }
             ],
         })
     ], AppModule);
@@ -1896,7 +1899,7 @@ function apiConfigFactory() {
 /***/ "../../../../../src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  login works!\n</p>\n"
+module.exports = "<p>\r\n  login works!\r\n</p>\r\n"
 
 /***/ }),
 
