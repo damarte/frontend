@@ -18,6 +18,7 @@ import { ApiModule, Configuration, ConfigurationParameters } from 'dv_fiwoo';
 import { ApiModule as UmApiModule } from 'um_fiwoo';  
 import { ApiModule as IotModule } from 'iot_devices_fiwoo';
 import { LoginComponent } from './login/login.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
  
 
 @NgModule({
@@ -33,11 +34,12 @@ import { LoginComponent } from './login/login.component';
     IotModule.forRoot(apiConfigFactory),
     NgbModule.forRoot(),
     ThemeModule.forRoot(), 
-    CoreModule.forRoot()  
+    CoreModule.forRoot()
   ],
   bootstrap: [AppComponent],
   providers: [
-    { provide: APP_BASE_HREF, useValue: '/' }   
+    { provide: APP_BASE_HREF, useValue: '/' },
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}} 
   ],
 })
 export class AppModule {

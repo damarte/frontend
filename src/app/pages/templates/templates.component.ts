@@ -74,15 +74,21 @@ export class TemplatesComponent {
   };
 
 
-
-
-
   source: LocalDataSource = new LocalDataSource();
 
   constructor(private _templatesService: DevicesService, private _http: HttpClient) {
     const data = this._templatesService.getMyTemplates().subscribe(res => {
       this.source.load(res);
     })
+  }
+
+  onModalHidden(reload){
+    //Recargamos los templates
+    if (reload){
+      const data = this._templatesService.getMyTemplates().subscribe(res => {
+        this.source.load(res);
+      });
+    }
   }
 
   onDeleteConfirm(event): void {
@@ -99,22 +105,23 @@ export class TemplatesComponent {
 
   onSaveConfirm(event) {
     if (window.confirm('Are you sure you want to save?')) {
-      event.newData['name'] += ' + added in code';
+      // event.newData['name'] += ' + added in code';
+      this._templatesService.createTemplate(event.newData._id, event.newData).subscribe(res => {
+        console.log(res);
+      });
       event.confirm.resolve(event.newData);
     } else {
       event.confirm.reject();
     }
   }
-
 
   onCreateConfirm(event) {
     if (window.confirm('Are you sure you want to create?')) {
       //event.newData['name'] += ' + added in code';      
-      this._templatesService.createTemplate(event.data.id, event.data);
+      this._templatesService.addTemplate(event.newData);
       event.confirm.resolve(event.newData);
     } else {
       event.confirm.reject();
     }
   }
-
 }

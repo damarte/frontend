@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>New {{data.selectedProperty}}</h1>
+<div mat-dialog-content>
+    <p>Fill {{data.selectedProperty}} data</p>
+    <mat-form-field>
+        <input matInput type="text" placeholder="Name" [(ngModel)]="data.name"/>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" placeholder="Type" [(ngModel)]="data.formType"/>
+    </mat-form-field>
+    <mat-form-field *ngIf="data.showValue">
+        <input matInput type="text" placeholder="Value" [(ngModel)]="data.value"/>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>

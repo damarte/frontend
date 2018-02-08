@@ -1,28 +1,118 @@
   <div class="ui modal" #addDeviceModal>
-      <div class="header">Add Device</div>
+      <div class="header">
+            <div class="ui grid">
+                <div class="twelve wide column">
+                        Add Device
+                </div>
+                <div class="two wide column">
+                        <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+                </div>
+                <div class="one wide column">
+                        <button mat-raised-button color="primary" (click)="sendDevices()">Save</button>
+                </div>
+            </div>  
+            
+      </div>
       <div class="scrolling content">
           <div class="ui grid">
-
               <!-- col1-->
               <div class="four wide column">
                   <div class="field">
-                      <label>Name of the device</label>
-                      <input type="text" name="first-name" placeholder="Name of the device...">
+                      <mat-form-field>
+                            <input matInput type="text" placeholder="Name of the device" [(ngModel)]="device_name" [formControl]="deviceNameFormControl"/>
+                            <button mat-button *ngIf="device_name" matSuffix mat-icon-button aria-label="Clear" (click)="device_name=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-error *ngIf="deviceNameFormControl.hasError('required')">
+                                Device's name <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
                     </div>
               </div>
               
               <!-- col2-->
-              <div class="four wide column">               
+              <div class="four wide column">
+                    <mat-form-field>
+                        <mat-select  [(value)]="currentTemplate" placeholder="Choose template" [formControl]="templateFormControl">
+                            <mat-option *ngFor="let template of templates" [value]="template">
+                            {{ template.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="templateFormControl.hasError('required')">
+                            Template <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
               </div>
               
               <!-- col3-->
               <div class="four wide column">
+                    <div class="field">
+                        <mat-form-field>
+                            <input matInput type="text" placeholder="Entity name" [(ngModel)]="entity_type" [formControl]="entityNameFormControl"/>
+                            <button mat-button *ngIf="entity_type" matSuffix mat-icon-button aria-label="Clear" (click)="entity_type=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-error *ngIf="entityNameFormControl.hasError('required')">
+                                Entity Name <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>   
+                    </div>
               </div>
 
               <!-- col4-->
               <div class="four wide column">
+                <mat-slide-toggle
+                    class="example-margin"
+                    color="accent"
+                    checked="false">
+                    Public
+                </mat-slide-toggle>
               </div>
-
             </div>
+
+            <div class="field" style="margin-top: 20px;">
+                <button mat-raised-button color="primary" (click)="onDeviceCreated($event)">Create device</button>
+            </div>
+
+            <mat-divider style="margin-top: 20px;"></mat-divider>
+
+            <mat-list role="list">
+                <div *ngFor="let createdDevice of createdDevices">
+                    <div class="ui grid">
+                        <!-- col1-->
+                        <div class="four wide column">
+                            <div class="field">
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Name" value="{{createdDevice.device.device[0].name}}" disabled/>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        
+                        <!-- col2-->
+                        <div class="four wide column">
+                            <mat-form-field>
+                                <input matInput type="text" placeholder="Template Id" value="{{createdDevice.templateName}}" disabled/>
+                            </mat-form-field>
+                        </div>
+                        
+                        <!-- col3-->
+                        <div class="four wide column">
+                            <div class="field">
+                                <mat-form-field>
+                                        <input matInput type="text" placeholder="Entity name" value="{{createdDevice.device.device[0].deviceId}}" disabled/>
+                                </mat-form-field>   
+                            </div>
+                        </div>
+            
+                        <!-- col4-->
+                        <div class="four wide column">
+                            <button mat-icon-button (click)="removeCreatedDevice(createdDevice)">
+                                <mat-icon aria-label="Remove">close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>                
+            </mat-list>
       </div>
     </div>
