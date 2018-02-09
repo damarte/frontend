@@ -77,18 +77,47 @@ export class TemplatesComponent {
   source: LocalDataSource = new LocalDataSource();
 
   constructor(private _templatesService: DevicesService, private _http: HttpClient) {
-    const data = this._templatesService.getMyTemplates().subscribe(res => {
-      this.source.load(res);
-    })
+    this.loadTemplates(null);
+  }
+
+  filterData: any = {};
+
+  getActiveFilters(){
+    if (this.filterData != undefined && this.filterData != null){
+      return Object.keys(this.filterData).length
+    }
+    return 0;
+  }
+
+  onApplyFilters(filterData){
+    this.filterData = filterData;
+    this.loadTemplates(filterData);
+  }
+  onResetFilters(){
+    this.filterData = {};
+    this.loadTemplates(null);
   }
 
   onModalHidden(reload){
     //Recargamos los templates
     if (reload){
-      const data = this._templatesService.getMyTemplates().subscribe(res => {
+     this.loadTemplates(null);
+    }
+  }
+
+  private loadTemplates(filterData):void{
+    if (filterData != undefined && filterData != null){
+      const data = this._templatesService.getTemplates(filterData.name, filterData.protocol,
+                                                   filterData.entity_type, filterData.transportProtocol,
+                                                   filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {     
+        this.source.load(res);
+      });
+    }else{
+      const data = this._templatesService.getTemplates().subscribe(res => {     
         this.source.load(res);
       });
     }
+
   }
 
   onDeleteConfirm(event): void {

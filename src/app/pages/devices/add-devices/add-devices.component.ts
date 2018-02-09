@@ -68,6 +68,7 @@ export class AddDevicesComponent implements OnInit {
   showModal() {
     this.saved = false;
     this.modal.modal({
+      allowMultiple: true,
       closable  : true,
       onHidden  : function(){
         context.cleanFields();
@@ -119,11 +120,11 @@ export class AddDevicesComponent implements OnInit {
     this.device = this.generateDevice();
     deviceWrapper.device = this.device;
     this.createdDevices.push(deviceWrapper);
+    
 
     //Delete data
     this.device_name = null;
     this.entity_type = null;
-    this.currentTemplate = null;
   }
 
   private generateDevice(): Devices {

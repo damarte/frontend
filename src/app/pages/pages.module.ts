@@ -11,11 +11,12 @@ import { TemplatesComponent } from './templates/templates.component';
 import { AddDevicesComponent } from './devices/add-devices/add-devices.component';
 
 import { MatButtonModule, MatSelectModule, MatSlideToggleModule, MatCardModule,
-MatIconModule, MatInputModule, MatListModule, MatRadioModule, MatChipsModule, MatDialogModule } from '@angular/material';
+MatIconModule, MatInputModule, MatListModule, MatRadioModule, MatChipsModule, MatDialogModule, MatExpansionModule } from '@angular/material';
 
 import { DialogOverviewExampleDialog } from './templates/add-template/add-template.component';
 
 import { AddTemplateComponent } from './templates/add-template/add-template.component';
+import { DevicesFilterComponent } from './devices/devices-filter/devices-filter.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -37,6 +38,7 @@ const PAGES_COMPONENTS = [
     MatRadioModule,
     MatChipsModule,
     MatDialogModule,
+    MatExpansionModule
   ],
   providers: [
     
@@ -48,7 +50,8 @@ const PAGES_COMPONENTS = [
     TemplatesComponent,
     AddDevicesComponent,
     AddTemplateComponent,
-    DialogOverviewExampleDialog
+    DialogOverviewExampleDialog,
+    DevicesFilterComponent
   ],
   entryComponents: [DialogOverviewExampleDialog],
 })
