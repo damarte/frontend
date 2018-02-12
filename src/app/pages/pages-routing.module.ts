@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DevicesComponent } from './devices/devices.component';
 import { UsersComponent } from './users/users.component';
 import { TemplatesComponent } from './templates/templates.component';
+import { AboutComponent } from './about/about.component';
 
 
 
@@ -52,6 +53,10 @@ const routes: Routes = [
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
+    },
+    {
+      path: 'about',
+      component: AboutComponent,
     }
   ]
 }];

@@ -17,6 +17,9 @@ import { DialogOverviewExampleDialog } from './templates/add-template/add-templa
 
 import { AddTemplateComponent } from './templates/add-template/add-template.component';
 import { DevicesFilterComponent } from './devices/devices-filter/devices-filter.component';
+import { AboutComponent } from './about/about.component';
+
+import { AboutService } from './about/about.service';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -41,7 +44,7 @@ const PAGES_COMPONENTS = [
     MatExpansionModule
   ],
   providers: [
-    
+    AboutService
   ],
   declarations: [
     ...PAGES_COMPONENTS, 
@@ -51,7 +54,8 @@ const PAGES_COMPONENTS = [
     AddDevicesComponent,
     AddTemplateComponent,
     DialogOverviewExampleDialog,
-    DevicesFilterComponent
+    DevicesFilterComponent,
+    AboutComponent
   ],
   entryComponents: [DialogOverviewExampleDialog],
 })

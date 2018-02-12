@@ -18,6 +18,11 @@ export class TemplatesComponent {
   outputs: string;
 
   settings = {
+
+    actions: {
+      add: false
+    },
+
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',

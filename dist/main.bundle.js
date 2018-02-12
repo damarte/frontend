@@ -594,7 +594,7 @@ var FooterComponent = /** @class */ (function () {
 /***/ "../../../../../src/app/@theme/components/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"header-container\"\r\n     [class.left]=\"position === 'normal'\"\r\n     [class.right]=\"position === 'inverse'\">\r\n  <div class=\"logo-containter\">\r\n    <a (click)=\"toggleSidebar()\" href=\"#\" class=\"navigation\"><i class=\"nb-menu\"></i></a>\r\n    <div class=\"logo\" (click)=\"goToHome()\" style=\"background-image:url('/assets/images/logo.png');\"></div>\r\n  </div>\r\n</div>\r\n\r\n<nb-actions\r\n  size=\"medium\"\r\n  class=\"header-container\"\r\n  [class.right]=\"position === 'normal'\"\r\n  [class.left]=\"position === 'inverse'\">\r\n  <nb-action icon=\"nb-grid-b\" class=\"toggle-layout\" (click)=\"toggleSettings()\"></nb-action>\r\n  <nb-action class=\"control-item\">\r\n    <nb-search type=\"rotate-layout\" (click)=\"startSearch()\"></nb-search> \r\n  </nb-action>\r\n  <nb-action>  \r\n  <nb-user [menu]=\"userMenu\" [name]=\"user?.name\" [picture]=\"user?.picture\"></nb-user>\r\n  </nb-action>\r\n  <nb-action class=\"control-item\" icon=\"nb-notifications\" href=\"/pages/components/notifications\" (click)=\"goToNotifications()\"></nb-action>\r\n  <nb-action class=\"control-item\" icon=\"ion-ionic\"></nb-action>\r\n</nb-actions>\r\n\r\n\r\n"
+module.exports = "<div class=\"header-container\"\r\n     [class.left]=\"position === 'normal'\"\r\n     [class.right]=\"position === 'inverse'\">\r\n  <div class=\"logo-containter\">\r\n    <a (click)=\"toggleSidebar()\" href=\"#\" class=\"navigation\"><i class=\"nb-menu\"></i></a>\r\n    <div class=\"logo\" (click)=\"goToHome()\" style=\"background-image:url('/assets/images/logo.png');\"></div>\r\n  </div>\r\n</div>\r\n\r\n<nb-actions\r\n  size=\"medium\"\r\n  class=\"header-container\"\r\n  [class.right]=\"position === 'normal'\"\r\n  [class.left]=\"position === 'inverse'\">\r\n  <nb-action icon=\"nb-grid-b\" class=\"toggle-layout\" (click)=\"toggleSettings()\"></nb-action>\r\n  <nb-action class=\"control-item\">\r\n    <nb-search type=\"rotate-layout\" (click)=\"startSearch()\"></nb-search> \r\n  </nb-action>\r\n  <nb-action>  \r\n  <nb-user [menu]=\"userMenu\" [name]=\"user?.name\" [picture]=\"user?.picture\" (menuClick)=\"onMenuClick($event)\"></nb-user>\r\n  </nb-action>\r\n  <nb-action class=\"control-item\" icon=\"nb-notifications\" href=\"/pages/components/notifications\" (click)=\"goToNotifications()\"></nb-action>\r\n  <nb-action class=\"control-item\" icon=\"ion-ionic\"></nb-action>\r\n</nb-actions>\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -648,12 +648,20 @@ var HeaderComponent = /** @class */ (function () {
         this.analyticsService = analyticsService;
         this.router = router;
         this.position = 'normal';
-        this.userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
+        this.userMenu = [{ title: 'Profile' }, { title: 'Log out', type: "logout" }];
     }
+    HeaderComponent.prototype.onMenuClick = function (value) {
+        if (value != undefined && value.type == "logout") {
+            //TODO LOGOUT
+            this.router.navigate(['../auth/login']);
+        }
+    };
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.userService.getUsers()
-            .subscribe(function (users) { return _this.user = users.nick; });
+            .subscribe(function (users) {
+            _this.user = users.nick;
+        });
     };
     HeaderComponent.prototype.toggleSidebar = function () {
         this.sidebarService.toggle(true, 'menu-sidebar');
@@ -1730,6 +1738,7 @@ var ThemeModule = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutingModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_index__ = __webpack_require__("../../../../../src/app/auth/index.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1738,9 +1747,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 
 
+
 var routes = [
     { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
     { path: '', redirectTo: 'pages', pathMatch: 'full' },
+    {
+        path: 'auth',
+        component: __WEBPACK_IMPORTED_MODULE_2__auth_index__["a" /* NbAuthComponent */],
+        children: [
+            {
+                path: '',
+                component: __WEBPACK_IMPORTED_MODULE_2__auth_index__["b" /* NbLoginComponent */],
+            },
+            {
+                path: 'login',
+                component: __WEBPACK_IMPORTED_MODULE_2__auth_index__["b" /* NbLoginComponent */],
+            },
+        ],
+    },
     { path: '**', redirectTo: 'pages' },
 ];
 var config = {
@@ -1828,6 +1852,7 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_iot_devices_fiwoo__ = __webpack_require__("../../../../iot_devices_fiwoo/dist/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__auth_auth_module__ = __webpack_require__("../../../../../src/app/auth/auth.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1839,6 +1864,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
+
 
 
 
@@ -1872,7 +1898,14 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_13_iot_devices_fiwoo__["a" /* ApiModule */].forRoot(apiConfigFactory),
                 __WEBPACK_IMPORTED_MODULE_10__ng_bootstrap_ng_bootstrap__["c" /* NgbModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_9__theme_theme_module__["a" /* ThemeModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_5__core_core_module__["a" /* CoreModule */].forRoot()
+                __WEBPACK_IMPORTED_MODULE_5__core_core_module__["a" /* CoreModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_16__auth_auth_module__["a" /* NbAuthModule */].forRoot({
+                    forms: {
+                        login: {
+                            redirectDelay: 3000,
+                        },
+                    },
+                })
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]],
             providers: [
@@ -1892,6 +1925,2263 @@ function apiConfigFactory() {
     };
     return new __WEBPACK_IMPORTED_MODULE_11_dv_fiwoo__["b" /* Configuration */](params);
 }
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/auth.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export nbAuthServiceFactory */
+/* unused harmony export nbOptionsFactory */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbAuthModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__nebular_theme__ = __webpack_require__("../../../../@nebular/theme/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_dummy_auth_provider__ = __webpack_require__("../../../../../src/app/auth/providers/dummy-auth.provider.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__providers_email_pass_auth_provider__ = __webpack_require__("../../../../../src/app/auth/providers/email-pass-auth.provider.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_auth_component__ = __webpack_require__("../../../../../src/app/auth/components/auth.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_token_service__ = __webpack_require__("../../../../../src/app/auth/services/token.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_auth_block_auth_block_component__ = __webpack_require__("../../../../../src/app/auth/components/auth-block/auth-block.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_login_login_component__ = __webpack_require__("../../../../../src/app/auth/components/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_register_register_component__ = __webpack_require__("../../../../../src/app/auth/components/register/register.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_logout_logout_component__ = __webpack_require__("../../../../../src/app/auth/components/logout/logout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_request_password_request_password_component__ = __webpack_require__("../../../../../src/app/auth/components/request-password/request-password.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_reset_password_reset_password_component__ = __webpack_require__("../../../../../src/app/auth/components/reset-password/reset-password.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__auth_routes__ = __webpack_require__("../../../../../src/app/auth/auth.routes.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function nbAuthServiceFactory(config, tokenService, injector) {
+    var providers = config.providers || {};
+    for (var key in providers) {
+        if (providers.hasOwnProperty(key)) {
+            var provider = providers[key];
+            var object = injector.get(provider.service);
+            object.setConfig(provider.config || {});
+        }
+    }
+    return new __WEBPACK_IMPORTED_MODULE_6__services_auth_service__["b" /* NbAuthService */](tokenService, injector, providers);
+}
+function nbOptionsFactory(options) {
+    return Object(__WEBPACK_IMPORTED_MODULE_19__helpers__["a" /* deepExtend */])(__WEBPACK_IMPORTED_MODULE_9__auth_options__["f" /* defaultSettings */], options);
+}
+var NbAuthModule = /** @class */ (function () {
+    function NbAuthModule() {
+    }
+    NbAuthModule_1 = NbAuthModule;
+    NbAuthModule.forRoot = function (nbAuthOptions) {
+        return {
+            ngModule: NbAuthModule_1,
+            providers: [
+                { provide: __WEBPACK_IMPORTED_MODULE_9__auth_options__["e" /* NB_AUTH_USER_OPTIONS_TOKEN */], useValue: nbAuthOptions },
+                { provide: __WEBPACK_IMPORTED_MODULE_9__auth_options__["b" /* NB_AUTH_OPTIONS_TOKEN */], useFactory: nbOptionsFactory, deps: [__WEBPACK_IMPORTED_MODULE_9__auth_options__["e" /* NB_AUTH_USER_OPTIONS_TOKEN */]] },
+                { provide: __WEBPACK_IMPORTED_MODULE_9__auth_options__["c" /* NB_AUTH_PROVIDERS_TOKEN */], useValue: {} },
+                { provide: __WEBPACK_IMPORTED_MODULE_9__auth_options__["d" /* NB_AUTH_TOKEN_WRAPPER_TOKEN */], useClass: __WEBPACK_IMPORTED_MODULE_11__services_token_service__["a" /* NbAuthSimpleToken */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_9__auth_options__["a" /* NB_AUTH_INTERCEPTOR_HEADER */], useValue: 'Authorization' },
+                {
+                    provide: __WEBPACK_IMPORTED_MODULE_6__services_auth_service__["b" /* NbAuthService */],
+                    useFactory: nbAuthServiceFactory,
+                    deps: [__WEBPACK_IMPORTED_MODULE_9__auth_options__["b" /* NB_AUTH_OPTIONS_TOKEN */], __WEBPACK_IMPORTED_MODULE_11__services_token_service__["b" /* NbTokenService */], __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"]],
+                },
+                __WEBPACK_IMPORTED_MODULE_11__services_token_service__["b" /* NbTokenService */],
+                __WEBPACK_IMPORTED_MODULE_7__providers_dummy_auth_provider__["a" /* NbDummyAuthProvider */],
+                __WEBPACK_IMPORTED_MODULE_8__providers_email_pass_auth_provider__["a" /* NbEmailPassAuthProvider */],
+            ],
+        };
+    };
+    NbAuthModule = NbAuthModule_1 = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
+            imports: [
+                __WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"],
+                __WEBPACK_IMPORTED_MODULE_5__nebular_theme__["e" /* NbLayoutModule */],
+                __WEBPACK_IMPORTED_MODULE_5__nebular_theme__["b" /* NbCardModule */],
+                __WEBPACK_IMPORTED_MODULE_5__nebular_theme__["c" /* NbCheckboxModule */],
+                __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* RouterModule */].forChild(__WEBPACK_IMPORTED_MODULE_18__auth_routes__["a" /* routes */]),
+                __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormsModule"],
+                __WEBPACK_IMPORTED_MODULE_4__angular_common_http__["b" /* HttpClientModule */],
+            ],
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_10__components_auth_component__["a" /* NbAuthComponent */],
+                __WEBPACK_IMPORTED_MODULE_12__components_auth_block_auth_block_component__["a" /* NbAuthBlockComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__components_login_login_component__["a" /* NbLoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__components_register_register_component__["a" /* NbRegisterComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__components_request_password_request_password_component__["a" /* NbRequestPasswordComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__components_reset_password_reset_password_component__["a" /* NbResetPasswordComponent */],
+                __WEBPACK_IMPORTED_MODULE_15__components_logout_logout_component__["a" /* NbLogoutComponent */],
+            ],
+            exports: [
+                __WEBPACK_IMPORTED_MODULE_10__components_auth_component__["a" /* NbAuthComponent */],
+                __WEBPACK_IMPORTED_MODULE_12__components_auth_block_auth_block_component__["a" /* NbAuthBlockComponent */],
+                __WEBPACK_IMPORTED_MODULE_13__components_login_login_component__["a" /* NbLoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__components_register_register_component__["a" /* NbRegisterComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__components_request_password_request_password_component__["a" /* NbRequestPasswordComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__components_reset_password_reset_password_component__["a" /* NbResetPasswordComponent */],
+                __WEBPACK_IMPORTED_MODULE_15__components_logout_logout_component__["a" /* NbLogoutComponent */],
+            ],
+        })
+    ], NbAuthModule);
+    return NbAuthModule;
+    var NbAuthModule_1;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/auth.options.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return defaultSettings; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NB_AUTH_OPTIONS_TOKEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return NB_AUTH_USER_OPTIONS_TOKEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return NB_AUTH_PROVIDERS_TOKEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return NB_AUTH_TOKEN_WRAPPER_TOKEN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NB_AUTH_INTERCEPTOR_HEADER; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+
+var defaultSettings = {
+    forms: {
+        login: {
+            redirectDelay: 500,
+            provider: 'email',
+            rememberMe: true,
+            showMessages: {
+                success: true,
+                error: true,
+            },
+        },
+        register: {
+            redirectDelay: 500,
+            provider: 'email',
+            showMessages: {
+                success: true,
+                error: true,
+            },
+            terms: true,
+        },
+        requestPassword: {
+            redirectDelay: 500,
+            provider: 'email',
+            showMessages: {
+                success: true,
+                error: true,
+            },
+        },
+        resetPassword: {
+            redirectDelay: 500,
+            provider: 'email',
+            showMessages: {
+                success: true,
+                error: true,
+            },
+        },
+        logout: {
+            redirectDelay: 500,
+            provider: 'email',
+        },
+        validation: {
+            password: {
+                required: true,
+                minLength: 4,
+                maxLength: 50,
+            },
+            email: {
+                required: true,
+            },
+            fullName: {
+                required: false,
+                minLength: 4,
+                maxLength: 50,
+            },
+        },
+    },
+};
+var NB_AUTH_OPTIONS_TOKEN = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["InjectionToken"]('Nebular Auth Options');
+var NB_AUTH_USER_OPTIONS_TOKEN = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["InjectionToken"]('Nebular User Auth Options');
+var NB_AUTH_PROVIDERS_TOKEN = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["InjectionToken"]('Nebular Auth Providers');
+var NB_AUTH_TOKEN_WRAPPER_TOKEN = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["InjectionToken"]('Nebular Auth Token');
+var NB_AUTH_INTERCEPTOR_HEADER = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["InjectionToken"]('Nebular Simple Interceptor Header');
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/auth.routes.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routes; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_auth_component__ = __webpack_require__("../../../../../src/app/auth/components/auth.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_login_login_component__ = __webpack_require__("../../../../../src/app/auth/components/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_register_register_component__ = __webpack_require__("../../../../../src/app/auth/components/register/register.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_logout_logout_component__ = __webpack_require__("../../../../../src/app/auth/components/logout/logout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_request_password_request_password_component__ = __webpack_require__("../../../../../src/app/auth/components/request-password/request-password.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_reset_password_reset_password_component__ = __webpack_require__("../../../../../src/app/auth/components/reset-password/reset-password.component.ts");
+
+
+
+
+
+
+var routes = [
+    {
+        path: 'auth',
+        component: __WEBPACK_IMPORTED_MODULE_0__components_auth_component__["a" /* NbAuthComponent */],
+        children: [
+            {
+                path: '',
+                component: __WEBPACK_IMPORTED_MODULE_1__components_login_login_component__["a" /* NbLoginComponent */],
+            },
+            {
+                path: 'login',
+                component: __WEBPACK_IMPORTED_MODULE_1__components_login_login_component__["a" /* NbLoginComponent */],
+            },
+            {
+                path: 'register',
+                component: __WEBPACK_IMPORTED_MODULE_2__components_register_register_component__["a" /* NbRegisterComponent */],
+            },
+            {
+                path: 'logout',
+                component: __WEBPACK_IMPORTED_MODULE_3__components_logout_logout_component__["a" /* NbLogoutComponent */],
+            },
+            {
+                path: 'request-password',
+                component: __WEBPACK_IMPORTED_MODULE_4__components_request_password_request_password_component__["a" /* NbRequestPasswordComponent */],
+            },
+            {
+                path: 'reset-password',
+                component: __WEBPACK_IMPORTED_MODULE_5__components_reset_password_reset_password_component__["a" /* NbResetPasswordComponent */],
+            },
+        ],
+    },
+];
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/auth-block/auth-block.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "/**\n * @license\n * Copyright Akveo. All Rights Reserved.\n * Licensed under the MIT License. See License.txt in the project root for license information.\n */\n@media (max-width: 550px) {\n  :host /deep/ .accept-group {\n    font-size: 12px;\n    padding: 0; } }\n\n:host /deep/ form {\n  width: 100%; }\n\n:host /deep/ .alert {\n  text-align: center; }\n\n:host /deep/ .title {\n  margin-bottom: 0.75rem;\n  text-align: center; }\n\n:host /deep/ .sub-title {\n  margin-bottom: 2rem;\n  text-align: center; }\n\n:host /deep/ .checkbox {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  margin-bottom: 10px;\n  font-weight: normal; }\n\n:host /deep/ .form-group.accept-group {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  margin: 2rem 0; }\n  :host /deep/ .form-group.accept-group .forgot-password {\n    line-height: 2; }\n\n:host /deep/ .links {\n  text-align: center;\n  margin-top: 1.75rem; }\n  :host /deep/ .links .socials {\n    margin: 1.5rem 0 2.5rem; }\n  :host /deep/ .links .socials a {\n    font-size: 2rem;\n    margin: 0 1rem;\n    text-decoration: none; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/auth-block/auth-block.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbAuthBlockComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var NbAuthBlockComponent = /** @class */ (function () {
+    function NbAuthBlockComponent() {
+    }
+    NbAuthBlockComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'nb-auth-block',
+            styles: [__webpack_require__("../../../../../src/app/auth/components/auth-block/auth-block.component.scss")],
+            template: "\n    <ng-content></ng-content>\n  ",
+        })
+    ], NbAuthBlockComponent);
+    return NbAuthBlockComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/auth.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ":host /deep/ nb-layout .layout .layout-container .content .columns nb-layout-column {\n  padding: 2.5rem; }\n\n:host /deep/ nb-card {\n  height: calc(100vh - 2 * 2.5rem); }\n\n:host /deep/ nb-card {\n  margin: 0; }\n\n:host /deep/ .flex-centered {\n  margin: auto; }\n\n:host /deep/ nb-card-body {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n@media (max-width: 550px) {\n  :host /deep/ /deep/ nb-layout .layout .layout-container .content .columns nb-layout-column {\n    padding: 0; }\n  :host /deep/ nb-card {\n    border-radius: 0;\n    height: 100vh; } }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/auth.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbAuthComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+
+var NbAuthComponent = /** @class */ (function () {
+    // showcase of how to use the onAuthenticationChange method
+    function NbAuthComponent(auth) {
+        var _this = this;
+        this.auth = auth;
+        this.authenticated = false;
+        this.token = '';
+        this.subscription = auth.onAuthenticationChange()
+            .subscribe(function (authenticated) {
+            _this.authenticated = authenticated;
+        });
+    }
+    NbAuthComponent.prototype.ngOnDestroy = function () {
+        this.subscription.unsubscribe();
+    };
+    NbAuthComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'nb-auth',
+            styles: [__webpack_require__("../../../../../src/app/auth/components/auth.component.scss")],
+            template: "\n    <nb-layout>\n      <nb-layout-column>\n        <nb-card>\n          <nb-card-body>\n            <div class=\"flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12\">\n              <router-outlet></router-outlet>\n            </div>\n          </nb-card-body>\n        </nb-card>\n      </nb-layout-column>\n    </nb-layout>\n  ",
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_auth_service__["b" /* NbAuthService */]])
+    ], NbAuthComponent);
+    return NbAuthComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__auth_component__ = __webpack_require__("../../../../../src/app/auth/components/auth.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__auth_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_block_auth_block_component__ = __webpack_require__("../../../../../src/app/auth/components/auth-block/auth-block.component.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login_component__ = __webpack_require__("../../../../../src/app/auth/components/login/login.component.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__login_login_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__logout_logout_component__ = __webpack_require__("../../../../../src/app/auth/components/logout/logout.component.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__register_register_component__ = __webpack_require__("../../../../../src/app/auth/components/register/register.component.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__request_password_request_password_component__ = __webpack_require__("../../../../../src/app/auth/components/request-password/request-password.component.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__reset_password_reset_password_component__ = __webpack_require__("../../../../../src/app/auth/components/reset-password/reset-password.component.ts");
+/* unused harmony namespace reexport */
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/login/login.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<nb-auth-block>\r\n    <h2 class=\"title\">Sign In</h2>\r\n    <small class=\"form-text sub-title\">Hello! Sign in with your username or email</small>\r\n\r\n    <form (ngSubmit)=\"login(form)\" #form=\"ngForm\" autocomplete=\"nope\">\r\n\r\n        <div *ngIf=\"showMessages.error && errors && errors.length > 0 && !submitted\" class=\"alert alert-danger\" role=\"alert\">\r\n            <div>\r\n                <strong>Oh snap!</strong>\r\n            </div>\r\n            <div *ngFor=\"let error of errors\">{{ error }}</div>\r\n        </div>\r\n\r\n        <div *ngIf=\"showMessages.success && messages && messages.length > 0 && !submitted\" class=\"alert alert-success\" role=\"alert\">\r\n            <div>\r\n                <strong>Hooray!</strong>\r\n            </div>\r\n            <div *ngFor=\"let message of messages\">{{ message }}</div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n        <!--<label for=\"input-email\" class=\"sr-only\">Email address</label>\r\n        <input ngModel name=\"email\" id=\"input-email\" pattern=\".+@.+\\..+\"\r\n               class=\"form-control\" placeholder=\"Email address\" #email=\"ngModel\"\r\n                [class.form-control-danger]=\"email.invalid && email.touched\" autofocus\r\n               [required]=\"getConfigValue('forms.validation.email.required')\"> \r\n               <small class=\"form-text error\" *ngIf=\"email.invalid && email.touched && email.errors?.required\">\r\n          Email is required!\r\n        </small>\r\n        <small class=\"form-text error\"\r\n               *ngIf=\"email.invalid && email.touched && email.errors?.pattern\">\r\n          Email should be the real one!\r\n        </small>-->\r\n\r\n            <label for=\"username\" class=\"sr-only\">Username</label>\r\n            <input type=\"text\" ngModel name=\"username\" id=\"input-username\" class=\"form-control\" placeholder=\"Username\" #username=\"ngModel\"\r\n                [class.form-control-danger]=\"username.invalid && username.touched\" autofocus [required]=\"getConfigValue('forms.validation.username.required')\">\r\n            <small class=\"form-text error\" *ngIf=\"username.invalid && username.touched && username.errors?.required\">\r\n                Username is required!\r\n            </small>\r\n\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n            <label for=\"input-password\" class=\"sr-only\">Password</label>\r\n            <input name=\"password\" ngModel name=\"password\" type=\"password\" id=\"input-password\" class=\"form-control\" placeholder=\"Password\"\r\n                #password=\"ngModel\" [class.form-control-danger]=\"password.invalid && password.touched\" [required]=\"getConfigValue('forms.validation.password.required')\"\r\n                [minlength]=\"getConfigValue('forms.validation.password.minLength')\" [maxlength]=\"getConfigValue('forms.validation.password.maxLength')\">\r\n            <small class=\"form-text error\" *ngIf=\"password.invalid && password.touched && password.errors?.required\">\r\n                Password is required!\r\n            </small>\r\n            <small class=\"form-text error\" *ngIf=\"password.invalid && password.touched && (password.errors?.minlength || password.errors?.maxlength)\">\r\n                Password should contains from {{ getConfigValue('forms.validation.password.minLength') }} to {{ getConfigValue('forms.validation.password.maxLength')\r\n                }} characters\r\n            </small>\r\n        </div>\r\n\r\n        <div class=\"form-group accept-group col-sm-12\">\r\n            <nb-checkbox name=\"rememberMe\" [(ngModel)]=\"rememberMe\" name=\"rememberMe\">Remember me</nb-checkbox>\r\n            <a class=\"forgot-password\" routerLink=\"../request-password\">Forgot Password?</a>\r\n        </div>\r\n\r\n        <button [disabled]=\"submitted || !form.valid\" class=\"btn btn-block btn-hero-success\" [class.btn-pulse]=\"submitted\">\r\n            Sign In\r\n        </button>\r\n    </form>\r\n\r\n    <div class=\"links\">        \r\n\r\n        <small class=\"form-text\">\r\n            Don't have an account?\r\n            <a routerLink=\"../register\">\r\n                <strong>Sign Up</strong>\r\n            </a>\r\n        </small>\r\n    </div>\r\n</nb-auth-block>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/login/login.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbLoginComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_um_fiwoo__ = __webpack_require__("../../../../um_fiwoo/dist/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_http__ = __webpack_require__("../../../http/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Rx__ = __webpack_require__("../../../../rxjs/_esm5/Rx.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+
+
+
+var NbLoginComponent = /** @class */ (function () {
+    function NbLoginComponent(service, config, router, _usersService, http) {
+        if (config === void 0) { config = {}; }
+        this.service = service;
+        this.config = config;
+        this.router = router;
+        this._usersService = _usersService;
+        this.http = http;
+        this.rememberMe = false;
+        this.redirectDelay = 0;
+        this.showMessages = {};
+        this.provider = '';
+        this.errors = [];
+        this.messages = [];
+        this.user = {};
+        this.submitted = false;
+        this.redirectDelay = this.getConfigValue('forms.login.redirectDelay');
+        this.showMessages = this.getConfigValue('forms.login.showMessages');
+        this.provider = this.getConfigValue('forms.login.provider');
+    }
+    NbLoginComponent.prototype.login = function (form) {
+        this.form = form;
+        if (form.invalid) {
+            return;
+        }
+        this.username = form.value.username;
+        this.password = form.value.password;
+        // let user: UserLogin = {email: form.value.username, password: form.value.password};
+        // this._usersService.login(user)
+        //           .subscribe(resp => {
+        //             console.log(resp);
+        //           });
+        this.doLogin();
+        console.log(form.valid);
+        console.log(form.value);
+    };
+    NbLoginComponent.prototype.doLogin = function () {
+        var _this = this;
+        var url = 'http://us1.fiwoo.eu:7000/users/login';
+        var grant_type = 'grant_type';
+        var username = 'username';
+        var password = 'password';
+        var body = new __WEBPACK_IMPORTED_MODULE_6__angular_http__["e" /* URLSearchParams */]();
+        body.append(grant_type, 'password');
+        body.append(username, this.form.value.username);
+        body.append(password, this.form.value.password);
+        var headers = new __WEBPACK_IMPORTED_MODULE_6__angular_http__["a" /* Headers */]();
+        // headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append("Authorization", "Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G");
+        // headers.append("Authorization", "Basic " + btoa(username + ":" + password)); 
+        var options = new __WEBPACK_IMPORTED_MODULE_6__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        this.http.post(url, body, options).subscribe(function (data) {
+            console.log(data);
+        }, function (err) {
+            console.log(err);
+            //TODO QUITAR DE AQUI
+            _this.router.navigate(['../pages/dashboard']);
+        });
+    };
+    /*login(): void {
+      this.errors = this.messages = [];
+      this.submitted = true;
+  
+      this.service.authenticate(this.provider, this.user).subscribe((result: NbAuthResult) => {
+        this.submitted = false;
+  
+        if (result.isSuccess()) {
+          this.messages = result.getMessages();
+        } else {
+          this.errors = result.getErrors();
+        }
+  
+        const redirect = result.getRedirect();
+        if (redirect) {
+          setTimeout(() => {
+            return this.router.navigateByUrl(redirect);
+          }, this.redirectDelay);
+        }
+      });
+    }*/
+    NbLoginComponent.prototype.getConfigValue = function (key) {
+        return Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* getDeepFromObject */])(this.config, key, null);
+    };
+    NbLoginComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'nb-login',
+            template: __webpack_require__("../../../../../src/app/auth/components/login/login.component.html"),
+            providers: [__WEBPACK_IMPORTED_MODULE_5_um_fiwoo__["b" /* UsersService */]]
+        }),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__auth_options__["b" /* NB_AUTH_OPTIONS_TOKEN */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__services_auth_service__["b" /* NbAuthService */], Object, __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_5_um_fiwoo__["b" /* UsersService */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_http__["b" /* Http */]])
+    ], NbLoginComponent);
+    return NbLoginComponent;
+}());
+
+// export function apiConfigFactory () {
+//   const params: ConfigurationParameters = {
+//     apiKeys: {
+//       key: 'Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G'
+//     },
+//     username: this.username,
+//     password: this.password
+//   };
+//   return new Configuration(params);
+// } 
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/logout/logout.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbLogoutComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+
+
+
+
+var NbLogoutComponent = /** @class */ (function () {
+    function NbLogoutComponent(service, config, router) {
+        if (config === void 0) { config = {}; }
+        this.service = service;
+        this.config = config;
+        this.router = router;
+        this.redirectDelay = 0;
+        this.provider = '';
+        this.redirectDelay = this.getConfigValue('forms.logout.redirectDelay');
+        this.provider = this.getConfigValue('forms.logout.provider');
+    }
+    NbLogoutComponent.prototype.ngOnInit = function () {
+        this.logout(this.provider);
+    };
+    NbLogoutComponent.prototype.logout = function (provider) {
+        var _this = this;
+        this.service.logout(provider).subscribe(function (result) {
+            var redirect = result.getRedirect();
+            if (redirect) {
+                setTimeout(function () {
+                    return _this.router.navigateByUrl(redirect);
+                }, _this.redirectDelay);
+            }
+        });
+    };
+    NbLogoutComponent.prototype.getConfigValue = function (key) {
+        return Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* getDeepFromObject */])(this.config, key, null);
+    };
+    NbLogoutComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'nb-logout',
+            template: "\n    <div>Logging out, please wait...</div>\n  ",
+        }),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__auth_options__["b" /* NB_AUTH_OPTIONS_TOKEN */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__services_auth_service__["b" /* NbAuthService */], Object, __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]])
+    ], NbLogoutComponent);
+    return NbLogoutComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/register/register.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "/**\n * @license\n * Copyright Akveo. All Rights Reserved.\n * Licensed under the MIT License. See License.txt in the project root for license information.\n */\n:host .title {\n  margin-bottom: 2rem; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/register/register.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbRegisterComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+
+
+
+
+var NbRegisterComponent = /** @class */ (function () {
+    function NbRegisterComponent(service, config, router) {
+        if (config === void 0) { config = {}; }
+        this.service = service;
+        this.config = config;
+        this.router = router;
+        this.redirectDelay = 0;
+        this.showMessages = {};
+        this.provider = '';
+        this.submitted = false;
+        this.errors = [];
+        this.messages = [];
+        this.user = {};
+        this.redirectDelay = this.getConfigValue('forms.register.redirectDelay');
+        this.showMessages = this.getConfigValue('forms.register.showMessages');
+        this.provider = this.getConfigValue('forms.register.provider');
+    }
+    NbRegisterComponent.prototype.register = function () {
+        var _this = this;
+        this.errors = this.messages = [];
+        this.submitted = true;
+        this.service.register(this.provider, this.user).subscribe(function (result) {
+            _this.submitted = false;
+            if (result.isSuccess()) {
+                _this.messages = result.getMessages();
+            }
+            else {
+                _this.errors = result.getErrors();
+            }
+            var redirect = result.getRedirect();
+            if (redirect) {
+                setTimeout(function () {
+                    return _this.router.navigateByUrl(redirect);
+                }, _this.redirectDelay);
+            }
+        });
+    };
+    NbRegisterComponent.prototype.getConfigValue = function (key) {
+        return Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* getDeepFromObject */])(this.config, key, null);
+    };
+    NbRegisterComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'nb-register',
+            styles: [__webpack_require__("../../../../../src/app/auth/components/register/register.component.scss")],
+            template: "\n    <nb-auth-block>\n      <h2 class=\"title\">Sign Up</h2>\n      <form (ngSubmit)=\"register()\" #form=\"ngForm\">\n\n        <div *ngIf=\"showMessages.error && errors && errors.length > 0 && !submitted\"\n             class=\"alert alert-danger\" role=\"alert\">\n          <div><strong>Oh snap!</strong></div>\n          <div *ngFor=\"let error of errors\">{{ error }}</div>\n        </div>\n        <div *ngIf=\"showMessages.success && messages && messages.length > 0 && !submitted\"\n             class=\"alert alert-success\" role=\"alert\">\n          <div><strong>Hooray!</strong></div>\n          <div *ngFor=\"let message of messages\">{{ message }}</div>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"input-name\" class=\"sr-only\">Full name</label>\n          <input name=\"fullName\" [(ngModel)]=\"user.fullName\" id=\"input-name\" #fullName=\"ngModel\"\n                 class=\"form-control\" placeholder=\"Full name\"\n                 [class.form-control-danger]=\"fullName.invalid && fullName.touched\"\n                 [required]=\"getConfigValue('forms.validation.fullName.required')\"\n                 [minlength]=\"getConfigValue('forms.validation.fullName.minLength')\"\n                 [maxlength]=\"getConfigValue('forms.validation.fullName.maxLength')\"\n                 autofocus>\n          <small class=\"form-text error\" *ngIf=\"fullName.invalid && fullName.touched && fullName.errors?.required\">\n            Full name is required!\n          </small>\n          <small\n            class=\"form-text error\"\n            *ngIf=\"fullName.invalid && fullName.touched && (fullName.errors?.minlength || fullName.errors?.maxlength)\">\n            Full name should contains\n            from {{getConfigValue('forms.validation.password.minLength')}}\n            to {{getConfigValue('forms.validation.password.maxLength')}}\n            characters\n          </small>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"input-email\" class=\"sr-only\">Email address</label>\n          <input name=\"email\" [(ngModel)]=\"user.email\" id=\"input-email\" #email=\"ngModel\"\n                 class=\"form-control\" placeholder=\"Email address\" pattern=\".+@.+..+\"\n                 [class.form-control-danger]=\"email.invalid && email.touched\"\n                 [required]=\"getConfigValue('forms.validation.email.required')\">\n          <small class=\"form-text error\" *ngIf=\"email.invalid && email.touched && email.errors?.required\">\n            Email is required!\n          </small>\n          <small class=\"form-text error\"\n                 *ngIf=\"email.invalid && email.touched && email.errors?.pattern\">\n            Email should be the real one!\n          </small>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"input-password\" class=\"sr-only\">Password</label>\n          <input name=\"password\" [(ngModel)]=\"user.password\" type=\"password\" id=\"input-password\"\n                 class=\"form-control\" placeholder=\"Password\" #password=\"ngModel\"\n                 [class.form-control-danger]=\"password.invalid && password.touched\"\n                 [required]=\"getConfigValue('forms.validation.password.required')\"\n                 [minlength]=\"getConfigValue('forms.validation.password.minLength')\"\n                 [maxlength]=\"getConfigValue('forms.validation.password.maxLength')\">\n          <small class=\"form-text error\" *ngIf=\"password.invalid && password.touched && password.errors?.required\">\n            Password is required!\n          </small>\n          <small\n            class=\"form-text error\"\n            *ngIf=\"password.invalid && password.touched && (password.errors?.minlength || password.errors?.maxlength)\">\n            Password should contains\n            from {{ getConfigValue('forms.validation.password.minLength') }}\n            to {{ getConfigValue('forms.validation.password.maxLength') }}\n            characters\n          </small>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"input-re-password\" class=\"sr-only\">Repeat password</label>\n          <input\n            name=\"rePass\" [(ngModel)]=\"user.confirmPassword\" type=\"password\" id=\"input-re-password\"\n            class=\"form-control\" placeholder=\"Confirm Password\" #rePass=\"ngModel\"\n            [class.form-control-danger]=\"(rePass.invalid || password.value != rePass.value) && rePass.touched\"\n            [required]=\"getConfigValue('forms.validation.password.required')\">\n          <small class=\"form-text error\"\n                 *ngIf=\"rePass.invalid && rePass.touched && rePass.errors?.required\">\n            Password confirmation is required!\n          </small>\n          <small\n            class=\"form-text error\"\n            *ngIf=\"rePass.touched && password.value != rePass.value && !rePass.errors?.required\">\n            Password does not match the confirm password.\n          </small>\n        </div>\n\n        <div class=\"form-group accept-group col-sm-12\" *ngIf=\"getConfigValue('forms.register.terms')\">\n          <nb-checkbox name=\"terms\" [(ngModel)]=\"user.terms\" [required]=\"getConfigValue('forms.register.terms')\">\n            Agree to <a href=\"#\" target=\"_blank\"><strong>Terms & Conditions</strong></a>\n          </nb-checkbox>\n        </div>\n\n        <button [disabled]=\"submitted || !form.valid\" class=\"btn btn-block btn-hero-success\"\n                [class.btn-pulse]=\"submitted\">\n          Register\n        </button>\n      </form>\n\n      <div class=\"links\">\n        <small class=\"form-text\">\n          Already have an account? <a routerLink=\"../login\"><strong>Sign in</strong></a>\n        </small>\n      </div>\n    </nb-auth-block>\n  ",
+        }),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__auth_options__["b" /* NB_AUTH_OPTIONS_TOKEN */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__services_auth_service__["b" /* NbAuthService */], Object, __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]])
+    ], NbRegisterComponent);
+    return NbRegisterComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/request-password/request-password.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "/**\n * @license\n * Copyright Akveo. All Rights Reserved.\n * Licensed under the MIT License. See License.txt in the project root for license information.\n */\n:host .links {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n:host .form-group:last-of-type {\n  margin-bottom: 3rem; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/request-password/request-password.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbRequestPasswordComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+
+
+
+
+var NbRequestPasswordComponent = /** @class */ (function () {
+    function NbRequestPasswordComponent(service, config, router) {
+        if (config === void 0) { config = {}; }
+        this.service = service;
+        this.config = config;
+        this.router = router;
+        this.redirectDelay = 0;
+        this.showMessages = {};
+        this.provider = '';
+        this.submitted = false;
+        this.errors = [];
+        this.messages = [];
+        this.user = {};
+        this.redirectDelay = this.getConfigValue('forms.requestPassword.redirectDelay');
+        this.showMessages = this.getConfigValue('forms.requestPassword.showMessages');
+        this.provider = this.getConfigValue('forms.requestPassword.provider');
+    }
+    NbRequestPasswordComponent.prototype.requestPass = function () {
+        var _this = this;
+        this.errors = this.messages = [];
+        this.submitted = true;
+        this.service.requestPassword(this.provider, this.user).subscribe(function (result) {
+            _this.submitted = false;
+            if (result.isSuccess()) {
+                _this.messages = result.getMessages();
+            }
+            else {
+                _this.errors = result.getErrors();
+            }
+            var redirect = result.getRedirect();
+            if (redirect) {
+                setTimeout(function () {
+                    return _this.router.navigateByUrl(redirect);
+                }, _this.redirectDelay);
+            }
+        });
+    };
+    NbRequestPasswordComponent.prototype.getConfigValue = function (key) {
+        return Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* getDeepFromObject */])(this.config, key, null);
+    };
+    NbRequestPasswordComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'nb-request-password-page',
+            styles: [__webpack_require__("../../../../../src/app/auth/components/request-password/request-password.component.scss")],
+            template: "\n    <nb-auth-block>\n      <h2 class=\"title\">Forgot Password</h2>\n      <small class=\"form-text sub-title\">Enter your email adress and we\u2019ll send a link to reset your password</small>\n      <form (ngSubmit)=\"requestPass()\" #requestPassForm=\"ngForm\">\n\n        <div *ngIf=\"showMessages.error && errors && errors.length > 0 && !submitted\"\n             class=\"alert alert-danger\" role=\"alert\">\n          <div><strong>Oh snap!</strong></div>\n          <div *ngFor=\"let error of errors\">{{ error }}</div>\n        </div>\n        <div *ngIf=\"showMessages.success && messages && messages.length > 0 && !submitted\"\n             class=\"alert alert-success\" role=\"alert\">\n          <div><strong>Hooray!</strong></div>\n          <div *ngFor=\"let message of messages\">{{ message }}</div>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"input-email\" class=\"sr-only\">Enter your email address</label>\n          <input name=\"email\" [(ngModel)]=\"user.email\" id=\"input-email\" #email=\"ngModel\"\n                 class=\"form-control\" placeholder=\"Email address\" pattern=\".+@.+..+\"\n                 [class.form-control-danger]=\"email.invalid && email.touched\"\n                 [required]=\"getConfigValue('forms.validation.email.required')\"\n                 autofocus>\n          <small class=\"form-text error\" *ngIf=\"email.invalid && email.touched && email.errors?.required\">\n            Email is required!\n          </small>\n          <small class=\"form-text error\"\n                 *ngIf=\"email.invalid && email.touched && email.errors?.pattern\">\n            Email should be the real one!\n          </small>\n        </div>\n\n        <button [disabled]=\"submitted || !requestPassForm.form.valid\" class=\"btn btn-hero-success btn-block\"\n                [class.btn-pulse]=\"submitted\">\n          Request password\n        </button>\n      </form>\n\n      <div class=\"links col-sm-12\">\n        <small class=\"form-text\">\n          Already have an account? <a routerLink=\"../login\"><strong>Sign In</strong></a>\n        </small>\n        <small class=\"form-text\">\n          <a routerLink=\"../register\"><strong>Sign Up</strong></a>\n        </small>\n      </div>\n    </nb-auth-block>\n  ",
+        }),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__auth_options__["b" /* NB_AUTH_OPTIONS_TOKEN */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__services_auth_service__["b" /* NbAuthService */], Object, __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]])
+    ], NbRequestPasswordComponent);
+    return NbRequestPasswordComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/reset-password/reset-password.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "/**\n * @license\n * Copyright Akveo. All Rights Reserved.\n * Licensed under the MIT License. See License.txt in the project root for license information.\n */\n:host .links {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n:host .form-group:last-of-type {\n  margin-bottom: 3rem; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/components/reset-password/reset-password.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbResetPasswordComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+
+
+
+
+var NbResetPasswordComponent = /** @class */ (function () {
+    function NbResetPasswordComponent(service, config, router) {
+        if (config === void 0) { config = {}; }
+        this.service = service;
+        this.config = config;
+        this.router = router;
+        this.redirectDelay = 0;
+        this.showMessages = {};
+        this.provider = '';
+        this.submitted = false;
+        this.errors = [];
+        this.messages = [];
+        this.user = {};
+        this.redirectDelay = this.getConfigValue('forms.resetPassword.redirectDelay');
+        this.showMessages = this.getConfigValue('forms.resetPassword.showMessages');
+        this.provider = this.getConfigValue('forms.resetPassword.provider');
+    }
+    NbResetPasswordComponent.prototype.resetPass = function () {
+        var _this = this;
+        this.errors = this.messages = [];
+        this.submitted = true;
+        this.service.resetPassword(this.provider, this.user).subscribe(function (result) {
+            _this.submitted = false;
+            if (result.isSuccess()) {
+                _this.messages = result.getMessages();
+            }
+            else {
+                _this.errors = result.getErrors();
+            }
+            var redirect = result.getRedirect();
+            if (redirect) {
+                setTimeout(function () {
+                    return _this.router.navigateByUrl(redirect);
+                }, _this.redirectDelay);
+            }
+        });
+    };
+    NbResetPasswordComponent.prototype.getConfigValue = function (key) {
+        return Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* getDeepFromObject */])(this.config, key, null);
+    };
+    NbResetPasswordComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'nb-reset-password-page',
+            styles: [__webpack_require__("../../../../../src/app/auth/components/reset-password/reset-password.component.scss")],
+            template: "\n    <nb-auth-block>\n      <h2 class=\"title\">Change password</h2>\n      <small class=\"form-text sub-title\">Please enter a new password</small>\n      <form (ngSubmit)=\"resetPass()\" #resetPassForm=\"ngForm\">\n\n        <div *ngIf=\"errors && errors.length > 0 && !submitted\" class=\"alert alert-danger\" role=\"alert\">\n          <div><strong>Oh snap!</strong></div>\n          <div *ngFor=\"let error of errors\">{{ error }}</div>\n        </div>\n        <div *ngIf=\"messages && messages.length > 0 && !submitted\" class=\"alert alert-success\" role=\"alert\">\n          <div><strong>Hooray!</strong></div>\n          <div *ngFor=\"let message of messages\">{{ message }}</div>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"input-password\" class=\"sr-only\">New Password</label>\n          <input name=\"password\" [(ngModel)]=\"user.password\" type=\"password\" id=\"input-password\"\n                 class=\"form-control form-control-lg first\" placeholder=\"New Password\" #password=\"ngModel\"\n                 [class.form-control-danger]=\"password.invalid && password.touched\"\n                 [required]=\"getConfigValue('forms.validation.password.required')\"\n                 [minlength]=\"getConfigValue('forms.validation.password.minLength')\"\n                 [maxlength]=\"getConfigValue('forms.validation.password.maxLength')\"\n                 autofocus>\n          <small class=\"form-text error\" *ngIf=\"password.invalid && password.touched && password.errors?.required\">\n            Password is required!\n          </small>\n          <small\n            class=\"form-text error\"\n            *ngIf=\"password.invalid && password.touched && (password.errors?.minlength || password.errors?.maxlength)\">\n            Password should contains\n            from {{getConfigValue('forms.validation.password.minLength')}}\n            to {{getConfigValue('forms.validation.password.maxLength')}}\n            characters\n          </small>\n        </div>\n\n        <div class=\"form-group\">\n          <label for=\"input-re-password\" class=\"sr-only\">Confirm Password</label>\n          <input\n            name=\"rePass\" [(ngModel)]=\"user.confirmPassword\" type=\"password\" id=\"input-re-password\"\n            class=\"form-control form-control-lg last\" placeholder=\"Confirm Password\" #rePass=\"ngModel\"\n            [class.form-control-danger]=\"(rePass.invalid || password.value != rePass.value) && rePass.touched\"\n            [required]=\"getConfigValue('forms.validation.password.required')\">\n          <small class=\"form-text error\"\n                 *ngIf=\"rePass.invalid && rePass.touched && rePass.errors?.required\">\n            Password confirmation is required!\n          </small>\n          <small\n            class=\"form-text error\"\n            *ngIf=\"rePass.touched && password.value != rePass.value && !rePass.errors?.required\">\n            Password does not match the confirm password.\n          </small>\n        </div>\n\n        <button [disabled]=\"submitted || !resetPassForm.form.valid\" class=\"btn btn-hero-success btn-block\"\n                [class.btn-pulse]=\"submitted\">\n          Change password\n        </button>\n      </form>\n\n      <div class=\"links col-sm-12\">\n        <small class=\"form-text\">\n          Already have an account? <a routerLink=\"../login\"><strong>Sign In</strong></a>\n        </small>\n        <small class=\"form-text\">\n          <a routerLink=\"../register\"><strong>Sign Up</strong></a>\n        </small>\n      </div>\n    </nb-auth-block>\n  ",
+        }),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_2__auth_options__["b" /* NB_AUTH_OPTIONS_TOKEN */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4__services_auth_service__["b" /* NbAuthService */], Object, __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]])
+    ], NbResetPasswordComponent);
+    return NbResetPasswordComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/helpers.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return deepExtend; });
+/* harmony export (immutable) */ __webpack_exports__["b"] = getDeepFromObject;
+/* harmony export (immutable) */ __webpack_exports__["c"] = urlBase64Decode;
+/* unused harmony export b64decode */
+/* unused harmony export b64DecodeUnicode */
+/**
+ * Extending object that entered in first argument.
+ *
+ * Returns extended object or false if have no target object or incorrect type.
+ *
+ * If you wish to clone source object (without modify it), just use empty new
+ * object as first argument, like this:
+ *   deepExtend({}, yourObj_1, [yourObj_N]);
+ */
+var deepExtend = function () {
+    var objects = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        objects[_i] = arguments[_i];
+    }
+    if (arguments.length < 1 || typeof arguments[0] !== 'object') {
+        return false;
+    }
+    if (arguments.length < 2) {
+        return arguments[0];
+    }
+    var target = arguments[0];
+    // convert arguments to array and cut off target object
+    var args = Array.prototype.slice.call(arguments, 1);
+    var val, src;
+    args.forEach(function (obj) {
+        // skip argument if it is array or isn't object
+        if (typeof obj !== 'object' || Array.isArray(obj)) {
+            return;
+        }
+        Object.keys(obj).forEach(function (key) {
+            src = target[key]; // source value
+            val = obj[key]; // new value
+            // recursion prevention
+            if (val === target) {
+                return;
+                /**
+                 * if new value isn't object then just overwrite by new value
+                 * instead of extending.
+                 */
+            }
+            else if (typeof val !== 'object' || val === null) {
+                target[key] = val;
+                return;
+                // just clone arrays (and recursive clone objects inside)
+            }
+            else if (Array.isArray(val)) {
+                target[key] = deepCloneArray(val);
+                return;
+                // custom cloning and overwrite for specific objects
+            }
+            else if (isSpecificValue(val)) {
+                target[key] = cloneSpecificValue(val);
+                return;
+                // overwrite by new value if source isn't object or array
+            }
+            else if (typeof src !== 'object' || src === null || Array.isArray(src)) {
+                target[key] = deepExtend({}, val);
+                return;
+                // source value and new value is objects both, extending...
+            }
+            else {
+                target[key] = deepExtend(src, val);
+                return;
+            }
+        });
+    });
+    return target;
+};
+function isSpecificValue(val) {
+    return (val instanceof Date
+        || val instanceof RegExp) ? true : false;
+}
+function cloneSpecificValue(val) {
+    if (val instanceof Date) {
+        return new Date(val.getTime());
+    }
+    else if (val instanceof RegExp) {
+        return new RegExp(val);
+    }
+    else {
+        throw new Error('cloneSpecificValue: Unexpected situation');
+    }
+}
+/**
+ * Recursive cloning array.
+ */
+function deepCloneArray(arr) {
+    var clone = [];
+    arr.forEach(function (item, index) {
+        if (typeof item === 'object' && item !== null) {
+            if (Array.isArray(item)) {
+                clone[index] = deepCloneArray(item);
+            }
+            else if (isSpecificValue(item)) {
+                clone[index] = cloneSpecificValue(item);
+            }
+            else {
+                clone[index] = deepExtend({}, item);
+            }
+        }
+        else {
+            clone[index] = item;
+        }
+    });
+    return clone;
+}
+// getDeepFromObject({result: {data: 1}}, 'result.data', 2); // returns 1
+function getDeepFromObject(object, name, defaultValue) {
+    if (object === void 0) { object = {}; }
+    var keys = name.split('.');
+    // clone the object
+    var level = deepExtend({}, object || {});
+    keys.forEach(function (k) {
+        if (level && typeof level[k] !== 'undefined') {
+            level = level[k];
+        }
+        else {
+            level = undefined;
+        }
+    });
+    return typeof level === 'undefined' ? defaultValue : level;
+}
+function urlBase64Decode(str) {
+    var output = str.replace(/-/g, '+').replace(/_/g, '/');
+    switch (output.length % 4) {
+        case 0: {
+            break;
+        }
+        case 2: {
+            output += '==';
+            break;
+        }
+        case 3: {
+            output += '=';
+            break;
+        }
+        default: {
+            throw new Error('Illegal base64url string!');
+        }
+    }
+    return b64DecodeUnicode(output);
+}
+function b64decode(str) {
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    var output = '';
+    str = String(str).replace(/=+$/, '');
+    if (str.length % 4 === 1) {
+        throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
+    }
+    for (
+    // initialize result and counters
+    var bc = 0, bs = void 0, buffer = void 0, idx = 0; 
+    // get next character
+    buffer = str.charAt(idx++); 
+    // character found in table? initialize bit storage and add its ascii value;
+    ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
+        // and if not first of each 4 characters,
+        // convert the first 8 bits to one ascii character
+        bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
+        // try to find character in table (0-63, not found => -1)
+        buffer = chars.indexOf(buffer);
+    }
+    return output;
+}
+// https://developer.mozilla.org/en/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_Unicode_Problem
+function b64DecodeUnicode(str) {
+    return decodeURIComponent(Array.prototype.map.call(b64decode(str), function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+}
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_module__ = __webpack_require__("../../../../../src/app/auth/auth.module.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components__ = __webpack_require__("../../../../../src/app/auth/components/index.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__components__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__components__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services__ = __webpack_require__("../../../../../src/app/auth/services/index.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers__ = __webpack_require__("../../../../../src/app/auth/providers/index.ts");
+/* unused harmony namespace reexport */
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/providers/abstract-auth.provider.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbAbstractAuthProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+
+
+var NbAbstractAuthProvider = /** @class */ (function () {
+    function NbAbstractAuthProvider() {
+        this.defaultConfig = {};
+        this.config = {};
+    }
+    NbAbstractAuthProvider.prototype.setConfig = function (config) {
+        this.config = Object(__WEBPACK_IMPORTED_MODULE_1__helpers__["a" /* deepExtend */])({}, this.defaultConfig, config);
+    };
+    NbAbstractAuthProvider.prototype.getConfigValue = function (key) {
+        return Object(__WEBPACK_IMPORTED_MODULE_1__helpers__["b" /* getDeepFromObject */])(this.config, key, null);
+    };
+    NbAbstractAuthProvider.prototype.createFailResponse = function (data) {
+        return new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["f" /* HttpResponse */]({ body: {}, status: 401 });
+    };
+    NbAbstractAuthProvider.prototype.createSuccessResponse = function (data) {
+        return new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["f" /* HttpResponse */]({ body: {}, status: 200 });
+    };
+    NbAbstractAuthProvider.prototype.getJsonSafe = function (res) {
+        return res.body;
+    };
+    return NbAbstractAuthProvider;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/providers/dummy-auth.provider.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbDummyAuthProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__ = __webpack_require__("../../../../rxjs/_esm5/observable/of.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__abstract_auth_provider__ = __webpack_require__("../../../../../src/app/auth/providers/abstract-auth.provider.ts");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+var NbDummyAuthProvider = /** @class */ (function (_super) {
+    __extends(NbDummyAuthProvider, _super);
+    function NbDummyAuthProvider() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.defaultConfig = {
+            delay: 1000,
+        };
+        return _this;
+    }
+    NbDummyAuthProvider.prototype.authenticate = function (data) {
+        return Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__["a" /* of */])(this.createDummyResult(data))
+            .delay(this.getConfigValue('delay'));
+    };
+    NbDummyAuthProvider.prototype.register = function (data) {
+        return Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__["a" /* of */])(this.createDummyResult(data))
+            .delay(this.getConfigValue('delay'));
+    };
+    NbDummyAuthProvider.prototype.requestPassword = function (data) {
+        return Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__["a" /* of */])(this.createDummyResult(data))
+            .delay(this.getConfigValue('delay'));
+    };
+    NbDummyAuthProvider.prototype.resetPassword = function (data) {
+        return Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__["a" /* of */])(this.createDummyResult(data))
+            .delay(this.getConfigValue('delay'));
+    };
+    NbDummyAuthProvider.prototype.logout = function (data) {
+        return Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_observable_of__["a" /* of */])(this.createDummyResult(data))
+            .delay(this.getConfigValue('delay'));
+    };
+    NbDummyAuthProvider.prototype.createDummyResult = function (data) {
+        if (this.getConfigValue('alwaysFail')) {
+            return new __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* NbAuthResult */](false, this.createFailResponse(data), null, ['Something went wrong.']);
+        }
+        return new __WEBPACK_IMPORTED_MODULE_2__services_auth_service__["a" /* NbAuthResult */](true, this.createSuccessResponse(data), '/', ['Successfully logged in.']);
+    };
+    NbDummyAuthProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+    ], NbDummyAuthProvider);
+    return NbDummyAuthProvider;
+}(__WEBPACK_IMPORTED_MODULE_3__abstract_auth_provider__["a" /* NbAbstractAuthProvider */]));
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/providers/email-pass-auth.provider.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbEmailPassAuthProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__("../../../../rxjs/_esm5/observable/of.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operators_switchMap__ = __webpack_require__("../../../../rxjs/_esm5/operators/switchMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__ = __webpack_require__("../../../../rxjs/_esm5/operators/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_operators_catchError__ = __webpack_require__("../../../../rxjs/_esm5/operators/catchError.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__services_auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__abstract_auth_provider__ = __webpack_require__("../../../../../src/app/auth/providers/abstract-auth.provider.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+
+
+
+
+
+
+
+
+
+/**
+ * The most common authentication provider for email/password strategy.
+ *
+ *
+ * @example
+ *
+ * Default settings object:
+ *
+ * ```
+ * {
+ *  baseEndpoint: '',
+ *  login: {
+ *    alwaysFail: false,
+ *    rememberMe: true,
+ *    endpoint: '/api/auth/login',
+ *    method: 'post',
+ *    redirect: {
+ *      success: '/',
+ *      failure: null,
+ *    },
+ *    defaultErrors: ['Login/Email combination is not correct, please try again.'],
+ *    defaultMessages: ['You have been successfully logged in.'],
+ *  },
+ *  register: {
+ *    alwaysFail: false,
+ *    rememberMe: true,
+ *    endpoint: '/api/auth/register',
+ *    method: 'post',
+ *    redirect: {
+ *      success: '/',
+ *      failure: null,
+ *    },
+ *    defaultErrors: ['Something went wrong, please try again.'],
+ *    defaultMessages: ['You have been successfully registered.'],
+ *  },
+ *  logout: {
+ *    alwaysFail: false,
+ *    endpoint: '/api/auth/logout',
+ *    method: 'delete',
+ *    redirect: {
+ *      success: '/',
+ *      failure: null,
+ *    },
+ *    defaultErrors: ['Something went wrong, please try again.'],
+ *    defaultMessages: ['You have been successfully logged out.'],
+ *  },
+ *  requestPass: {
+ *    endpoint: '/api/auth/request-pass',
+ *    method: 'post',
+ *    redirect: {
+ *      success: '/',
+ *      failure: null,
+ *    },
+ *    defaultErrors: ['Something went wrong, please try again.'],
+ *    defaultMessages: ['Reset password instructions have been sent to your email.'],
+ *  },
+ *  resetPass: {
+ *    endpoint: '/api/auth/reset-pass',
+ *    method: 'put',
+ *    redirect: {
+ *      success: '/',
+ *      failure: null,
+ *    },
+ *    resetPasswordTokenKey: 'reset_password_token',
+ *    defaultErrors: ['Something went wrong, please try again.'],
+ *    defaultMessages: ['Your password has been successfully changed.'],
+ *  },
+ *  token: {
+ *    key: 'data.token',
+ *    getter: (module: string, res: HttpResponse<Object>) => getDeepFromObject(res.body,
+ *      this.getConfigValue('token.key')),
+ *  },
+ *  errors: {
+ *    key: 'data.errors',
+ *    getter: (module: string, res: HttpErrorResponse) => getDeepFromObject(res.error,
+ *      this.getConfigValue('errors.key'),
+ *      this.getConfigValue(`${module}.defaultErrors`)),
+ *  },
+ *  messages: {
+ *    key: 'data.messages',
+ *    getter: (module: string, res: HttpResponse<Object>) => getDeepFromObject(res.body,
+ *      this.getConfigValue('messages.key'),
+ *      this.getConfigValue(`${module}.defaultMessages`)),
+ *  },
+ *}
+ *
+ * // Note, there is no need to copy over the whole object to change the settings you need.
+ * // Also, this.getConfigValue call won't work outside ofthe default config declaration
+ * // (which is inside of the `NbEmailPassAuthProvider` class), so you have to replace it with a custom helper function
+ * // if you need it.
+ * ```
+ */
+var NbEmailPassAuthProvider = /** @class */ (function (_super) {
+    __extends(NbEmailPassAuthProvider, _super);
+    function NbEmailPassAuthProvider(http, route) {
+        var _this = _super.call(this) || this;
+        _this.http = http;
+        _this.route = route;
+        _this.defaultConfig = {
+            baseEndpoint: '',
+            login: {
+                alwaysFail: false,
+                rememberMe: true,
+                endpoint: '/api/auth/login',
+                method: 'post',
+                redirect: {
+                    success: '/',
+                    failure: null,
+                },
+                defaultErrors: ['Login/Email combination is not correct, please try again.'],
+                defaultMessages: ['You have been successfully logged in.'],
+            },
+            register: {
+                alwaysFail: false,
+                rememberMe: true,
+                endpoint: '/api/auth/register',
+                method: 'post',
+                redirect: {
+                    success: '/',
+                    failure: null,
+                },
+                defaultErrors: ['Something went wrong, please try again.'],
+                defaultMessages: ['You have been successfully registered.'],
+            },
+            logout: {
+                alwaysFail: false,
+                endpoint: '/api/auth/logout',
+                method: 'delete',
+                redirect: {
+                    success: '/',
+                    failure: null,
+                },
+                defaultErrors: ['Something went wrong, please try again.'],
+                defaultMessages: ['You have been successfully logged out.'],
+            },
+            requestPass: {
+                endpoint: '/api/auth/request-pass',
+                method: 'post',
+                redirect: {
+                    success: '/',
+                    failure: null,
+                },
+                defaultErrors: ['Something went wrong, please try again.'],
+                defaultMessages: ['Reset password instructions have been sent to your email.'],
+            },
+            resetPass: {
+                endpoint: '/api/auth/reset-pass',
+                method: 'put',
+                redirect: {
+                    success: '/',
+                    failure: null,
+                },
+                resetPasswordTokenKey: 'reset_password_token',
+                defaultErrors: ['Something went wrong, please try again.'],
+                defaultMessages: ['Your password has been successfully changed.'],
+            },
+            token: {
+                key: 'data.token',
+                getter: function (module, res) { return Object(__WEBPACK_IMPORTED_MODULE_9__helpers__["b" /* getDeepFromObject */])(res.body, _this.getConfigValue('token.key')); },
+            },
+            errors: {
+                key: 'data.errors',
+                getter: function (module, res) { return Object(__WEBPACK_IMPORTED_MODULE_9__helpers__["b" /* getDeepFromObject */])(res.error, _this.getConfigValue('errors.key'), _this.getConfigValue(module + ".defaultErrors")); },
+            },
+            messages: {
+                key: 'data.messages',
+                getter: function (module, res) { return Object(__WEBPACK_IMPORTED_MODULE_9__helpers__["b" /* getDeepFromObject */])(res.body, _this.getConfigValue('messages.key'), _this.getConfigValue(module + ".defaultMessages")); },
+            },
+        };
+        return _this;
+    }
+    NbEmailPassAuthProvider.prototype.authenticate = function (data) {
+        var _this = this;
+        var method = this.getConfigValue('login.method');
+        var url = this.getActionEndpoint('login');
+        return this.http.request(method, url, { body: data, observe: 'response' })
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            if (_this.getConfigValue('login.alwaysFail')) {
+                throw _this.createFailResponse(data);
+            }
+            return res;
+        }), this.validateToken('login'), Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            return new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](true, res, _this.getConfigValue('login.redirect.success'), [], _this.getConfigValue('messages.getter')('login', res), _this.getConfigValue('token.getter')('login', res));
+        }), Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_operators_catchError__["a" /* catchError */])(function (res) {
+            var errors = [];
+            if (res instanceof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpErrorResponse */]) {
+                errors = _this.getConfigValue('errors.getter')('login', res);
+            }
+            else {
+                errors.push('Something went wrong.');
+            }
+            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](false, res, _this.getConfigValue('login.redirect.failure'), errors));
+        }));
+    };
+    NbEmailPassAuthProvider.prototype.register = function (data) {
+        var _this = this;
+        var method = this.getConfigValue('register.method');
+        var url = this.getActionEndpoint('register');
+        return this.http.request(method, url, { body: data, observe: 'response' })
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            if (_this.getConfigValue('register.alwaysFail')) {
+                throw _this.createFailResponse(data);
+            }
+            return res;
+        }), this.validateToken('register'), Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            return new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](true, res, _this.getConfigValue('register.redirect.success'), [], _this.getConfigValue('messages.getter')('register', res), _this.getConfigValue('token.getter')('register', res));
+        }), Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_operators_catchError__["a" /* catchError */])(function (res) {
+            var errors = [];
+            if (res instanceof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpErrorResponse */]) {
+                errors = _this.getConfigValue('errors.getter')('register', res);
+            }
+            else {
+                errors.push('Something went wrong.');
+            }
+            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](false, res, _this.getConfigValue('register.redirect.failure'), errors));
+        }));
+    };
+    NbEmailPassAuthProvider.prototype.requestPassword = function (data) {
+        var _this = this;
+        var method = this.getConfigValue('requestPass.method');
+        var url = this.getActionEndpoint('requestPass');
+        return this.http.request(method, url, { body: data, observe: 'response' })
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            if (_this.getConfigValue('requestPass.alwaysFail')) {
+                throw _this.createFailResponse();
+            }
+            return res;
+        }), Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            return new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](true, res, _this.getConfigValue('requestPass.redirect.success'), [], _this.getConfigValue('messages.getter')('requestPass', res));
+        }), Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_operators_catchError__["a" /* catchError */])(function (res) {
+            var errors = [];
+            if (res instanceof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpErrorResponse */]) {
+                errors = _this.getConfigValue('errors.getter')('requestPass', res);
+            }
+            else {
+                errors.push('Something went wrong.');
+            }
+            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](false, res, _this.getConfigValue('requestPass.redirect.failure'), errors));
+        }));
+    };
+    NbEmailPassAuthProvider.prototype.resetPassword = function (data) {
+        var _this = this;
+        if (data === void 0) { data = {}; }
+        var tokenKey = this.getConfigValue('resetPass.resetPasswordTokenKey');
+        data[tokenKey] = this.route.snapshot.queryParams[tokenKey];
+        var method = this.getConfigValue('resetPass.method');
+        var url = this.getActionEndpoint('resetPass');
+        return this.http.request(method, url, { body: data, observe: 'response' })
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            if (_this.getConfigValue('resetPass.alwaysFail')) {
+                throw _this.createFailResponse();
+            }
+            return res;
+        }), Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            return new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](true, res, _this.getConfigValue('resetPass.redirect.success'), [], _this.getConfigValue('messages.getter')('resetPass', res));
+        }), Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_operators_catchError__["a" /* catchError */])(function (res) {
+            var errors = [];
+            if (res instanceof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpErrorResponse */]) {
+                errors = _this.getConfigValue('errors.getter')('resetPass', res);
+            }
+            else {
+                errors.push('Something went wrong.');
+            }
+            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](false, res, _this.getConfigValue('resetPass.redirect.failure'), errors));
+        }));
+    };
+    NbEmailPassAuthProvider.prototype.logout = function () {
+        var _this = this;
+        var method = this.getConfigValue('logout.method');
+        var url = this.getActionEndpoint('logout');
+        return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])({})
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators_switchMap__["a" /* switchMap */])(function (res) {
+            if (!url) {
+                return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(res);
+            }
+            return _this.http.request(method, url, { observe: 'response' });
+        }), Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            if (_this.getConfigValue('logout.alwaysFail')) {
+                throw _this.createFailResponse();
+            }
+            return res;
+        }), Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            return new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](true, res, _this.getConfigValue('logout.redirect.success'), [], _this.getConfigValue('messages.getter')('logout', res));
+        }), Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_operators_catchError__["a" /* catchError */])(function (res) {
+            var errors = [];
+            if (res instanceof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpErrorResponse */]) {
+                errors = _this.getConfigValue('errors.getter')('logout', res);
+            }
+            else {
+                errors.push('Something went wrong.');
+            }
+            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["a" /* of */])(new __WEBPACK_IMPORTED_MODULE_7__services_auth_service__["a" /* NbAuthResult */](false, res, _this.getConfigValue('logout.redirect.failure'), errors));
+        }));
+    };
+    NbEmailPassAuthProvider.prototype.validateToken = function (module) {
+        var _this = this;
+        return Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_map__["a" /* map */])(function (res) {
+            var token = _this.getConfigValue('token.getter')(module, res);
+            if (!token) {
+                var key = _this.getConfigValue('token.key');
+                console.warn("NbEmailPassAuthProvider:\n                          Token is not provided under '" + key + "' key\n                          with getter '" + _this.getConfigValue('token.getter') + "', check your auth configuration.");
+                throw new Error('Could not extract token from the response.');
+            }
+            return res;
+        });
+    };
+    NbEmailPassAuthProvider.prototype.getActionEndpoint = function (action) {
+        var actionEndpoint = this.getConfigValue(action + ".endpoint");
+        var baseEndpoint = this.getConfigValue('baseEndpoint');
+        return baseEndpoint + actionEndpoint;
+    };
+    NbEmailPassAuthProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]])
+    ], NbEmailPassAuthProvider);
+    return NbEmailPassAuthProvider;
+}(__WEBPACK_IMPORTED_MODULE_8__abstract_auth_provider__["a" /* NbAbstractAuthProvider */]));
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/providers/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__abstract_auth_provider__ = __webpack_require__("../../../../../src/app/auth/providers/abstract-auth.provider.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dummy_auth_provider__ = __webpack_require__("../../../../../src/app/auth/providers/dummy-auth.provider.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__email_pass_auth_provider__ = __webpack_require__("../../../../../src/app/auth/providers/email-pass-auth.provider.ts");
+/* unused harmony namespace reexport */
+
+
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/services/auth.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbAuthResult; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NbAuthService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__ = __webpack_require__("../../../../rxjs/_esm5/operators/switchMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map__ = __webpack_require__("../../../../rxjs/_esm5/operators/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators_tap__ = __webpack_require__("../../../../rxjs/_esm5/operators/tap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_observable_of__ = __webpack_require__("../../../../rxjs/_esm5/observable/of.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__token_service__ = __webpack_require__("../../../../../src/app/auth/services/token.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+
+
+
+
+
+
+var NbAuthResult = /** @class */ (function () {
+    // TODO pass arguments in options object
+    function NbAuthResult(success, response, redirect, errors, messages, token) {
+        this.success = success;
+        this.response = response;
+        this.redirect = redirect;
+        this.errors = [];
+        this.messages = [];
+        this.errors = this.errors.concat([errors]);
+        if (errors instanceof Array) {
+            this.errors = errors;
+        }
+        this.messages = this.messages.concat([messages]);
+        if (messages instanceof Array) {
+            this.messages = messages;
+        }
+        this.token = token;
+    }
+    NbAuthResult.prototype.getResponse = function () {
+        return this.response;
+    };
+    NbAuthResult.prototype.getTokenValue = function () {
+        return this.token;
+    };
+    NbAuthResult.prototype.replaceToken = function (token) {
+        this.token = token;
+    };
+    NbAuthResult.prototype.getRedirect = function () {
+        return this.redirect;
+    };
+    NbAuthResult.prototype.getErrors = function () {
+        return this.errors.filter(function (val) { return !!val; });
+    };
+    NbAuthResult.prototype.getMessages = function () {
+        return this.messages.filter(function (val) { return !!val; });
+    };
+    NbAuthResult.prototype.isSuccess = function () {
+        return this.success;
+    };
+    NbAuthResult.prototype.isFailure = function () {
+        return !this.success;
+    };
+    return NbAuthResult;
+}());
+
+/**
+ * Common authentication service.
+ * Should be used to as an interlayer between UI Components and Auth Providers.
+ */
+var NbAuthService = /** @class */ (function () {
+    function NbAuthService(tokenService, injector, providers) {
+        if (providers === void 0) { providers = {}; }
+        this.tokenService = tokenService;
+        this.injector = injector;
+        this.providers = providers;
+    }
+    /**
+     * Retrieves current authenticated token stored
+     * @returns {Observable<any>}
+     */
+    NbAuthService.prototype.getToken = function () {
+        return this.tokenService.get();
+    };
+    /**
+     * Returns true if auth token is presented in the token storage
+     * // TODO: check exp date for JWT token
+     * @returns {Observable<any>}
+     */
+    NbAuthService.prototype.isAuthenticated = function () {
+        return this.getToken().pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map__["a" /* map */])(function (token) { return !!(token && token.getValue()); }));
+    };
+    /**
+     * Returns tokens stream
+     * @returns {Observable<any>}
+     */
+    NbAuthService.prototype.onTokenChange = function () {
+        return this.tokenService.tokenChange();
+    };
+    /**
+     * Returns authentication status stream
+     *  // TODO: check exp date for JWT token
+     * @returns {Observable<any>}
+     */
+    NbAuthService.prototype.onAuthenticationChange = function () {
+        return this.onTokenChange().pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map__["a" /* map */])(function (token) { return !!(token && token.getValue()); }));
+    };
+    /**
+     * Authenticates with the selected provider
+     * Stores received token in the token storage
+     *
+     * Example:
+     * authenticate('email', {email: 'email@example.com', password: 'test'})
+     *
+     * @param provider
+     * @param data
+     * @returns {Observable<NbAuthResult>}
+     */
+    NbAuthService.prototype.authenticate = function (provider, data) {
+        var _this = this;
+        return this.getProvider(provider).authenticate(data)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__["a" /* switchMap */])(function (result) {
+            if (result.isSuccess() && result.getTokenValue()) {
+                return _this.tokenService.set(result.getTokenValue())
+                    .pipe(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__["a" /* switchMap */])(function () { return _this.tokenService.get(); }), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map__["a" /* map */])(function (token) {
+                    result.replaceToken(token);
+                    return result;
+                }));
+            }
+            return Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_observable_of__["a" /* of */])(result);
+        }));
+    };
+    /**
+     * Registers with the selected provider
+     * Stores received token in the token storage
+     *
+     * Example:
+     * register('email', {email: 'email@example.com', name: 'Some Name', password: 'test'})
+     *
+     * @param provider
+     * @param data
+     * @returns {Observable<NbAuthResult>}
+     */
+    NbAuthService.prototype.register = function (provider, data) {
+        var _this = this;
+        return this.getProvider(provider).register(data)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__["a" /* switchMap */])(function (result) {
+            if (result.isSuccess() && result.getTokenValue()) {
+                return _this.tokenService.set(result.getTokenValue())
+                    .pipe(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__["a" /* switchMap */])(function (_) { return _this.tokenService.get(); }), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map__["a" /* map */])(function (token) {
+                    result.replaceToken(token);
+                    return result;
+                }));
+            }
+            return Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_observable_of__["a" /* of */])(result);
+        }));
+    };
+    /**
+     * Sign outs with the selected provider
+     * Removes token from the token storage
+     *
+     * Example:
+     * logout('email')
+     *
+     * @param provider
+     * @returns {Observable<NbAuthResult>}
+     */
+    NbAuthService.prototype.logout = function (provider) {
+        var _this = this;
+        return this.getProvider(provider).logout()
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators_tap__["a" /* tap */])(function (result) {
+            if (result.isSuccess()) {
+                _this.tokenService.clear().subscribe(function () {
+                });
+            }
+        }));
+    };
+    /**
+     * Sends forgot password request to the selected provider
+     *
+     * Example:
+     * requestPassword('email', {email: 'email@example.com'})
+     *
+     * @param provider
+     * @param data
+     * @returns {Observable<NbAuthResult>}
+     */
+    NbAuthService.prototype.requestPassword = function (provider, data) {
+        return this.getProvider(provider).requestPassword(data);
+    };
+    /**
+     * Tries to reset password with the selected provider
+     *
+     * Example:
+     * resetPassword('email', {newPassword: 'test'})
+     *
+     * @param provider
+     * @param data
+     * @returns {Observable<NbAuthResult>}
+     */
+    NbAuthService.prototype.resetPassword = function (provider, data) {
+        return this.getProvider(provider).resetPassword(data);
+    };
+    NbAuthService.prototype.getProvider = function (provider) {
+        if (!this.providers[provider]) {
+            throw new TypeError("Nb auth provider '" + provider + "' is not registered");
+        }
+        return this.injector.get(this.providers[provider].service);
+    };
+    NbAuthService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __param(2, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"])()), __param(2, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_6__auth_options__["c" /* NB_AUTH_PROVIDERS_TOKEN */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_5__token_service__["b" /* NbTokenService */],
+            __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"], Object])
+    ], NbAuthService);
+    return NbAuthService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/services/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__token_service__ = __webpack_require__("../../../../../src/app/auth/services/token.service.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interceptors_jwt_interceptor__ = __webpack_require__("../../../../../src/app/auth/services/interceptors/jwt-interceptor.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interceptors_simple_interceptor__ = __webpack_require__("../../../../../src/app/auth/services/interceptors/simple-interceptor.ts");
+/* unused harmony namespace reexport */
+
+
+
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/services/interceptors/jwt-interceptor.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export NbAuthJWTInterceptor */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__ = __webpack_require__("../../../../rxjs/_esm5/operators/switchMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var NbAuthJWTInterceptor = /** @class */ (function () {
+    function NbAuthJWTInterceptor(injector) {
+        this.injector = injector;
+    }
+    NbAuthJWTInterceptor.prototype.intercept = function (req, next) {
+        return this.authService.getToken()
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__["a" /* switchMap */])(function (token) {
+            if (token) {
+                var JWT = "Bearer " + token.getValue();
+                req = req.clone({
+                    setHeaders: {
+                        Authorization: JWT,
+                    },
+                });
+            }
+            return next.handle(req);
+        }));
+    };
+    Object.defineProperty(NbAuthJWTInterceptor.prototype, "authService", {
+        get: function () {
+            return this.injector.get(__WEBPACK_IMPORTED_MODULE_2__auth_service__["b" /* NbAuthService */]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    NbAuthJWTInterceptor = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"]])
+    ], NbAuthJWTInterceptor);
+    return NbAuthJWTInterceptor;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/services/interceptors/simple-interceptor.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export NbAuthSimpleInterceptor */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__ = __webpack_require__("../../../../rxjs/_esm5/operators/switchMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_service__ = __webpack_require__("../../../../../src/app/auth/services/auth.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+var NbAuthSimpleInterceptor = /** @class */ (function () {
+    function NbAuthSimpleInterceptor(injector, headerName) {
+        if (headerName === void 0) { headerName = 'Authorization'; }
+        this.injector = injector;
+        this.headerName = headerName;
+    }
+    NbAuthSimpleInterceptor.prototype.intercept = function (req, next) {
+        var _this = this;
+        return this.authService.getToken()
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_1_rxjs_operators_switchMap__["a" /* switchMap */])(function (token) {
+            if (token && token.getValue()) {
+                req = req.clone({
+                    setHeaders: (_a = {},
+                        _a[_this.headerName] = token.getValue(),
+                        _a),
+                });
+            }
+            return next.handle(req);
+            var _a;
+        }));
+    };
+    Object.defineProperty(NbAuthSimpleInterceptor.prototype, "authService", {
+        get: function () {
+            return this.injector.get(__WEBPACK_IMPORTED_MODULE_2__auth_service__["b" /* NbAuthService */]);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    NbAuthSimpleInterceptor = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_3__auth_options__["a" /* NB_AUTH_INTERCEPTOR_HEADER */])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"], String])
+    ], NbAuthSimpleInterceptor);
+    return NbAuthSimpleInterceptor;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/auth/services/token.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NbAuthSimpleToken; });
+/* unused harmony export NbAuthJWTToken */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NbTokenService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/_esm5/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__ = __webpack_require__("../../../../rxjs/_esm5/observable/of.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators_switchMap__ = __webpack_require__("../../../../rxjs/_esm5/operators/switchMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operators_tap__ = __webpack_require__("../../../../rxjs/_esm5/operators/tap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operators_share__ = __webpack_require__("../../../../rxjs/_esm5/operators/share.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__auth_options__ = __webpack_require__("../../../../../src/app/auth/auth.options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__helpers__ = __webpack_require__("../../../../../src/app/auth/helpers.ts");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+
+
+
+/**
+ * Wrapper for simple (text) token
+ */
+var NbAuthSimpleToken = /** @class */ (function () {
+    function NbAuthSimpleToken() {
+        this.token = '';
+    }
+    NbAuthSimpleToken.prototype.setValue = function (token) {
+        this.token = token;
+    };
+    /**
+     * Returns the token value
+     * @returns string
+     */
+    NbAuthSimpleToken.prototype.getValue = function () {
+        return this.token;
+    };
+    NbAuthSimpleToken = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+    ], NbAuthSimpleToken);
+    return NbAuthSimpleToken;
+}());
+
+/**
+ * Wrapper for JWT token with additional methods.
+ */
+var NbAuthJWTToken = /** @class */ (function (_super) {
+    __extends(NbAuthJWTToken, _super);
+    function NbAuthJWTToken() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * TODO: check for this.token to be not null
+     * Returns payload object
+     * @returns any
+     */
+    NbAuthJWTToken.prototype.getPayload = function () {
+        var parts = this.token.split('.');
+        if (parts.length !== 3) {
+            throw new Error("The token " + this.token + " is not valid JWT token and must consist of three parts.");
+        }
+        var decoded = Object(__WEBPACK_IMPORTED_MODULE_7__helpers__["c" /* urlBase64Decode */])(parts[1]);
+        if (!decoded) {
+            throw new Error("The token " + this.token + " is not valid JWT token and cannot be decoded.");
+        }
+        return JSON.parse(decoded);
+    };
+    /**
+     * Returns expiration date
+     * @returns Date
+     */
+    NbAuthJWTToken.prototype.getTokenExpDate = function () {
+        var decoded = this.getPayload();
+        if (!decoded.hasOwnProperty('exp')) {
+            return null;
+        }
+        var date = new Date(0);
+        date.setUTCSeconds(decoded.exp);
+        return date;
+    };
+    NbAuthJWTToken = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+    ], NbAuthJWTToken);
+    return NbAuthJWTToken;
+}(NbAuthSimpleToken));
+
+/**
+ * Nebular token service. Provides access to the stored token.
+ * By default returns NbAuthSimpleToken instance,
+ * but you can inject NbAuthJWTToken if you need additional methods for JWT token.
+ *
+ * @example Injecting NbAuthJWTToken, so that NbTokenService will now return NbAuthJWTToken instead
+ * of the default NbAuthSimpleToken
+ *
+ * ```
+ * // import token and service into your AppModule
+ * import { NB_AUTH_TOKEN_WRAPPER_TOKEN,  NbAuthJWTToken} from '@nebular/auth';
+ *
+ * // add to a list of providers
+ * providers: [
+ *  // ...
+ *  { provide: NB_AUTH_TOKEN_WRAPPER_TOKEN, useClass: NbAuthJWTToken },
+ * ],
+ * ```
+ */
+var NbTokenService = /** @class */ (function () {
+    function NbTokenService(options, tokenWrapper) {
+        var _this = this;
+        this.options = options;
+        this.tokenWrapper = tokenWrapper;
+        this.defaultConfig = {
+            token: {
+                key: 'auth_app_token',
+                getter: function () {
+                    var tokenValue = localStorage.getItem(_this.getConfigValue('token.key'));
+                    _this.tokenWrapper.setValue(tokenValue);
+                    return Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__["a" /* of */])(_this.tokenWrapper);
+                },
+                setter: function (token) {
+                    var raw = token instanceof NbAuthSimpleToken ? token.getValue() : token;
+                    localStorage.setItem(_this.getConfigValue('token.key'), raw);
+                    return Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__["a" /* of */])(null);
+                },
+                deleter: function () {
+                    localStorage.removeItem(_this.getConfigValue('token.key'));
+                    return Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__["a" /* of */])(null);
+                },
+            },
+        };
+        this.config = {};
+        this.token$ = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](null);
+        this.setConfig(options);
+        this.get().subscribe(function (token) { return _this.publishToken(token); });
+    }
+    NbTokenService.prototype.setConfig = function (config) {
+        this.config = Object(__WEBPACK_IMPORTED_MODULE_7__helpers__["a" /* deepExtend */])({}, this.defaultConfig, config);
+    };
+    NbTokenService.prototype.getConfigValue = function (key) {
+        return Object(__WEBPACK_IMPORTED_MODULE_7__helpers__["b" /* getDeepFromObject */])(this.config, key, null);
+    };
+    /**
+     * Sets the token into the storage. This method is used by the NbAuthService automatically.
+     * @param {string} rawToken
+     * @returns {Observable<any>}
+     */
+    NbTokenService.prototype.set = function (rawToken) {
+        var _this = this;
+        return this.getConfigValue('token.setter')(rawToken)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators_switchMap__["a" /* switchMap */])(function () { return _this.get(); }), Object(__WEBPACK_IMPORTED_MODULE_4_rxjs_operators_tap__["a" /* tap */])(function (token) {
+            _this.publishToken(token);
+        }));
+    };
+    /**
+     * Returns observable of current token
+     * @returns {Observable<NbAuthSimpleToken>}
+     */
+    NbTokenService.prototype.get = function () {
+        return this.getConfigValue('token.getter')();
+    };
+    /**
+     * Publishes token when it changes.
+     * @returns {Observable<NbAuthSimpleToken>}
+     */
+    NbTokenService.prototype.tokenChange = function () {
+        return this.token$.pipe(Object(__WEBPACK_IMPORTED_MODULE_5_rxjs_operators_share__["a" /* share */])());
+    };
+    /**
+     * Removes the token
+     * @returns {Observable<any>}
+     */
+    NbTokenService.prototype.clear = function () {
+        this.publishToken(null);
+        return this.getConfigValue('token.deleter')();
+    };
+    NbTokenService.prototype.publishToken = function (token) {
+        this.token$.next(token);
+    };
+    NbTokenService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_6__auth_options__["b" /* NB_AUTH_OPTIONS_TOKEN */])),
+        __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_6__auth_options__["d" /* NB_AUTH_TOKEN_WRAPPER_TOKEN */])),
+        __metadata("design:paramtypes", [Object, NbAuthSimpleToken])
+    ], NbTokenService);
+    return NbTokenService;
+}());
+
 
 
 /***/ }),

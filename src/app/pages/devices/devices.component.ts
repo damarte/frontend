@@ -19,6 +19,9 @@ import { DatePipe } from '@angular/common';
 export class DevicesComponent {
 
   settings = {
+    actions: {
+      add: false
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
