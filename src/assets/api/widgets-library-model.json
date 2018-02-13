@@ -11,38 +11,38 @@
         "facet": "Graphic Charts",
         "name": "Bar Chart"
       }
-    ],
-      "config": {
-        "propertyPages": [
-          {
-            "displayName": "Configuration",
-            "groupId": "run",
-            "position": 10,
-            "properties": [
-              {
-                "controlType": "textbox",
-                "key": "title",
-                "label": "Title",
-                "value": "Energy Consumption in 2004.",
-                "required": true,
-                "order": 1
-              },
-             
-              {
-                "controlType": "textbox",
-                "key": "instanceId",
-                "label": "Widget Id",
-                "value": 999,
-                "required": true,
-                "order": -1
-              }
-            ]
-          }          
-        ]
-      },
-      "actions":[{
-        "name": "Add"
-      }]
+      ],
+        "config": {
+          "propertyPages": [
+            {
+              "displayName": "Configuration",
+              "groupId": "run",
+              "position": 10,
+              "properties": [
+                {
+                  "controlType": "textbox",
+                  "key": "title",
+                  "label": "Title",
+                  "value": "Energy Consumption in 2004.",
+                  "required": true,
+                  "order": 1
+                },
+               
+                {
+                  "controlType": "textbox",
+                  "key": "instanceId",
+                  "label": "Widget Id",
+                  "value": 999,
+                  "required": true,
+                  "order": -1
+                }
+              ]
+            }          
+          ]
+        },
+        "actions":[{
+          "name": "Add"
+        }]
     },
     {
       "componentType": "DoughnutChartComponent",
@@ -302,8 +302,44 @@
       "actions":[{
         "name": "Add"
       }]
+    },
+    {
+      "componentType": "GisMapComponent",
+      "name": "Gis Map",
+      "description": "Localization.",
+      "icon": "assets/images/gmaps.png",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "Maps",
+          "name": "GIS Map"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Configuration",
+            "groupId": "run",
+            "position": 10,
+            "properties": [ 
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Devices Localization",
+                "required": true,
+                "order": 1
+              }
+            ]
+          }
+        ]
+      },
+      "actions":[{
+        "name": "Add"
+      }]
     }
 
   ]
 }
+
 

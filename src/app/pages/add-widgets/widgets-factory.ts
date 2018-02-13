@@ -5,6 +5,7 @@ import { LinearGaugeComponent } from '../widgets/linear-gauge/linear-gauge.compo
 import { BarChartComponent } from '../widgets/bar-chart/bar-chart.component';
 import { DoughnutChartComponent } from '../widgets/doughnut-chart/doughnut-chart.component';
 import { PolarChartComponent } from '../widgets/polar-chart/polar-chart.component';
+import { GisMapComponent } from '../widgets/gis-map/gis-map.component';
 
 
 export class WidgetsFactory {
@@ -34,6 +35,8 @@ export class WidgetsFactory {
                 return BarChartComponent;
             case 'DoughnutChartComponent':
                 return DoughnutChartComponent;
+            case 'GisMapComponent':
+                return GisMapComponent;
             default:
                 return null;
 
