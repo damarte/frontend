@@ -19,6 +19,7 @@ import { ApiModule as UmApiModule } from 'um_fiwoo';
 import { ApiModule as IotModule } from 'iot_devices_fiwoo';
 import { LoginComponent } from './login/login.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
+import { NbAuthModule } from './auth/auth.module';
  
 
 @NgModule({
@@ -34,7 +35,14 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
     IotModule.forRoot(apiConfigFactory),
     NgbModule.forRoot(),
     ThemeModule.forRoot(), 
-    CoreModule.forRoot()
+    CoreModule.forRoot(),
+    NbAuthModule.forRoot({
+      forms: {
+        login: {
+          redirectDelay: 3000,
+        },
+      },   
+    })
   ],
   bootstrap: [AppComponent],
   providers: [

@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 
   user: any;
 
-  userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
+  userMenu = [{ title: 'Profile' }, { title: 'Log out', type:"logout" }];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
@@ -28,9 +28,19 @@ export class HeaderComponent implements OnInit {
             ) {
   }
 
+  onMenuClick(value): void {
+    if (value != undefined && value.type == "logout"){
+      //TODO LOGOUT
+      this.router.navigate(['../auth/login']);
+    }
+  }
+
   ngOnInit() {
     this.userService.getUsers()
-      .subscribe((users: any) => this.user = users.nick);
+      .subscribe((users: any) => {
+        this.user = users.nick;
+      });
+     
   }
 
   toggleSidebar(): boolean {

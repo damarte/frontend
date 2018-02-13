@@ -1,0 +1,112 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+          Filter {{title}}
+      </mat-panel-title>
+      <mat-panel-description *ngIf="getActiveFilters() != 0">
+          {{getActiveFilters()}} active filters
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+            <section>
+                <div class="ui grid" #filterData>
+                    <!-- col1-->
+                    <div class="four wide column" style="width: 22% !important;">
+                        <div class="field">
+                            <mat-form-field>
+                                  <input matInput type="text" placeholder="Name" [(ngModel)]="formData.name"/>
+                                  <button mat-button *ngIf="formData.name" matSuffix mat-icon-button aria-label="Clear" (click)="formData.name=''">
+                                      <mat-icon>close</mat-icon>
+                                  </button>
+                              </mat-form-field>
+                          </div>
+                    </div>
+                    
+                    <!-- col3-->
+                    <div class="four wide column" style="width: 22% !important;">
+                          <div class="field">
+                              <mat-form-field>
+                                  <input matInput type="text" placeholder="Protocol" [(ngModel)]="formData.protocol"/>
+                                  <button mat-button *ngIf="formData.protocol" matSuffix mat-icon-button aria-label="Clear" (click)="formData.protocol=''">
+                                      <mat-icon>close</mat-icon>
+                                  </button>
+                              </mat-form-field>   
+                          </div>
+                    </div>
+    
+                    <!-- col3-->
+                    <div class="four wide column" style="width: 22% !important;">
+                        <div class="field">
+                            <mat-form-field>
+                                <input matInput type="text" placeholder="Entity type" [(ngModel)]="formData.entity_type"/>
+                                <button mat-button *ngIf="formData.entity_type" matSuffix mat-icon-button aria-label="Clear" (click)="formData.entity_type=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                    <div class="four wide column" *ngIf="showEntityName" style="width: 22% !important;">
+                        <div class="field">
+                            <mat-form-field>
+                                <input matInput type="text" placeholder="Entity Name" [(ngModel)]="formData.entity_name"/>
+                                <button mat-button *ngIf="formData.entity_name" matSuffix mat-icon-button aria-label="Clear" (click)="formData.attribute=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="ui grid">
+                    <!-- col1-->
+                    <div class="four wide column" style="width: 22% !important;">
+                        <div class="field">
+                            <mat-form-field>
+                                  <input matInput type="text" placeholder="Transport Protocol" [(ngModel)]="formData.transportProtocol"/>
+                                  <button mat-button *ngIf="formData.transportProtocol" matSuffix mat-icon-button aria-label="Clear" (click)="formData.transportProtocol=''">
+                                      <mat-icon>close</mat-icon>
+                                  </button>
+                              </mat-form-field>
+                          </div>
+                    </div>
+                    
+                    <!-- col3-->
+                    <div class="four wide column" style="width: 22% !important;">
+                          <div class="field">
+                              <mat-form-field>
+                                  <input matInput type="text" placeholder="Owner" [(ngModel)]="formData.owner"/>
+                                  <button mat-button *ngIf="formData.owner" matSuffix mat-icon-button aria-label="Clear" (click)="formData.owner=''">
+                                      <mat-icon>close</mat-icon>
+                                  </button>
+                              </mat-form-field>   
+                          </div>
+                    </div>
+    
+                    <!-- col3-->
+                    <div class="four wide column" style="width: 22% !important;">
+                        <div class="field">
+                            <mat-form-field>
+                                <input matInput type="text" placeholder="Attribute" [(ngModel)]="formData.attributes"/>
+                                <button mat-button *ngIf="formData.attributes" matSuffix mat-icon-button aria-label="Clear" (click)="formData.attributes=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>   
+                        </div>
+                    </div>
+                    <div class="four wide column" style="width: 22% !important;">
+                        <mat-slide-toggle [(ngModel)]="formData.isPublic"
+                            color="primary"
+                            [checked]="formData.isPublic">
+                            Public
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+              </section>
+              <section style="text-align: end; margin-top: 20px">
+                  <button mat-raised-button color="warn" (click)="resetFilters()">Reset</button>
+                  <button mat-raised-button color="primary" (click)="applyFilters()">Apply</button>
+              </section> 
+    
+    
+    
+  </mat-expansion-panel>

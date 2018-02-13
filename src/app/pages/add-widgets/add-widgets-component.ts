@@ -64,6 +64,7 @@ export class AddWidgetsComponent implements AfterViewInit {
 
    
     sensors : any[];
+    attributes: any[];
 
     constructor(private _addWidgetsService: AddWidgetsService,
                 private _devicesServices: DevicesService) {
@@ -73,13 +74,27 @@ export class AddWidgetsComponent implements AfterViewInit {
         this._devicesServices.listDevices().subscribe(res => {  
                 
                 
-                    this.sensors = res;
+            this.sensors = res;
 
-                    //console.log(this.sensors);
+            //console.log(this.sensors);
               
 
         })
     }
+
+    onDeviceChanged(value):void {
+        console.log(value);
+        if (value.attributes != undefined && value.attributes.length > 0){
+            this.attributes = value.attributes;
+        }
+    }
+
+    onAttributeChanged(value):void {
+        console.log(value);
+        
+    }
+
+
 
 
     actionHandler(actionItem, actionName) {

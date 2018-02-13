@@ -50,5 +50,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Living',
     icon: 'ion-ios-home-outline',    
+  },
+  {
+    title: 'About',
+    icon: 'ion-ios-information-outline', 
+    link: '/pages/about',  
   }
 ];

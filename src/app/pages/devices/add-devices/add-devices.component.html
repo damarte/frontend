@@ -1,20 +1,34 @@
   <div class="ui modal" #addDeviceModal>
       <div class="header">
             <div class="ui grid">
-                <div class="twelve wide column">
+                <div class="ten wide column">
                         Add Device
                 </div>
                 <div class="two wide column">
                         <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
                 </div>
-                <div class="one wide column">
-                        <button mat-raised-button color="primary" (click)="sendDevices()">Save</button>
+                <div class="two wide column">
+                        <button mat-raised-button color="primary" (click)="sendDevices()">Create Devices</button>
                 </div>
             </div>  
             
       </div>
       <div class="scrolling content">
-          <div class="ui grid">
+
+           
+            <mat-form-field>
+                <mat-select  [(value)]="currentTemplate" placeholder="Choose template" [formControl]="templateFormControl">
+                    <mat-option *ngFor="let template of templates" [value]="template">
+                    {{ template.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="templateFormControl.hasError('required')">
+                    Template <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+             
+
+          <div class="ui grid" style="margin-top: 20px">
               <!-- col1-->
               <div class="four wide column">
                   <div class="field">
@@ -28,20 +42,6 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-              </div>
-              
-              <!-- col2-->
-              <div class="four wide column">
-                    <mat-form-field>
-                        <mat-select  [(value)]="currentTemplate" placeholder="Choose template" [formControl]="templateFormControl">
-                            <mat-option *ngFor="let template of templates" [value]="template">
-                            {{ template.name }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="templateFormControl.hasError('required')">
-                            Template <strong>required</strong>
-                        </mat-error>
-                    </mat-form-field>
               </div>
               
               <!-- col3-->
@@ -71,7 +71,7 @@
             </div>
 
             <div class="field" style="margin-top: 20px;">
-                <button mat-raised-button color="primary" (click)="onDeviceCreated($event)">Create device</button>
+                <button mat-raised-button color="primary" (click)="onDeviceCreated($event)">Add device</button>
             </div>
 
             <mat-divider style="margin-top: 20px;"></mat-divider>

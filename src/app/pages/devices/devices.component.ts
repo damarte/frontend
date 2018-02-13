@@ -6,9 +6,6 @@ import { DevicesService } from 'iot_devices_fiwoo';
 import { DatePipe } from '@angular/common';
 
 
-
-
-
 @Component({
   selector: 'ngx-smart-table',
   templateUrl: './devices.component.html',
@@ -22,6 +19,9 @@ import { DatePipe } from '@angular/common';
 export class DevicesComponent {
 
   settings = {
+    actions: {
+      add: false
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -87,21 +87,46 @@ export class DevicesComponent {
   constructor(private devicesService: DevicesService,
               private datePipe: DatePipe
              ) {
-    //const data = this.service.getData();
-    const data = this.devicesService.listDevices().subscribe(res => {     
-      this.source.load(res);
-      //console.log(res);
-    });   
-    //console.log(isDevMode());
-  } 
+    this.loadDevices(null);
+  }
+
+  private loadDevices(filterData): void{
+    if (filterData != undefined && filterData != null){
+      const data = this.devicesService.listDevices(filterData.name, filterData.entity_name, filterData.protocol,
+                                                   filterData.entity_type, filterData.transportProtocol,
+                                                   filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {     
+        this.source.load(res);
+      });
+    }else{
+      const data = this.devicesService.listDevices().subscribe(res => {     
+        this.source.load(res);
+      });
+    }
+
+  }
+
+  filterData: any = {};
+
+  getActiveFilters(){
+    if (this.filterData != undefined && this.filterData != null){
+      return Object.keys(this.filterData).length
+    }
+    return 0;
+  }
+
+  onApplyFilters(filterData){
+    this.filterData = filterData;
+    this.loadDevices(filterData);
+  }
+  onResetFilters(){
+    this.filterData = {};
+    this.loadDevices(null);
+  }
 
   onModalHidden(reload){
     //Recargamos los templates
     if (reload){
-      const data = this.devicesService.listDevices().subscribe(res => {     
-        this.source.load(res);
-        //console.log(res);
-      });
+      this.loadDevices(null);
     }
   }
 

@@ -1,12 +1,21 @@
 <nb-card>
   <nb-card-header>
-    Devices
+    <div class="ui grid">
+        <div class="fourteen wide column">
+            Devices
+        </div>
+        <div class="two wide column">
+            <a class="item" (click)="addDeviceModal.showModal()">
+                <button mat-raised-button color="primary">Add Device</button>
+            </a>
+        </div>
+    </div> 
   </nb-card-header>
-
-  <a class="item" (click)="addDeviceModal.showModal()">
-      <button mat-raised-button color="primary">Add Device</button>
-  </a>
   <nb-card-body>
+      <app-devices-filter style="padding: 10px" title="devices" [showEntityName] = "true" [filtersApplied] = "getActiveFilters()" (onApplyFilters)="onApplyFilters($event)"
+       (onResetFilters)="onResetFilters()">
+        </app-devices-filter>
+
     <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
     </ng2-smart-table>
   </nb-card-body>
