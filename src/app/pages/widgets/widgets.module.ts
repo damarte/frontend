@@ -6,7 +6,7 @@ import {LinearGaugeComponent} from './linear-gauge/linear-gauge.component';
 import {LineChartComponent} from './line-chart/line-chart.component';
 import {CircularGaugeComponent} from './circular-gauge/circular-gauge.component';
 import {LinearGaugeService} from './linear-gauge/service';
-
+import {GisMapComponent} from './gis-map/gis-map.component';
 import {DynamicFormModule} from '../dynamic-form/dynamic-form-module';
 import {DndModule} from 'ng2-dnd';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
@@ -27,6 +27,7 @@ import {FacetModule} from '../facet/facet.module';
 import {TypeAheadInputModule} from '../typeahead-input/typeahead-input.module';
 import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectBoxModule, DxSliderModule,DxCheckBoxModule, DxPieChartModule, 
     DxChartModule, DxChartComponent, DxPolarChartModule, DxMapModule, DxTextBoxModule, DxTemplateModule, DxRangeSelectorModule, DxDateBoxModule} from 'devextreme-angular';
+
 
 
 
@@ -70,7 +71,8 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         LineChartComponent,       
         CircularGaugeComponent,                
         DoughnutChartComponent,        
-        PolarChartComponent
+        PolarChartComponent, 
+        GisMapComponent
     ],
 
     providers: [
@@ -86,7 +88,8 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         LineChartComponent,
         CircularGaugeComponent,        
         DoughnutChartComponent,        
-        PolarChartComponent
+        PolarChartComponent,
+        GisMapComponent
     ]
 })
 export class WidgetsModule {

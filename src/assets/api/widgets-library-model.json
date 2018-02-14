@@ -350,8 +350,44 @@
       "actions":[{
         "name": "Select"
       }]
+    },
+    {
+      "componentType": "GisMapComponent",
+      "name": "Gis Map",
+      "description": "Localization.",
+      "icon": "assets/images/gmaps.png",
+      "instanceId": -1,
+      "tags": [
+        {
+          "facet": "Maps",
+          "name": "GIS Map"
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Configuration",
+            "groupId": "run",
+            "position": 10,
+            "properties": [ 
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "Devices Localization",
+                "required": true,
+                "order": 1
+              }
+            ]
+          }
+        ]
+      },
+      "actions":[{
+        "name": "Select"
+      }]
     }
 
   ]
 }
+
 
