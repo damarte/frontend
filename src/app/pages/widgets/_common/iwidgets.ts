@@ -5,6 +5,8 @@ interface IWidgets {
 
     stop();
 
+    configDone();
+
     toggleConfigMode();
 
     initializeProperties();
@@ -19,7 +21,7 @@ interface IWidgets {
 
     showGadgetControls(enable: boolean);
 
-    configureGadget(instanceId: number, config: any);
+    configureGadget(instanceId: number, config: any, widget: any);
 
 
 }

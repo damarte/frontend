@@ -15,6 +15,7 @@ export class CellComponent implements OnInit {
     @Input() widgetConfig: any;
     @Input() widgetInstanceId: number;
 
+    @Input() widgetInstance: any;
 
     constructor(private viewContainerRef: ViewContainerRef,
                 private cfr: ComponentFactoryResolver, private gadgetInstanceService: WidgetsInstanceService) {
@@ -29,13 +30,14 @@ export class CellComponent implements OnInit {
         let gadgetRef: any = {};
 
         if (component) {
+            console.log(component);
             compFactory = this.cfr.resolveComponentFactory(component);
             gadgetRef = this.viewContainerRef.createComponent(compFactory);
 
             /*
              we need to pass the input parameters (instance id and config) back into the newly created component.
              */
-            gadgetRef.instance.configureGadget(this.widgetInstanceId, this.widgetConfig);
+            gadgetRef.instance.configureGadget(this.widgetInstanceId, this.widgetConfig, this.widgetInstance);
 
             /*
              add concrete component to service for tracking

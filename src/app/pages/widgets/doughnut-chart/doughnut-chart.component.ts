@@ -42,6 +42,10 @@ export class DoughnutChartComponent extends WidgetsBase implements OnDestroy {
         return point.argumentText + ": " + point.valueText + "%";
     }
 
+    public configDone(){
+
+    }
+
     public preRun(): void {
 
     }

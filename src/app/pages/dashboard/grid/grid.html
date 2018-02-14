@@ -13,7 +13,7 @@
 
 
             <app-grid-cell *ngFor="let cellGadget of col.gadgets" [widgetInstanceId]="cellGadget.instanceId"
-                       [widgetConfig]="cellGadget.config" [widgetType]="cellGadget.componentType"></app-grid-cell>
+                       [widgetConfig]="cellGadget.config" [widgetInstance]="cellGadget" [widgetType]="cellGadget.componentType"></app-grid-cell>
 
         </div>
 

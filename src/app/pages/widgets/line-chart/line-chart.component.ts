@@ -48,21 +48,7 @@ export class LineChartComponent extends WidgetsBase {
         super(_runtimeService,
             _widgetsInstanceService,
             _propertyService,            
-            _changeDetectionRef);                   
-
-            
-            this.fromDate = new Date();
-            this.fromDate.setDate(this.fromDate.getDate()-7);
-
-            this.deviceService.listDevices().subscribe(res => {
-                this.sensorsDataSource = res;
-                if (res.length > 0){
-                    var thisDevice:any = res[0];
-                    this.currentDevice = thisDevice._id;
-                    this.loadData(thisDevice.entity_name, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));                    
-                }
-                
-            });
+            _changeDetectionRef);
 
     }
 
@@ -130,13 +116,43 @@ export class LineChartComponent extends WidgetsBase {
     valueChanged(arg: any) {
         this.chart.instance.zoomArgument(arg.value[0], arg.value[1]);
     }
-    
+
+    public configDone() {
+
+        console.log(this.widget);
+
+        this.fromDate = new Date();
+        this.fromDate.setDate(this.fromDate.getDate()-7);
+
+        if (this.widget != undefined && this.widget.extra_data != undefined){
+
+            var extra_data: any;
+            if (this.widget.extra_data.length > 0){
+                extra_data = this.widget.extra_data[0];
+            }
+        
+            this.currentDevice = extra_data.device_id;
+            
+            
+            this.loadData(extra_data.device_id, extra_data.attribute, extra_data.from, extra_data.to);
+        }
+
+        // this.deviceService.listDevices().subscribe(res => {
+        //     this.sensorsDataSource = res;
+        //     if (res.length > 0){
+        //         var thisDevice:any = res[0];
+        //         this.currentDevice = thisDevice._id;
+        //         this.loadData(thisDevice.entity_name, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));                    
+        //     }
+            
+        // });  
+    }
+
     public preRun(): void {
-       
+        
     }
 
     public run() {      
-
     }
 
     public stop() {        
