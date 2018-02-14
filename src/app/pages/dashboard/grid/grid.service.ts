@@ -14,7 +14,7 @@ export class WidgetsInstanceService {
     }
 
     addInstance(gadget: any) {
-
+        console.log(gadget);
         this.concreteGadgetInstances.push(gadget);
 
     }

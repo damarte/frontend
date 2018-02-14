@@ -81,6 +81,10 @@ export class PolarChartComponent extends WidgetsBase implements OnDestroy {
 
     }
 
+    public configDone(){
+
+    }
+
     public preRun(): void {
 
         console.log('PRERUN');

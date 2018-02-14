@@ -41,7 +41,7 @@
         ]
       },
       "actions":[{
-        "name": "Add"
+        "name": "Select"
       }]
     },
     {
@@ -84,7 +84,7 @@
         ]
       },
       "actions":[{
-        "name": "Add"
+        "name": "Select"
       }]
     },
     {
@@ -121,13 +121,29 @@
                 "value": 999,
                 "required": true,
                 "order": -1
+              },
+              {
+                "controlType": "textbox",
+                "key": "min",
+                "label": "Min value",
+                "value": 0,
+                "required": true,
+                "order": -1
+              },
+              {
+                "controlType": "textbox",
+                "key": "max",
+                "label": "Max value",
+                "value": 100,
+                "required": true,
+                "order": -1
               }
             ]
           }        
         ]
       },
       "actions":[{
-        "name": "Add"
+        "name": "Select"
       }]
     },   
     {
@@ -170,7 +186,7 @@
         ]
       },
       "actions":[{
-        "name": "Add"
+        "name": "Select"
       }]
     },      
     {
@@ -207,13 +223,29 @@
                 "value": 2,
                 "required": true,
                 "order": -1
+              },
+              {
+                "controlType": "textbox",
+                "key": "min",
+                "label": "Min value",
+                "value": 0,
+                "required": true,
+                "order": -1
+              },
+              {
+                "controlType": "textbox",
+                "key": "max",
+                "label": "Max value",
+                "value": 100,
+                "required": true,
+                "order": -1
               }
             ]
           }
         ]
       },
       "actions":[{
-        "name": "Add"
+        "name": "Select"
       }]
     },   
     {
@@ -256,7 +288,7 @@
         ]
       },
       "actions":[{
-        "name": "Add"
+        "name": "Select"
       }]
     },    
     {
@@ -294,13 +326,29 @@
                 "value": 2,
                 "required": true,
                 "order": -1
+              },
+              {
+                "controlType": "textbox",
+                "key": "min",
+                "label": "Min value",
+                "value": 0,
+                "required": true,
+                "order": -1
+              },
+              {
+                "controlType": "textbox",
+                "key": "max",
+                "label": "Max value",
+                "value": 100,
+                "required": true,
+                "order": -1
               }
             ]
           }
         ]
       },
       "actions":[{
-        "name": "Add"
+        "name": "Select"
       }]
     }
 

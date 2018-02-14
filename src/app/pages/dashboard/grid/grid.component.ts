@@ -65,6 +65,7 @@ export class GridComponent {
             this.gadgetLibrary.length = 0;
             const me = this;
             data.library.forEach(function (item) {
+                console.log(item);
                 me.gadgetLibrary.push(item);
             });
         });
@@ -163,6 +164,8 @@ export class GridComponent {
     }
 
     public addGadget(gadget: any) {
+
+        console.log(gadget);
 
         const _widgets = Object.assign({}, gadget);
 

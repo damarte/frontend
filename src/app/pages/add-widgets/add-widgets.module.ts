@@ -4,15 +4,23 @@ import { AddWidgetsComponent } from './add-widgets-component';
 import { AddWidgetsService } from './service';
 import { HttpClientModule } from '@angular/common/http';
 import { DataListModule } from '../datalist/data-list.module';
-import { MatButtonModule, MatSelectModule } from '@angular/material';
+import { MatButtonModule, MatSelectModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatInputModule, MatCheckboxModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
+        FormsModule,
         CommonModule,
         DataListModule,
         HttpClientModule,
         MatButtonModule,
-        MatSelectModule
+        MatSelectModule,
+        MatCardModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatInputModule,
+        MatCheckboxModule
+        
     ],
     declarations: [
         AddWidgetsComponent
