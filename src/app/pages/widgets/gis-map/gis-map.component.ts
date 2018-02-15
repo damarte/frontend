@@ -48,6 +48,10 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
    	public preRun(): void {
     }
 
+    public configDone(){
+        
+    }
+
     public run() {  
     }
 
