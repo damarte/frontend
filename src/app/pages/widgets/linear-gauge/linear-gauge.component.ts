@@ -96,17 +96,43 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     public configDone(){
         if(this.devicesService != null){
-            if (this.widget != undefined && this.widget.extra_data != undefined){
-                var extra_data: any;
-                if (this.widget.extra_data.length > 0){
-                    extra_data = this.widget.extra_data[0];
-                }
-                this.titleNew = extra_data.device_name;
-                this.loadData(extra_data.device_id, extra_data.attribute);
+            // if (this.widget != undefined && this.widget.extra_data != undefined){
+            //     var extra_data: any;
+            //     if (this.widget.extra_data.length > 0){
+            //         extra_data = this.widget.extra_data[0];
+            //     }
+            //     this.titleNew = extra_data.device_name;
+            //     this.loadData(extra_data.device_id, extra_data.attribute);
 
-                this.minValue = this.getPropFromPropertyPages("min");
-                this.maxValue = this.getPropFromPropertyPages("max");
+            //     this.minValue = this.getPropFromPropertyPages("min");
+            //     this.maxValue = this.getPropFromPropertyPages("max");
     
+            // }
+
+            if (this.widget != undefined && this.widget.sources != undefined){
+                var source: any;
+                
+                if (this.widget.sources.length > 0){
+                    
+                    source = this.widget.sources[0];
+    
+                    var device_name, device_id, attribute, from, to;
+                    source.parameters.forEach(param => {
+                        if (param.name === "device_name"){
+                            device_name = param.value;
+                        }else if (param.name === "device_id"){
+                            device_id = param.value;
+                        }else if (param.name === "attribute"){
+                            attribute = param.value;
+                        }
+                    });
+    
+                    this.titleNew = device_name;
+                    this.loadData(device_id, attribute);
+
+                    this.minValue = this.getPropFromPropertyPages("min");
+                    this.maxValue = this.getPropFromPropertyPages("max");
+                }        
             }
         }
         this.run();

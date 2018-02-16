@@ -23,7 +23,9 @@
               [source]="source" 
               (deleteConfirm)="onDeleteConfirm($event)" 
               (createConfirm)="onCreateConfirm($event)"
-              (editConfirm)="onSaveConfirm($event)">
+              (editConfirm)="onSaveConfirm($event)"
+              (edit)="addTemplateModal.showModal($event.data)"
+              (delete)="onDeleteConfirm($event)">
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>

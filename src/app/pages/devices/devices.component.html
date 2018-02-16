@@ -5,7 +5,7 @@
             Devices
         </div>
         <div class="two wide column">
-            <a class="item" (click)="addDeviceModal.showModal()">
+            <a class="item" (click)="addDeviceModal.showModal(null)">
                 <button mat-raised-button color="primary">Add Device</button>
             </a>
         </div>
@@ -16,7 +16,7 @@
        (onResetFilters)="onResetFilters()">
         </app-devices-filter>
 
-    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (edit)="editDeviceModal.showModal($event.data)" (delete)="onDeleteConfirm($event)">
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>
@@ -24,3 +24,6 @@
 <!-- the modal will emit an event and call the grid component to add the requested cell to the board -->
 <app-add-devices #addDeviceModal (onHidden)="onModalHidden($event)">
 </app-add-devices>
+
+<app-edit-devices #editDeviceModal (onHidden)="onModalHidden($event)">
+</app-edit-devices>

@@ -111,20 +111,36 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
 
     public configDone(){
 
-        if (this.widget != null){
-            this.devices = this.widget.extra_data;
-            this.deviceData = new Array<DeviceData>();
-            this.loadDataGeneral();
 
-            this.startValue = this.getPropFromPropertyPages("min");
-            this.endValue = this.getPropFromPropertyPages("max");
+        if (this.widget != undefined && this.widget.sources != undefined){
+            var source: any;
+            this.devices = [];
+            if (this.widget.sources.length > 0){
+                
+                this.widget.sources.forEach(source => {
+                    var device: any = {};
+                    source.parameters.forEach(param => {
+                        device[param.name] =  param.value;
+                    });
+                    this.devices.push(device);
+                });
+
+                this.deviceData = new Array<DeviceData>();
+                this.loadDataGeneral();
+
+                this.startValue = this.getPropFromPropertyPages("min");
+                this.endValue = this.getPropFromPropertyPages("max");
+            }        
         }
 
-        // this.deviceService.listDevices().subscribe(res => {
-        //     this.devices = res;
+        // if (this.widget != null){
+        //     this.devices = this.widget.extra_data;
         //     this.deviceData = new Array<DeviceData>();
         //     this.loadDataGeneral();
-        // });
+
+        //     this.startValue = this.getPropFromPropertyPages("min");
+        //     this.endValue = this.getPropFromPropertyPages("max");
+        // }
     }
 
     public run() {     

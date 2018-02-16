@@ -39,6 +39,9 @@ export class AddDevicesComponent implements OnInit {
   device_name: string;
   entity_type: string;
   device: Devices = {};
+  modalTitle: string = "";
+
+  editedDevice:any = null;
 
   createdDevices: Array<any> = [];
 
@@ -65,7 +68,11 @@ export class AddDevicesComponent implements OnInit {
   ngOnInit() {
   }
 
-  showModal() {
+  showModal(device) {
+    this.editedDevice = device;
+    
+    this.configureDeviceToEdit();
+
     this.saved = false;
     this.modal.modal({
       allowMultiple: true,
@@ -76,6 +83,19 @@ export class AddDevicesComponent implements OnInit {
       }
     })
     .modal('show');
+  }
+
+  configureDeviceToEdit(){
+    if (this.editedDevice != null){
+      this.modalTitle = "Edit device"
+      this.currentTemplate = {};
+      this.currentTemplateName = "";
+      this.currentTemplateId = this.editedDevice.entity_type;
+      this.device_name = this.editedDevice.name;
+      this.entity_type = this.editedDevice.entity_name;
+    }else{
+      this.modalTitle = "Add device"
+    }
   }
   
   cleanFields(){

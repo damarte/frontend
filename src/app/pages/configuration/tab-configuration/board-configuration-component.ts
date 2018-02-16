@@ -116,8 +116,12 @@ export class BoardConfigurationComponent implements AfterViewInit {
         this.dashboardEditEvent.emit(name);
     }
 
-    deleteBoard(name: string) {
-        this.dashboardDeleteEvent.emit(name);
+    deleteBoard(board: any) {
+        if (this._configurationService.demo){
+            this.dashboardDeleteEvent.emit(board.title);
+        }else{
+            this.dashboardDeleteEvent.emit(board.id);
+        }
     }
 
 

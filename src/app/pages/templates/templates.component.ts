@@ -18,7 +18,7 @@ export class TemplatesComponent {
   outputs: string;
 
   settings = {
-
+    mode: 'external',
     actions: {
       add: false
     },
@@ -127,13 +127,14 @@ export class TemplatesComponent {
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+      // event.confirm.resolve();
       //Call service to delete this device
       this._templatesService.deleteTemplateById(event.data._id).subscribe(res => {
         //console.log(res);
+        this.loadTemplates(null);
       });
     } else {
-      event.confirm.reject();
+      // event.confirm.reject();
     }
   }
 
@@ -143,9 +144,9 @@ export class TemplatesComponent {
       this._templatesService.createTemplate(event.newData._id, event.newData).subscribe(res => {
         console.log(res);
       });
-      event.confirm.resolve(event.newData);
+      // event.confirm.resolve(event.newData);
     } else {
-      event.confirm.reject();
+      // event.confirm.reject();
     }
   }
 

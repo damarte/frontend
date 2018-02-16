@@ -16,8 +16,19 @@ enum WIDGET_TYPES {
     TYPE_SINGLE,
     TYPE_SINGLE_HISTORIC,
     TYPE_MULTIPLE,
-    TYPE_MULTIPLE_HISTORIC
-}
+    TYPE_MULTIPLE_HISTORIC,
+    TYPE_MAP
+};
+
+enum WIDGET_MICRO_SERVICE_TYPES {
+    "analogGauge",
+    "lineChart",
+    "barChart",
+    "pieChart",
+    "cards",
+    "alarmWidget",
+    "controlWidgets",
+};
 
 /**
  * Message Modal - clasable modal with message
@@ -127,6 +138,8 @@ export class AddWidgetsComponent implements AfterViewInit {
             return WIDGET_TYPES.TYPE_MULTIPLE;
             case "CircularGaugeComponent":
             return WIDGET_TYPES.TYPE_SINGLE;
+            case "GisMapComponent":
+            return WIDGET_TYPES.TYPE_MAP;
         }
     }
 
@@ -148,6 +161,28 @@ export class AddWidgetsComponent implements AfterViewInit {
                 this.showDateControls = false;
                 this.isMultiple = true;
                 return "Select multiple devices, an attribute and the data range"
+        }
+    }
+
+    getCustomWidgetType (){
+         var componentType = this.widgetSelected.componentType;
+        switch(componentType){
+            case "BarChartComponent":
+            return WIDGET_MICRO_SERVICE_TYPES.barChart;
+            // case "DoughnutChartComponent":
+            // return WIDGET_MICRO_SERVICE_TYPES.TYPE_MULTIPLE;
+            case "LinearGaugeComponent":
+            return WIDGET_MICRO_SERVICE_TYPES.controlWidgets;
+            case "LineChartComponent":
+            return WIDGET_MICRO_SERVICE_TYPES.lineChart;
+            case "BarGaugeComponent":
+            return WIDGET_MICRO_SERVICE_TYPES.alarmWidget;
+            // case "PolarChartComponent":
+            // return WIDGET_MICRO_SERVICE_TYPES.TYPE_MULTIPLE;
+            case "CircularGaugeComponent":
+            return WIDGET_MICRO_SERVICE_TYPES.analogGauge;
+            case "GisMapComponent":
+            return WIDGET_MICRO_SERVICE_TYPES.cards;
         }
     }
 
@@ -220,90 +255,60 @@ export class AddWidgetsComponent implements AfterViewInit {
         var devices = [];
         if (this.selectedDevice instanceof Array){
             devices = this.selectedDevice
-        }else{
+        }else if (this.selectedDevice != undefined){
             devices.push(this.selectedDevice);
         }
         widget.extra_data = [];
         widget.sources = [];
-        widget.type = null;
-        // widget.properties = [
-        //     {
-        //         "id": 37,
-        //         "name": "width",
-        //         "value": "220px"
-        //     },
-        //     {
-        //         "id": 38,
-        //         "name": "height",
-        //         "value": "220px"
-        //     },
-        //     {
-        //         "id": 39,
-        //         "name": "position",
-        //         "value": "top"
-        //     }
-        // ];
-        // "url": "http://platform.fiwoo.eu/api/devices/historics?id=A81B6AA907B5&attributes=temperature&from=16-12-2017T00:00:00&to=17-01-2018T00:00:00",
+        widget.type = this.getCustomWidgetType();
+    
 
         devices.forEach(element => {
-            var extra: any = {
-                "device_id": element.entity_name,
-                "attribute": this.selectedAttribute,
-                "device_name": element.name
-            };
+            var parameters = [];
+            parameters.push({
+                "id": 1,
+               "name": "device_name",
+               "value": element.name,
+               "operator": null
+
+            });
+            parameters.push({
+                "id": 2,
+                "name": "device_id",
+                "value": element.entity_name,
+                "operator": null
+ 
+             });
+             parameters.push({
+                "id": 3,
+                "name": "attribute",
+                "value": this.selectedAttribute,
+                "operator": null
+ 
+             });
             var url = `https://platform.fiwoo.eu/api/device-management/devices/historics?${element.entity_name}&attribute=${this.selectedAttribute}`;
             if (this.showDateControls){
                 url = url.concat(`&from=${this.changeDate(this.fromDate)}&to=${this.changeDate(this.toDate)}`);
-                extra.from = this.changeDate(this.fromDate);
-                extra.to = this.changeDate(this.toDate);
+                parameters.push({
+                    "id": 4,
+                    "name": "from",
+                    "value": this.changeDate(this.fromDate),
+                    "operator": null
+     
+                 });
+                 parameters.push({
+                    "id": 5,
+                    "name": "to",
+                    "value": this.changeDate(this.toDate),
+                    "operator": null
+     
+                 });
             }
-            widget.extra_data.push(extra);
             widget.sources.push({
                 "url": url,
-                // "parameters": [
-                //     {
-                //         "id": 25,
-                //         "name": "parameter_a",
-                //         "value": "value_a",
-                //         "operator": "operator_a"
-                //     },
-                //     {
-                //         "id": 26,
-                //         "name": "parameter_b",
-                //         "value": "value_b",
-                //         "operator": "operator_b"
-                //     }
-                // ]
+                "parameters": parameters
             });
         });
-
-      
-        // var url = `https://platform.fiwoo.eu/api/device-management/devices/historics?${this.selectedDevice.entity_name}&attribute=${this.selectedAttribute}`;
-        // widget.extra_data = [];
-        // if (this.insertDates){
-        //     url = url.concat(`&from=${this.changeDate(this.fromDate)}&to=${this.changeDate(this.toDate)}`);
-        //     widget.extra_data.from = this.changeDate(this.fromDate);
-        //     widget.extra_data.to = this.changeDate(this.toDate);
-        // }
-        // widget.sources = [
-        //     {
-        //         "url": url,
-                // "parameters": [
-                //     {
-                //         "id": 25,
-                //         "name": "parameter_a",
-                //         "value": "value_a",
-                //         "operator": "operator_a"
-                //     },
-                //     {
-                //         "id": 26,
-                //         "name": "parameter_b",
-                //         "value": "value_b",
-                //         "operator": "operator_b"
-                //     }
-                // ]
-        //     }
-        // ];
         return widget;
 
     }
@@ -312,7 +317,14 @@ export class AddWidgetsComponent implements AfterViewInit {
     actionHandler(actionItem, actionName) {
         this.resetSelectedvalues();
         actionItem.selected = true;
-        this.widgetSelected = actionItem;     
+        this.widgetSelected = actionItem;
+
+        if (this.checkComponents() == WIDGET_TYPES.TYPE_MAP){
+            //Add Directly by the moment
+            actionItem = this.updateWidgetInfo(actionItem);
+            this.addGadgetEvent.emit(actionItem);
+            this.hideMessageModal(); 
+        }
 
     }
 
@@ -341,11 +353,10 @@ export class AddWidgetsComponent implements AfterViewInit {
         this.modalheader = header;
         this.modalmessage = message;
         this.messageModal.modal('show');
-
     }
 
     showComponentLibraryModal(header: string) {
-
+        this.restart();
         this.modalheader = header;
         this.messageModal.modal('show');
     }

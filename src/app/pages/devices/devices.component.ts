@@ -22,6 +22,7 @@ export class DevicesComponent {
     actions: {
       add: false
     },
+    mode: 'external',
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -132,11 +133,23 @@ export class DevicesComponent {
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+      // event.confirm.resolve();
       //Call service to delete this device
       this.devicesService.deleteDevice(event.data.entity_name).subscribe(res => {
         console.log(res);
+        this.loadDevices(null);
       });
+    } else {
+      // event.confirm.reject();
+    }
+  }
+  onSaveConfirm(event) {
+    if (window.confirm('Are you sure you want to save?')) {
+      // event.newData['name'] += ' + added in code';
+      this.devicesService.updateDevice(event.newData._id, event.newData).subscribe(res => {
+        console.log(res);
+      });
+      event.confirm.resolve(event.newData);
     } else {
       event.confirm.reject();
     }

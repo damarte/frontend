@@ -20,6 +20,7 @@ import { DevicesFilterComponent } from './devices/devices-filter/devices-filter.
 import { AboutComponent } from './about/about.component';
 
 import { AboutService } from './about/about.service';
+import { EditDevicesComponent } from './devices/edit-devices/edit-devices.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -55,7 +56,8 @@ const PAGES_COMPONENTS = [
     AddTemplateComponent,
     DialogOverviewExampleDialog,
     DevicesFilterComponent,
-    AboutComponent
+    AboutComponent,
+    EditDevicesComponent
   ],
   entryComponents: [DialogOverviewExampleDialog],
 })

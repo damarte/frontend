@@ -124,28 +124,32 @@ export class LineChartComponent extends WidgetsBase {
         this.fromDate = new Date();
         this.fromDate.setDate(this.fromDate.getDate()-7);
 
-        if (this.widget != undefined && this.widget.extra_data != undefined){
+        if (this.widget != undefined && this.widget.sources != undefined){
+            var source: any;
+            
+            if (this.widget.sources.length > 0){
+                
+                source = this.widget.sources[0];
 
-            var extra_data: any;
-            if (this.widget.extra_data.length > 0){
-                extra_data = this.widget.extra_data[0];
-            }
-        
-            this.currentDevice = extra_data.device_id;
-            
-            
-            this.loadData(extra_data.device_id, extra_data.attribute, extra_data.from, extra_data.to);
+                var device_id, attribute, from, to;
+                source.parameters.forEach(param => {
+                    if (param.name === "device_id"){
+                        device_id = param.value;
+                    }else if (param.name === "attribute"){
+                        attribute = param.value;
+                    }else if (param.name === "from"){
+                        from = param.value;
+                    }else if (param.name === "to"){
+                        to = param.value;
+                    }
+                });
+
+                this.currentDevice = device_id;
+
+                this.loadData(device_id, attribute, from, to);
+            }        
         }
-
-        // this.deviceService.listDevices().subscribe(res => {
-        //     this.sensorsDataSource = res;
-        //     if (res.length > 0){
-        //         var thisDevice:any = res[0];
-        //         this.currentDevice = thisDevice._id;
-        //         this.loadData(thisDevice.entity_name, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));                    
-        //     }
-            
-        // });  
+ 
     }
 
     public preRun(): void {
