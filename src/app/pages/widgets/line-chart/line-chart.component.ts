@@ -48,21 +48,7 @@ export class LineChartComponent extends WidgetsBase {
         super(_runtimeService,
             _widgetsInstanceService,
             _propertyService,            
-            _changeDetectionRef);                   
-
-            
-            this.fromDate = new Date();
-            this.fromDate.setDate(this.fromDate.getDate()-7);
-
-            this.deviceService.listDevices().subscribe(res => {
-                this.sensorsDataSource = res;
-                if (res.length > 0){
-                    var thisDevice:any = res[0];
-                    this.currentDevice = thisDevice._id;
-                    this.loadData(thisDevice.entity_name, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));                    
-                }
-                
-            });
+            _changeDetectionRef);
 
     }
 
@@ -130,13 +116,47 @@ export class LineChartComponent extends WidgetsBase {
     valueChanged(arg: any) {
         this.chart.instance.zoomArgument(arg.value[0], arg.value[1]);
     }
-    
+
+    public configDone() {
+
+        console.log(this.widget);
+
+        this.fromDate = new Date();
+        this.fromDate.setDate(this.fromDate.getDate()-7);
+
+        if (this.widget != undefined && this.widget.sources != undefined){
+            var source: any;
+            
+            if (this.widget.sources.length > 0){
+                
+                source = this.widget.sources[0];
+
+                var device_id, attribute, from, to;
+                source.parameters.forEach(param => {
+                    if (param.name === "device_id"){
+                        device_id = param.value;
+                    }else if (param.name === "attribute"){
+                        attribute = param.value;
+                    }else if (param.name === "from"){
+                        from = param.value;
+                    }else if (param.name === "to"){
+                        to = param.value;
+                    }
+                });
+
+                this.currentDevice = device_id;
+
+                this.loadData(device_id, attribute, from, to);
+            }        
+        }
+ 
+    }
+
     public preRun(): void {
-       
+        
     }
 
     public run() {      
-
     }
 
     public stop() {        

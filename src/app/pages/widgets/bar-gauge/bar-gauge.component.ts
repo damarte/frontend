@@ -49,13 +49,6 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
             _widgetsInstanceService,
             _propertyService,            
             _changeDetectionRef);
-
-            this.deviceService.listDevices().subscribe(res => {
-                this.devices = res;
-                this.deviceData = new Array<DeviceData>();
-                this.loadDataGeneral();
-            });
-
     }
 
     devicesToValues() {
@@ -72,26 +65,37 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
 
     private loadDataGeneral (){
         this.devices.forEach(device => {
-            this.deviceService.getHistorics(device.entity_name, "temperature").subscribe(res => {
-                if (res instanceof Array){
-                    var element = res[res.length - 1];
-                    if (element != null){
-                        var result = parseInt(element.attrValue, 10);
-                        if (result < this.startValue){
-                            this.startValue = result;
-                        }
-                        if (result > this.endValue){
-                            this.endValue = result;
-                        }
-                        console.log(device.name, result);
-                        this.deviceData.push(
-                            {"name": device.name,
-                            "value": result,
-                            "active": true});
-                    }
+            this.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
+                console.log(res);
+                if (res.value != undefined){
+                    this.deviceData.push(
+                        {"name": device.device_name,
+                        "value": res.value,
+                        "active": true});
                 }
                 this.devicesToValues();
             });
+
+            // this.deviceService.getHistorics(device.entity_name, "temperature").subscribe(res => {
+            //     if (res instanceof Array){
+            //         var element = res[res.length - 1];
+            //         if (element != null){
+            //             var result = parseInt(element.attrValue, 10);
+            //             if (result < this.startValue){
+            //                 this.startValue = result;
+            //             }
+            //             if (result > this.endValue){
+            //                 this.endValue = result;
+            //             }
+            //             console.log(device.name, result);
+            //             this.deviceData.push(
+            //                 {"name": device.name,
+            //                 "value": result,
+            //                 "active": true});
+            //         }
+            //     }
+            //     this.devicesToValues();
+            // });
             
         });   
     }
@@ -99,10 +103,44 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
 
     customizeTooltip(arg) {
         return {
-            text: arg.valueText + " ºC"
+            text: arg.valueText + ""
         };       
     }
     public preRun(): void {
+    }
+
+    public configDone(){
+
+
+        if (this.widget != undefined && this.widget.sources != undefined){
+            var source: any;
+            this.devices = [];
+            if (this.widget.sources.length > 0){
+                
+                this.widget.sources.forEach(source => {
+                    var device: any = {};
+                    source.parameters.forEach(param => {
+                        device[param.name] =  param.value;
+                    });
+                    this.devices.push(device);
+                });
+
+                this.deviceData = new Array<DeviceData>();
+                this.loadDataGeneral();
+
+                this.startValue = this.getPropFromPropertyPages("min");
+                this.endValue = this.getPropFromPropertyPages("max");
+            }        
+        }
+
+        // if (this.widget != null){
+        //     this.devices = this.widget.extra_data;
+        //     this.deviceData = new Array<DeviceData>();
+        //     this.loadDataGeneral();
+
+        //     this.startValue = this.getPropFromPropertyPages("min");
+        //     this.endValue = this.getPropFromPropertyPages("max");
+        // }
     }
 
     public run() {     
@@ -161,6 +199,9 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
 
         this.title = updatedPropsObject.title;       
         this.showOperationControls = true;
+
+        this.startValue = updatedPropsObject.min;      
+        this.endValue = updatedPropsObject.max; 
     }
 
     public ngOnDestroy() {

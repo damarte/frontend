@@ -10,9 +10,9 @@
         </div>
         
         <div class="ui secondary pointing menu board">
-            <a *ngFor="let board of dashboardList; let i = index" class="item" [ngClass]="{'active':board == selectedBoard}" (click)="gadgetGrid.loadBoard(board)"
-                (click)="selectBoard(board)">
-                {{board}}
+            <a *ngFor="let board of dashboardList; let i = index" class="item" [ngClass]="{'active':board == selectedBoard}" (click)="gadgetGrid.loadBoardById(board.id)"
+                (click)="selectBoard(board.id)">
+                {{board.title}}
             </a>
         </div>  
        

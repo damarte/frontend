@@ -16,21 +16,19 @@ import { validateConfig } from '@angular/router/src/config';
 import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { Http, Headers } from '@angular/http';
 
 declare var jQuery: any;
 var context: any;
 
 @Component({
-  selector: 'app-add-template',
-  templateUrl: './add-template.component.html',
-  styleUrls: ['./add-template.component.scss']
+  selector: 'app-edit-devices',
+  templateUrl: './edit-devices.component.html',
+  styleUrls: ['./edit-devices.component.scss']
 })
+export class EditDevicesComponent implements OnInit {
 
-
-export class AddTemplateComponent implements OnInit {
-
-  @ViewChild('addTemplateModal') addTemplateModalRef: ElementRef;
+  @ViewChild('editDeviceModal') editDeviceModalRef: ElementRef;
 
   @Output() onHidden = new EventEmitter<boolean>();
 
@@ -38,7 +36,7 @@ export class AddTemplateComponent implements OnInit {
 
   template: any;
   template_name: string;
-  entity_type: string;
+  entity_name: string;
 
   currentAttributeToCreate: any;
   isPublic: boolean = false;
@@ -106,7 +104,7 @@ export class AddTemplateComponent implements OnInit {
 
   data:any = { selectedProperty: this.selectedProperty, showValue: this.showValue, name: "", formType: "", value: "" }
 
-  constructor(private devicesService: DevicesService, public dialog: MatDialog) {
+  constructor(private devicesService: DevicesService, private _http: Http) {
 
     context = this;
 
@@ -139,13 +137,6 @@ export class AddTemplateComponent implements OnInit {
     this.selectedProperty = prop;
     this.showValue = show;
     this.data = { selectedProperty: this.selectedProperty, showValue: this.showValue, name: "", formType: "", value: "" }
-  }
-
-  configureDialog(prop: string, show: boolean): void {
-    this.selectedProperty = prop;
-    this.showValue = show;
-
-    this.openDialog();
   }
 
   onAttributeChanged (): void{
@@ -183,19 +174,6 @@ export class AddTemplateComponent implements OnInit {
     } 
   }
 
-
-  openDialog(): void {
-    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '250px',
-      data: { selectedProperty: this.selectedProperty, showValue: this.showValue, name: "", formType: "", value: "" }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.insertProperty(result);    
-    });
-  }
-
   remove(object: any, objects: any[]): void {
     
     let index = objects.indexOf(object);
@@ -212,7 +190,7 @@ export class AddTemplateComponent implements OnInit {
     this.currentAttributeToCreate = null;  
 
     this.template_name = "";
-    this.entity_type = "";
+    this.entity_name = "";
     this.isPublic = false;
     this.protocolSelected = null;
     this.transportSelected = null;
@@ -255,8 +233,8 @@ export class AddTemplateComponent implements OnInit {
       this.currentAttributeToCreate = null;  
 
       this.template_name = this.editedTemplate.name;
-      this.entity_type = this.editedTemplate.entity_type;
-      this.isPublic = this.editedTemplate._public;
+      this.entity_name = this.editedTemplate.entity_name;
+      this.isPublic = this.editedTemplate.public;
       this.setCurrentProtocolFromId(this.editedTemplate.protocol);
       this.setCurrentTransportProtocolFromId(this.editedTemplate.transport_protocol);
       // owner: "";
@@ -301,7 +279,7 @@ export class AddTemplateComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.modal = jQuery(this.addTemplateModalRef.nativeElement);
+    this.modal = jQuery(this.editDeviceModalRef.nativeElement);
   }
 
   onChangeProtocol(event): void {
@@ -315,16 +293,16 @@ export class AddTemplateComponent implements OnInit {
   }
 
   sendTemplate (){
-    //TODOD VALIDATIONS
+    //TODO VALIDATIONS
 
     if (!this.templateNameFormControl.hasError('required') &&
         !this.transportProtocolFormControl.hasError('required') &&
-        !this.protocolFormControl.hasError('required') &&
-        !this.entityTypeFormControl.hasError('required')){
+        !this.protocolFormControl.hasError('required')){
 
         this.template = {
           name: this.template_name,
-          entity_type: this.entity_type,
+          entity_name: this.entity_name,
+          entity_type: this.editedTemplate.entity_type,
           public: this.isPublic,
           protocol: this.protocolSelected.key,
           transport_protocol: this.transportSelected.key,
@@ -337,13 +315,7 @@ export class AddTemplateComponent implements OnInit {
         };
 
         if (this.editedTemplate != undefined){
-          this.devicesService.createTemplate(this.editedTemplate._id, this.template).subscribe(res => {
-            console.log(res);
-            this.saved = true;
-            this.hideModal();
-          });
-        }else{
-          this.devicesService.addTemplate(this.template).subscribe(res => {
+          this.devicesService.updateDevice(this.editedTemplate.entity_name, this.template).subscribe(res => {
             console.log(res);
             this.saved = true;
             this.hideModal();
@@ -372,21 +344,5 @@ class TransportProtocol {
     this.key = key;
     this.value = value;
   }
-}
-
-@Component({
-  selector: 'dialog_extra_data',
-  templateUrl: 'dialog_extra_data.html',
-})
-export class DialogOverviewExampleDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 
 }
-

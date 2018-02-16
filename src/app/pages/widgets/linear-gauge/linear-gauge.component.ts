@@ -5,6 +5,7 @@ import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
 import { LinearGaugeService } from './service'; 
+import { DevicesService } from 'iot_devices_fiwoo';
 
 
 declare var jQuery: any;
@@ -52,6 +53,9 @@ declare var jQuery: any;
 })
 export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
+    titleNew: any;
+    minValue: number;
+    maxValue: number;
         
     // chart options
     showXAxis = true;
@@ -76,22 +80,73 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
                 protected _widgetsInstanceService: WidgetsInstanceService,
                 protected _propertyService: WidgetsPropertyService,                
                 private _changeDetectionRef: ChangeDetectorRef,
-                private _linearGaugeService: LinearGaugeService) {
+                private _linearGaugeService: LinearGaugeService,
+                private devicesService: DevicesService) {
         super(_procMonRuntimeService,
             _widgetsInstanceService,
             _propertyService,            
             _changeDetectionRef);
-        
-            
-
-
-     
 
         const single = [];
 
         Object.assign(this, {single});
 
         
+    }
+
+    public configDone(){
+        if(this.devicesService != null){
+            // if (this.widget != undefined && this.widget.extra_data != undefined){
+            //     var extra_data: any;
+            //     if (this.widget.extra_data.length > 0){
+            //         extra_data = this.widget.extra_data[0];
+            //     }
+            //     this.titleNew = extra_data.device_name;
+            //     this.loadData(extra_data.device_id, extra_data.attribute);
+
+            //     this.minValue = this.getPropFromPropertyPages("min");
+            //     this.maxValue = this.getPropFromPropertyPages("max");
+    
+            // }
+
+            if (this.widget != undefined && this.widget.sources != undefined){
+                var source: any;
+                
+                if (this.widget.sources.length > 0){
+                    
+                    source = this.widget.sources[0];
+    
+                    var device_name, device_id, attribute, from, to;
+                    source.parameters.forEach(param => {
+                        if (param.name === "device_name"){
+                            device_name = param.value;
+                        }else if (param.name === "device_id"){
+                            device_id = param.value;
+                        }else if (param.name === "attribute"){
+                            attribute = param.value;
+                        }
+                    });
+    
+                    this.titleNew = device_name;
+                    this.loadData(device_id, attribute);
+
+                    this.minValue = this.getPropFromPropertyPages("min");
+                    this.maxValue = this.getPropFromPropertyPages("max");
+                }        
+            }
+        }
+        this.run();
+    }
+
+    currentValue: number = 0;
+
+    private loadData(deviceId, attribute){
+       this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
+            console.log(res);
+            if (res.value != undefined){
+                this.currentValue = res.value;
+            }
+        });
     }
 
     public preRun(): void {
@@ -163,7 +218,9 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
             }
         });
 
-        this.title = updatedPropsObject.title;       
+        this.title = updatedPropsObject.title;      
+        this.minValue = updatedPropsObject.min;      
+        this.maxValue = updatedPropsObject.max;         
 
         this.showOperationControls = true;
 

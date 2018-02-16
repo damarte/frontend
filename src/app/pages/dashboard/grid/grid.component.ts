@@ -65,6 +65,7 @@ export class GridComponent {
             this.gadgetLibrary.length = 0;
             const me = this;
             data.library.forEach(function (item) {
+                console.log(item);
                 me.gadgetLibrary.push(item);
             });
         });
@@ -163,6 +164,8 @@ export class GridComponent {
     }
 
     public addGadget(gadget: any) {
+
+        console.log(gadget);
 
         const _widgets = Object.assign({}, gadget);
 
@@ -296,20 +299,122 @@ export class GridComponent {
 
     private initializeBoard() {
 
+       
+
         this._configurationService.getBoards().subscribe(board => {
 
             if (board && board instanceof Array && board.length) {
+                
+                //TODO CHANGE
+                var newData = [];
+                var i = board.length - 1; //ONLY LAST 3 DASHBOARDS - TEST
+                var limit = i - 3;
+                limit = limit > 0 ? limit : 0;
+                for (i; i >= limit; i--){
+                    var element = board[i];
+                    if (i >= limit){
+                        newData.push(element);
+                    }
+                }
+                // board.forEach(element => {
+                //     if (i >= limit){
+                //         newData.push(element);
+                //         i--;
+                //     }
+                // });
+
+                board = newData;
 
                 const sortedBoard = board.sort(function (a, b) {
                     return a.id - b.id;
                 });
-
-                this.loadBoard(sortedBoard[0].title);
+                if (this._configurationService.demo){
+                    this.loadBoard(sortedBoard[0].title);
+                }else{
+                    this.loadBoardById(sortedBoard[0].id);
+                }
             } else {
 
                 this.loadDefaultBoard();
             }
         });
+    }
+
+    private loadBoardById(boardId: string) {
+
+        this.clearGridModelAndGadgetInstanceStructures();
+
+        this._configurationService.getBoardById(boardId).subscribe(board => {
+                board = this.updateBoard(board);
+                this.setModel(board);
+                this.updateServicesAndGridWithModel();
+                this.boardUpdateEvent.emit(boardId);
+            },
+            error => {
+                console.error(error);
+                this.loadDefaultBoard();
+
+            });
+
+    }
+
+    getLocalWidgetType (type){
+        var typeName = type.name;
+       switch(typeName){
+           case "barChart":
+           return "BarChartComponent";
+           case "controlWidgets":
+           return "LinearGaugeComponent";
+           case "lineChart":
+           return "LineChartComponent";
+           case "alarmWidget":
+           return "BarGaugeComponent";
+           case "analogGauge":
+           return "CircularGaugeComponent";
+           case "cards":
+           return "GisMapComponen";
+       }
+   }
+
+    //TODO CHANGE WHEN WS Ok
+    private updateBoard(board){
+        if (board != null){
+            board.title = board.name;
+            if (board.structure == null){
+                board.structure = "8-8";
+            }
+            var columnEmptyObject = {"styleClass": "eight wide", gadgets: []};
+            var rowEmptyObject = {columns: [columnEmptyObject, columnEmptyObject]}
+            if (board.rows.length == 0){
+                board.rows.push(rowEmptyObject);
+            }
+            else{
+                board.rows.forEach(row => {
+                    row.columns.forEach(column => {
+                        column.gadgets = Object.assign([], column.widgets);
+                        column.gadgets.forEach(gadget => {
+                            gadget.componentType = this.getLocalWidgetType(gadget.type);
+                            gadget.instanceId = gadget.id;
+                            gadget.config = {};
+                            gadget.config.propertyPages = gadget.propertyPages;
+                            gadget.config.propertyPages.forEach(propertyPage => {
+                                propertyPage.groupId = "run";
+                                propertyPage.position =  10;
+                                propertyPage.properties.forEach(property => {
+                                    property.controlType = property._controlType;
+                                    property.key = property._key;
+                                    property.label = property._label;
+                                    property.value = property._value;
+                                    property.required = property._required;
+                                    property.order = property._order;        
+                                });
+                            });
+                        });
+                    });    
+                });
+            }
+        }
+        return board;
     }
 
     private loadBoard(boardTitle: string) {
@@ -353,7 +458,9 @@ export class GridComponent {
 
             this.setModel(res);
             this.getModel().title = name;
+            this.getModel().name = name;
             this.getModel().id = new Date().getTime();
+            this.getModel().isNew = true;
 
             this.updateServicesAndGridWithModel();
             this.saveBoard('Initialization of a new board', true);

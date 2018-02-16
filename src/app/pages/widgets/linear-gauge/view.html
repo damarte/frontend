@@ -7,7 +7,7 @@
     </app-gadget-header>
 
     <div *ngIf="!inConfig">
-        <dx-linear-gauge id="gauge" [value]="17" [subvalues]="[5, 25]">
+        <dx-linear-gauge id="gauge" [value]="currentValue" [subvalues]="[currentValue]">
             <dxo-subvalue-indicator [offset]="-15"></dxo-subvalue-indicator>
             <dxo-value-indicator [offset]="20"></dxo-value-indicator>
             <dxo-range-container [offset]="10">
@@ -15,12 +15,12 @@
                 <dxi-range [startValue]="5" [endValue]="20" color="#E6E200"></dxi-range>
                 <dxi-range [startValue]="20" [endValue]="30" color="#77DD77"></dxi-range>
             </dxo-range-container>
-            <dxo-scale [startValue]="0" [endValue]="30" [tickInterval]="5">
+            <dxo-scale [startValue]="minValue" [endValue]="maxValue" [tickInterval]="5">
                 <dxo-tick color="#536878"></dxo-tick>
                 <dxo-label [indentFromTick]="-3"></dxo-label>
             </dxo-scale>
             <dxo-export [enabled]="true"></dxo-export>
-            <dxo-title text="Humidity from sensor 999">
+            <dxo-title [text]="titleNew">
                 <dxo-font [size]="22"></dxo-font>
             </dxo-title>
         </dx-linear-gauge>

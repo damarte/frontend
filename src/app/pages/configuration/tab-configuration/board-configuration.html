@@ -28,7 +28,7 @@
                 <tr class="ui basic segment" *ngFor="let board of dashboardList; let i = index" dnd-sortable
                     [sortableIndex]="i">
                     <td class="c-col">{{i + 1}}</td>
-                    <td>{{board}}</td>
+                    <td>{{board.title}}</td>
                     <td style="text-align:right">
                         <a mat-mini-fab routerLink="." (click)="deleteBoard(board)">
                             <mat-icon>clear</mat-icon>

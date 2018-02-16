@@ -2,7 +2,7 @@
     <div class="header">
           <div class="ui grid">
               <div class="twelve wide column">
-                      Add Template
+                      {{modalTitle}}
               </div>
               <div class="two wide column">
                       <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
@@ -87,7 +87,7 @@
 
                         <section>
                             <mat-form-field style="width: 100%">
-                                <input matInput type="text" placeholder="Name (Template's name)" [(ngModel)]="data.name" [formControl]="propertyNameFormControl"/>
+                                <input matInput type="text" placeholder="Name (attribute's name)" [(ngModel)]="data.name" [formControl]="propertyNameFormControl"/>
                                 <mat-error *ngIf="propertyNameFormControl.hasError('required')">
                                    Name <strong>required</strong>
                                 </mat-error>

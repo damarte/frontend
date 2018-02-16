@@ -11,6 +11,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
     title: string;
     instanceId: number;
     config: any;
+    widget: any;
 
     /**
      * Used to determine when to show the controls that appear in the gadgets
@@ -76,7 +77,6 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
     }
 
     public ngOnInit() {
-
         this.toggleConfigMode();
         this.changeDetectionRef.detectChanges();
     }
@@ -118,6 +118,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
             this._propertyService.setPropertyPagesAndProperties(this.config.propertyPages, this.propertyPages);
         }
     }
+    public abstract configDone(): void
 
     public abstract run(): void
 
@@ -179,10 +180,13 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
      * we give them an opportunity to perform an action during the preRun() method. For example,
      * the statistic gadget uses preRun() to make a single call to the endpoint to update its display.
      * */
-    public configureGadget(instanceId: number, config: any) {
+    public configureGadget(instanceId: number, config: any, widget: any) {
 
         this.instanceId = instanceId;
         this.config = config;
+        this.widget = widget;
+
+        this.configDone();
 
         this.setTitle(this.getPropFromPropertyPages('title'));
         this.preRun();

@@ -60,6 +60,10 @@ export class BarChartComponent extends WidgetsBase implements OnDestroy, OnInit 
         };
     }
 
+    public configDone(){
+
+    }
+
     public preRun(): void {
     }
 

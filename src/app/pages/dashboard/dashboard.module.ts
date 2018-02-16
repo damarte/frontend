@@ -19,6 +19,7 @@ import { ObservableWebSocketService } from '../services/websocket-service';
 import { DoughnutChartComponent } from '../widgets/doughnut-chart/doughnut-chart.component';
 import { TypeAheadInputModule } from '../typeahead-input/typeahead-input.module';
 import { PolarChartComponent } from '../widgets/polar-chart/polar-chart.component';
+import { GisMapComponent } from '../widgets/gis-map/gis-map.component';
 import { ToastModule } from '../toast/toast.module';
 
 
@@ -36,7 +37,8 @@ import { ToastModule } from '../toast/toast.module';
             LinearGaugeComponent,
             BarChartComponent,
             DoughnutChartComponent,
-            PolarChartComponent
+            PolarChartComponent,
+            GisMapComponent
 
         ]),
         WidgetsModule,

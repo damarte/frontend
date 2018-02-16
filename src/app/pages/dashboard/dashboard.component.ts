@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ConfigurationService } from '../services/configuration.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import {Http, Headers, RequestOptions} from '@angular/http';
+import 'rxjs/Rx';
+
 
 declare var jQuery: any;
-
 
 @Component({
     moduleId: module.id,
@@ -15,32 +17,50 @@ export class DashboardComponent implements OnInit {
 
 
     dashboardList: any[] = [];
-    selectedBoard = '';  
+    selectedBoard:any = null;  
 
     detailMenuOpen = 'out';
 
-    constructor(private _configurationService: ConfigurationService) {
+    constructor(private _configurationService: ConfigurationService,
+        public http: Http) {
     }
 
     ngOnInit() {
         this.updateDashboardMenu('');        
     }
 
-    updateDashboardMenu(selectedBoard: string) {
-
+    updateDashboardMenu(selectedBoard: any) {
+       
         this._configurationService.getBoards().subscribe(data => {
 
             const me = this;
             if (data && data instanceof Array && data.length) {
                 this.dashboardList.length = 0;
-
+                
+                //TODO CHANGE WHEN STRUCTURE GOES OK
+                // data  = [{"title": data[0].name, "structure": data[0].structure}];
+                if (!this._configurationService.demo){
+                    var newData = [];
+                    var i = data.length - 1; //ONLY LAST 3 DASHBOARDS - TEST
+                    var limit = i - 3;
+                    limit = limit > 0 ? limit : 0;
+                    for (i; i >= limit; i--){
+                        var element = data[i];
+                        if (i >= limit){
+                            newData.push({"title": element.name, "structure": element.structure,
+                            "id": element.id});
+                        }
+                    }
+                    data = newData;
+                }               
+                console.log(data);
 
                 // sort boards
                 data.sort((a: any, b: any) => a.id - b.id);
 
                 data.forEach(board => {
 
-                    me.dashboardList.push(board.title);
+                    me.dashboardList.push({"title": board.title, "id": board.id});
 
                 });
 
@@ -56,7 +76,7 @@ export class DashboardComponent implements OnInit {
         });
     }
 
-    selectBoard(selectedBoard: string) {
+    selectBoard(selectedBoard: any) {
         this.selectedBoard = selectedBoard;
     }
 
@@ -65,6 +85,4 @@ export class DashboardComponent implements OnInit {
         this.detailMenuOpen = this.detailMenuOpen === 'out' ? 'in' : 'out';
 
     }
-
-    
 }

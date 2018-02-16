@@ -9,7 +9,7 @@ import { sampleBoardCollection } from '../dashboard/models/dashboard-collection-
 export class ConfigurationService {
     model: any; // todo review this object closely
     currentModel: any; // this object helps with updates to property page values
-    demo = true;
+    demo = false;
 
     defaultBoard: any;
     sampleBoardCollection: any;
@@ -18,7 +18,10 @@ export class ConfigurationService {
      * todo - fix this hard coded store
      * @type {string}
      */
-    remoteConfigurationRepository = 'http://localhost:8090/api/store';
+    // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
+    remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
+
+    
 
     constructor(private _http: Http) {
 
@@ -56,6 +59,12 @@ export class ConfigurationService {
 
             return this._http.get(this.remoteConfigurationRepository + '/' + name).map(res => res.json());
         }
+    }
+
+    public getBoardById(id: string) {
+
+        return this._http.get(this.remoteConfigurationRepository + '/' + id).map(res => res.json());
+        
     }
 
     public getBoards() {
@@ -120,11 +129,81 @@ export class ConfigurationService {
              * todo - a delete must happen here
              *
              */
+
             const headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this.remoteConfigurationRepository + '?id=' + board.title, JSON.stringify(board), {headers: headers});
+            if (board.isNew){
+                board.isNew = false;
+                return this._http.post(this.remoteConfigurationRepository + '/', JSON.stringify(board), {headers: headers});
+            }else{
+                board = this.updateBoardForSend(board);
+                console.log(JSON.stringify(board));
+                return this._http.put(this.remoteConfigurationRepository + '/' + board.id, JSON.stringify(board), {headers: headers});
+            }
+            
         }
     }
+
+     //TODO CHANGE WHEN WS Ok
+     private updateBoardForSend(board){
+        if (board != null){
+            board.name = board.title;
+            board.rows.forEach(row => {
+                row.columns.forEach(column => {
+                    column.widgets = Object.assign([], column.gadgets);
+                    column.widgets.forEach(widget => {
+                        widget.type = this.getWidgetType(widget.componentType);
+                        widget.id = widget.instanceId;
+                        widget.propertyPages = widget.config.propertyPages;
+                        widget.propertyPages.forEach(propertyPage => {
+                            propertyPage.groupId = "run";
+                            propertyPage.position =  10;
+                            var i = 0;
+                            propertyPage.properties.forEach(property => {
+                                property.id = i
+                                property._controlType = property.controlType;
+                                property._key = property.key;
+                                property._label = property.label;
+                                property._value = property.value;
+                                property._required = property.required;
+                                property._order = property.order;  
+                                i++;     
+                            });
+                        });
+                    });
+                });    
+            });
+            
+        }
+        return board;
+    }
+
+    getWidgetType (typeName){
+        var name = "";
+       switch(typeName){
+           case "BarChartComponent":
+            name = "barChart";
+           break;
+           case "LinearGaugeComponent":
+            name = "controlWidgets";
+           break;
+           case "LineChartComponent":
+            name = "lineChart";
+           break;
+           case "BarGaugeComponent":
+            name = "alarmWidget";
+           break;
+           case "CircularGaugeComponent":
+            name = "analogGauge";
+           break;
+           case "GisMapComponen":
+            name = "cards";
+           break;
+        
+       }
+       return {"name": name};
+   }
+
 
     private delete(board_collection: any) {
 
