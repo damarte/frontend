@@ -24,7 +24,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       }
     ]
   },  
-  {
+  /*{
     title: 'Environment',
     link: '/pages/charts/echarts',
     icon: 'ion-ios-partlysunny-outline',    
@@ -43,14 +43,31 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'ion-ios-calculator-outline',   
   },
   {
-    title: 'People',
-    icon : 'ion-ios-people-outline', 
-    link: '/pages/users' 
-  },
-  {
     title: 'Living',
     icon: 'ion-ios-home-outline',    
-  },
+  },*/
+  {
+    title: 'Users',
+    link: '',
+    icon: 'ion-ios-person-outline',
+    children: [
+      {
+        title: 'Users',
+        link: '/pages/users',
+        icon: 'ion-ios-people-outline'
+      },   
+      {
+        title: 'Roles',
+        link: '/pages/roles',
+        icon: 'ion-ios-paper-outline'
+      },      
+      {
+        title: 'Assets',
+        link: '/pages/assets',
+        icon: 'ion-ios-home-outline'
+      },   
+    ]
+  },     
   {
     title: 'About',
     icon: 'ion-ios-information-outline', 

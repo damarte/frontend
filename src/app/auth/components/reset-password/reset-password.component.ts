@@ -9,81 +9,15 @@ import { NB_AUTH_OPTIONS_TOKEN } from '../../auth.options';
 import { getDeepFromObject } from '../../helpers';
 
 import { NbAuthResult, NbAuthService } from '../../services/auth.service';
+import { Http } from '@angular/http';
+import { NgForm, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { User } from "../User";
+import sweetAlert from 'sweetalert2';
 
 @Component({
   selector: 'nb-reset-password-page',
   styleUrls: ['./reset-password.component.scss'],
-  template: `
-    <nb-auth-block>
-      <h2 class="title">Change password</h2>
-      <small class="form-text sub-title">Please enter a new password</small>
-      <form (ngSubmit)="resetPass()" #resetPassForm="ngForm">
-
-        <div *ngIf="errors && errors.length > 0 && !submitted" class="alert alert-danger" role="alert">
-          <div><strong>Oh snap!</strong></div>
-          <div *ngFor="let error of errors">{{ error }}</div>
-        </div>
-        <div *ngIf="messages && messages.length > 0 && !submitted" class="alert alert-success" role="alert">
-          <div><strong>Hooray!</strong></div>
-          <div *ngFor="let message of messages">{{ message }}</div>
-        </div>
-
-        <div class="form-group">
-          <label for="input-password" class="sr-only">New Password</label>
-          <input name="password" [(ngModel)]="user.password" type="password" id="input-password"
-                 class="form-control form-control-lg first" placeholder="New Password" #password="ngModel"
-                 [class.form-control-danger]="password.invalid && password.touched"
-                 [required]="getConfigValue('forms.validation.password.required')"
-                 [minlength]="getConfigValue('forms.validation.password.minLength')"
-                 [maxlength]="getConfigValue('forms.validation.password.maxLength')"
-                 autofocus>
-          <small class="form-text error" *ngIf="password.invalid && password.touched && password.errors?.required">
-            Password is required!
-          </small>
-          <small
-            class="form-text error"
-            *ngIf="password.invalid && password.touched && (password.errors?.minlength || password.errors?.maxlength)">
-            Password should contains
-            from {{getConfigValue('forms.validation.password.minLength')}}
-            to {{getConfigValue('forms.validation.password.maxLength')}}
-            characters
-          </small>
-        </div>
-
-        <div class="form-group">
-          <label for="input-re-password" class="sr-only">Confirm Password</label>
-          <input
-            name="rePass" [(ngModel)]="user.confirmPassword" type="password" id="input-re-password"
-            class="form-control form-control-lg last" placeholder="Confirm Password" #rePass="ngModel"
-            [class.form-control-danger]="(rePass.invalid || password.value != rePass.value) && rePass.touched"
-            [required]="getConfigValue('forms.validation.password.required')">
-          <small class="form-text error"
-                 *ngIf="rePass.invalid && rePass.touched && rePass.errors?.required">
-            Password confirmation is required!
-          </small>
-          <small
-            class="form-text error"
-            *ngIf="rePass.touched && password.value != rePass.value && !rePass.errors?.required">
-            Password does not match the confirm password.
-          </small>
-        </div>
-
-        <button [disabled]="submitted || !resetPassForm.form.valid" class="btn btn-hero-success btn-block"
-                [class.btn-pulse]="submitted">
-          Change password
-        </button>
-      </form>
-
-      <div class="links col-sm-12">
-        <small class="form-text">
-          Already have an account? <a routerLink="../login"><strong>Sign In</strong></a>
-        </small>
-        <small class="form-text">
-          <a routerLink="../register"><strong>Sign Up</strong></a>
-        </small>
-      </div>
-    </nb-auth-block>
-  `,
+  templateUrl: './reset-password.component.html'  
 })
 export class NbResetPasswordComponent {
 
@@ -94,18 +28,98 @@ export class NbResetPasswordComponent {
   submitted = false;
   errors: string[] = [];
   messages: string[] = [];
-  user: any = {};
+  // user: any = {};
 
   constructor(protected service: NbAuthService,
               @Inject(NB_AUTH_OPTIONS_TOKEN) protected config = {},
-              protected router: Router) {
+              protected router: Router,
+              private http: Http,
+              private fb: FormBuilder) {
 
     this.redirectDelay = this.getConfigValue('forms.resetPassword.redirectDelay');
     this.showMessages = this.getConfigValue('forms.resetPassword.showMessages');
     this.provider = this.getConfigValue('forms.resetPassword.provider');
   }
 
-  resetPass(): void {
+  
+  
+  
+  
+
+  //Property for the user
+  private user: User; 
+  signupForm: FormGroup;
+  private id: number = 3;
+
+  ngOnInit() {
+
+   
+    // Use the formbuilder to build the Form model
+    this.signupForm = this.fb.group({     
+      email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+
+    })
+
+  }
+  
+  get email() { return this.signupForm.get('email'); }
+  get password() { return this.signupForm.get('password'); }
+
+
+
+  getUserId() {
+
+    this.user = this.signupForm.value;
+    let userEmail: string = this.user.email;
+
+    // Check
+
+    // Get the ID and the old password
+
+
+    
+  }
+
+
+  public onFormSubmit() {
+
+    let urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+    let old_password: string;
+    let new_password: string;
+    let new_password2: string;
+
+    var body = new URLSearchParams();
+    body.append(old_password, '');
+    body.append(new_password, this.user.password);
+    body.append(new_password2, this.user.password)
+
+    if (this.signupForm.valid) {
+
+      this.user = this.signupForm.value;      
+      console.log('User: ', this.user);  
+
+      /*this.http.put(`${this.urlBase}/users/${this.id}/password`, this.user).subscribe( 
+        res => {
+           console.log('Change password put: ', res); 
+           sweetAlert("Ok!", "You have changed your password!", "success");
+           this.router.navigate['/login'];
+          },
+        err => { 
+           console.error(err);   
+           sweetAlert("Oops!", "Something went wrong!", "error");           
+        }
+      );  */
+
+    }
+  }
+
+  
+  
+  
+  
+  
+  /*resetPass(): void {
     this.errors = this.messages = [];
     this.submitted = true;
 
@@ -124,7 +138,7 @@ export class NbResetPasswordComponent {
         }, this.redirectDelay);
       }
     });
-  }
+  }*/
 
   getConfigValue(key: string): any {
     return getDeepFromObject(this.config, key, null);

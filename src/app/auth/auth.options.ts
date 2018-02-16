@@ -12,7 +12,7 @@ export interface NbAuthProviders {
 export const defaultSettings: any = {
   forms: {
     login: {
-      redirectDelay: 500,
+      redirectDelay: 10,
       provider: 'email',
       rememberMe: true,
       showMessages: {

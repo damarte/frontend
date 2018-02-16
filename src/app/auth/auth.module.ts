@@ -1,7 +1,7 @@
 import { Injector, ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NbLayoutModule, NbCardModule, NbCheckboxModule } from '@nebular/theme';
@@ -31,6 +31,8 @@ import { NbResetPasswordComponent } from './components/reset-password/reset-pass
 
 import { routes } from './auth.routes';
 import { deepExtend } from './helpers';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+import { TermsComponent } from './components/terms/terms.component';
 
 export function nbAuthServiceFactory(config: any, tokenService: NbTokenService, injector: Injector) {
   const providers = config.providers || {};
@@ -59,6 +61,13 @@ export function nbOptionsFactory(options) {
     RouterModule.forChild(routes),
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    SweetAlert2Module.forRoot({
+      buttonsStyling: false,
+      customClass: 'modal-content',
+      confirmButtonClass: 'btn btn-primary',
+      cancelButtonClass: 'btn'
+  })
   ],
   declarations: [
     NbAuthComponent,
@@ -68,6 +77,7 @@ export function nbOptionsFactory(options) {
     NbRequestPasswordComponent,
     NbResetPasswordComponent,
     NbLogoutComponent,
+    TermsComponent,
   ],
   exports: [
     NbAuthComponent,

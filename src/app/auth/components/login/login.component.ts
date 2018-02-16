@@ -9,10 +9,12 @@ import { UsersService, UserLogin } from 'um_fiwoo';
 
 import {Http, Headers, RequestOptions, URLSearchParams} from '@angular/http';
 import 'rxjs/Rx';
+import sweetAlert from 'sweetalert2';
 
 @Component({
   selector: 'nb-login',
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
   providers: [UsersService]
 })
 export class NbLoginComponent {
@@ -43,6 +45,7 @@ export class NbLoginComponent {
 
   username : string;
   password: string;
+  grant_type: string;
 
 
   login(form: NgForm) {
@@ -51,24 +54,15 @@ export class NbLoginComponent {
       return;
     }
 
+    
     this.username = form.value.username;
-    this.password = form.value.password
-
-    // let user: UserLogin = {email: form.value.username, password: form.value.password};
-
-    // this._usersService.login(user)
-    //           .subscribe(resp => {
-    //             console.log(resp);
-    //           });
+    this.password = form.value.password    
 
     this.doLogin();
-
-    console.log(form.valid);
-    console.log(form.value);
   }
 
   private doLogin(){
-    let url: string = 'http://us1.fiwoo.eu:7000/users/login';
+    let url: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users/login';
     let grant_type: string = 'grant_type';
     let username: string = 'username';
     let password: string = 'password';
@@ -78,47 +72,32 @@ export class NbLoginComponent {
     body.append(username, this.form.value.username);
     body.append(password, this.form.value.password);
 
-    let headers = new Headers();
-    // headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    headers.append("Authorization", "Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G"); 
-    // headers.append("Authorization", "Basic " + btoa(username + ":" + password)); 
+    let headers = new Headers();    
+    headers.append("Authorization", "Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G");
 
     let options = new RequestOptions({headers: headers});
 
     this.http.post(url, body, options).subscribe(
       data => {
-         console.log(data); 
+         console.log('Login Data: ', data); 
+         sweetAlert("Ok!", "You are login!", "success");
+         this.router.navigate(['../pages/dashboard']);
         },
-      err => { console.log(err);
-      
-        //TODO QUITAR DE AQUI
-        this.router.navigate(['../pages/dashboard']);
+      err => {   
+        // uncomment this lines when the ws is ok     
+         console.error(err);   
+         sweetAlert("Oops!", "Something went wrong!", "error");
+
+        // remove this lines when the ws is ok        
+        // get the email user and save it in to the localstorage
+        /*localStorage.setItem('email', JSON.stringify(this.username));
+        sweetAlert("Ok!", "You are login!", "success")
+        .then((result) => {
+          this.router.navigate(['../pages/dashboard']);          
+        })     */
       }
     );  
 }
-
-
-  /*login(): void {
-    this.errors = this.messages = [];
-    this.submitted = true;
-
-    this.service.authenticate(this.provider, this.user).subscribe((result: NbAuthResult) => {
-      this.submitted = false;
-
-      if (result.isSuccess()) {
-        this.messages = result.getMessages();
-      } else {
-        this.errors = result.getErrors();
-      }
-
-      const redirect = result.getRedirect();
-      if (redirect) {
-        setTimeout(() => {
-          return this.router.navigateByUrl(redirect);
-        }, this.redirectDelay);
-      }
-    });
-  }*/
 
   getConfigValue(key: string): any {
     return getDeepFromObject(this.config, key, null);
@@ -126,17 +105,3 @@ export class NbLoginComponent {
 
 }
 
-
-
-
-// export function apiConfigFactory () {
-//   const params: ConfigurationParameters = {
-//     apiKeys: {
-//       key: 'Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G'
-//     },
-//     username: this.username,
-//     password: this.password
-
-//   };
-//   return new Configuration(params);
-// }
