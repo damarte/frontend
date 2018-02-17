@@ -1,22 +1,30 @@
 import { Component } from '@angular/core';
+import { DevicesService, Template } from 'iot_devices_fiwoo';
 import { LocalDataSource } from 'ng2-smart-table';
-import { UsersService } from 'um_fiwoo';
-import { DatePipe } from '@angular/common';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { Output } from '@angular/core/src/metadata/directives';
+import { HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import { Http } from '@angular/http';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
-  selector: 'ngx-smart-table',
+  selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   providers: [DatePipe]
 })
-export class UsersComponent {
-  router: any;
 
-  settings = {    
+
+export class UsersComponent {
+
+  outputs: string;
+
+  settings = {
+    mode: 'external',
+    actions: {
+      add: false
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -33,11 +41,7 @@ export class UsersComponent {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: true,
     },
-    columns: {
-      id: {
-        title: 'User id:',
-        type: 'number',
-      },
+    columns: {     
       email: {
         title: 'Email:',
         type: 'string',
@@ -53,15 +57,11 @@ export class UsersComponent {
       surname: {
         title: 'Surname',
         type: 'string',
-      },
-      password: {
-        title: 'Password',
-        type: 'string'
-      },
+      },      
       gender: {
         title: 'Gender',
         type: 'string'
-      },   
+      },     
       date_of_birth: {
         title: 'Date of birth',
         type: 'string',
@@ -75,46 +75,39 @@ export class UsersComponent {
   };
 
 
-
- // users:any[];
-
   source: LocalDataSource = new LocalDataSource();
   urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
 
-  constructor(private _usersService: UsersService,
-              private datePipe: DatePipe,
-              private http: Http) { 
-        
-      /* Connect with SDK
-      const data = this._usersService.getUsers().subscribe(res => {       
-      this.source.prepend(res);
-      console.log(res);
-      });*/
+  constructor(private _templatesService: DevicesService,              
+              private http: Http,
+              private datePipe: DatePipe ) {
+    this.loadTemplates();
+  }
+ 
 
-       this.getUsers();  
+  onModalHidden(reload){
+    //Recargamos los templates
+    if (reload){
+     this.loadTemplates();
+    }
   }
 
-  
-
-  private getUsers(){
-  
+  private loadTemplates():void{    
     this.http.get(`${this.urlBase}/users`).subscribe(
-      data => {
-          
+      data => {          
           let users: any[] = data.json(); 
-
-          users.forEach(element => {
+         /* users.forEach(element => {
             this.source.prepend(element);   
-          });                      
-
-          console.log('getUsers: ', users);      
-
+          });     */
+          
+          this.source.load(users);
+          console.log('getUsers: ', users);  
         },
       err => {        
         console.log(err);          
       } 
     );  
-  } 
+  }
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete the user: '+event.data.name+' ?')) {
@@ -127,76 +120,5 @@ export class UsersComponent {
     } else {
       event.confirm.reject();
     }
-  }
-
-
-
-  // ADD
-  onCreateConfirm(event) {
-    if (window.confirm('Are you sure you want to create?')) {
-      //event.newData['name'] += ' + added in code'; 
-      
-      let body = {  
-        "name": event.newData.name,
-        "surname": event.newData.surname,
-        "email": event.newData.email,
-        "password": event.newData.password,
-        "gender": event.newData.gender,
-        "username":event.newData.username,
-        "assets": [],
-        "roles": [],
-        "enabled": true,
-        "accountNonExpired": true,
-        "accountNonLocked": true,
-        "credentialsNonExpired": true,
-        "authorities": [],
-      }
-
-      this.http.post(`${this.urlBase}/users`, body).subscribe(res => {
-        
-        event.confirm.resolve(event.newData);
-      });
-
-    } else {
-      event.confirm.reject();
-    }
-  }
-
-
-
-
-  // UPDATE
-  onSaveConfirm(event) {
-    
-    let body = {  
-      "name": event.newData.name,
-      "surname": event.newData.surname,
-      "email": event.newData.email,
-      "password": event.newData.password,
-      "gender": event.newData.gender,
-      "username": event.newData.username,
-      "assets": [],
-      "roles": [],
-      "enabled": true,
-      "accountNonExpired": true,
-      "accountNonLocked": true,
-      "credentialsNonExpired": true,
-      "authorities": [],
-    }
-
-  this.http.put(`${this.urlBase}/users/${event.data.id}`, body).subscribe(
-        res => {
-          console.log(res);
-          event.confirm.resolve(event.newData);
-      },
-      (err: HttpErrorResponse) => {
-        if (err.error instanceof Error) {
-          console.log("Client-side error occured.");
-        } else {
-          console.log("Server-side error occured.");
-        }
-      });
-  }
- 
-
+  }  
 }

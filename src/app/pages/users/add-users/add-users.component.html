@@ -1,0 +1,126 @@
+<div class="ui modal" #addTemplateModal>
+        <div class="header">
+              <div class="ui grid">
+                  <div class="twelve wide column">
+                          {{modalTitle}}
+                  </div>
+                  <div class="two wide column">
+                          <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+                  </div>
+                  <div class="one wide column">
+                          <button mat-raised-button color="primary" (click)="sendTemplate()">Save</button>
+                  </div>
+              </div>  
+              
+        </div>
+        <div class="scrolling content">
+            <div class="ui grid">
+                           
+                <!-- col1-->
+                <div class="eight wide column">
+                                <mat-card class="result">
+                                                <mat-card-content>    
+                    <div class="field">
+                        <mat-form-field style="width: 100%">
+                            <input matInput type="text" placeholder="Name" [(ngModel)]="name" [formControl]="nameFormControl"/>
+                            <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-error *ngIf="nameFormControl.hasError('required')">
+                                Name <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>     
+                        
+                        <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Surname" [(ngModel)]="surname" [formControl]="surnameFormControl"/>
+                                <button mat-button *ngIf="surname" matSuffix mat-icon-button aria-label="Clear" (click)="surname=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="surnameFormControl.hasError('required')">
+                                    Surname <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>   
+                            
+                            <mat-form-field style="width: 100%">
+                                        <input matInput type="text" placeholder="Email" [(ngModel)]="email" [formControl]="emailFormControl"/>
+                                        <button mat-button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="emailFormControl.hasError('required')">
+                                            Email <strong>required</strong>
+                                        </mat-error>
+                                    </mat-form-field>   
+                            
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Username" [(ngModel)]="username" [formControl]="usernameFormControl"/>
+                                <button mat-button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="usernameFormControl.hasError('required')">
+                                    Username <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>     
+
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="password" placeholder="Password" [(ngModel)]="password" [formControl]="passwordFormControl"/>
+                                <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="passwordFormControl.hasError('required')">
+                                    Password <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>    
+
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" [formControl]="confirmPasswordFormControl"/>
+                                <button mat-button *ngIf="confirmPassword" matSuffix mat-icon-button aria-label="Clear" (click)="confirmPassword=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="confirmPasswordFormControl.hasError('required')">
+                                    Confirm Password <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>    
+                        
+                    </div>
+                </mat-card-content>
+        </mat-card>  
+              </div>                 
+    
+                <div class="eight wide column">
+                    <mat-card class="result">
+                        <mat-card-content>                          
+                            <mat-form-field style="width: 100%">
+                                <mat-select placeholder="Select a role" [formControl]="roleFormControl" [(value)]="roleSelected" multiple>
+                                    <mat-option *ngFor="let role of roles" [value]="role" >
+                                    {{ role.name  }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field style="width: 100%">
+                                        <mat-select placeholder="Select an asset" [formControl]="assetFormControl" [(value)]="assetSelected" multiple>
+                                            <mat-option *ngFor="let asset of assets" [value]="asset" >
+                                            {{ asset.name  }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                            <mat-form-field style="width: 100%">
+                                <mat-select placeholder="Select a gender" [(value)]="genderSelected"  [formControl]="genderFormControl" >
+                                    <mat-option *ngFor="let gender of genders" [value]="gender">
+                                    {{ gender }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field style="width: 100%">
+                                        <input matInput [matDatepicker]="dateOfBirth" placeholder="Select from date" [(ngModel)]="date_of_birth" [formControl]="birthFormControl">
+                                        <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                                        <mat-datepicker #dateOfBirth ></mat-datepicker>
+                                </mat-form-field>                      
+                        </mat-card-content>
+                    </mat-card>  
+                </div>
+            </div>      
+        </div>
+      </div>

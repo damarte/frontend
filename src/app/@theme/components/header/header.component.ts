@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
 
   onMenuClick(value): void {
     if (value != undefined && value.type == "logout"){
-      //TODO LOGOUT
+      // TODO LOGOUT
       this.router.navigate(['../auth/login']);
     }
   }
