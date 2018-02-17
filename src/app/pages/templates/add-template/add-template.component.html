@@ -87,7 +87,7 @@
 
                         <section>
                             <mat-form-field style="width: 100%">
-                                <input matInput type="text" placeholder="Name (attribute's name)" [(ngModel)]="data.name" [formControl]="propertyNameFormControl"/>
+                                <input matInput type="text" placeholder="Name (property's name)" [(ngModel)]="data.name" [formControl]="propertyNameFormControl"/>
                                 <mat-error *ngIf="propertyNameFormControl.hasError('required')">
                                    Name <strong>required</strong>
                                 </mat-error>

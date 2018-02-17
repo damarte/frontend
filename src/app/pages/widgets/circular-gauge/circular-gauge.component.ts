@@ -70,7 +70,7 @@ export class CircularGaugeComponent extends WidgetsBase {
                 });
 
                
-                this.loadData(device_id, attribute);
+                this.loadDataGeneral(device_id, attribute);
 
                 this.minValue = this.getPropFromPropertyPages("min");
                 this.maxValue = this.getPropFromPropertyPages("max");
@@ -99,7 +99,17 @@ export class CircularGaugeComponent extends WidgetsBase {
 
     currentValue: number = 0;
 
-    private loadData(deviceId, attribute){
+
+    private loadDataGeneral (deviceId, attribute){
+        var context = this;
+        this.loadData(deviceId, attribute);
+        setInterval(function(){
+            context.loadData(deviceId, attribute);
+        }
+        , context.refreshTime);         
+    }
+
+    loadData (deviceId, attribute){
        this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
             console.log(res);
             if (res.value != undefined){

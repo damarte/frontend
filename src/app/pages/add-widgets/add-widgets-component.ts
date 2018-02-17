@@ -168,21 +168,21 @@ export class AddWidgetsComponent implements AfterViewInit {
          var componentType = this.widgetSelected.componentType;
         switch(componentType){
             case "BarChartComponent":
-            return WIDGET_MICRO_SERVICE_TYPES.barChart;
+            return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.barChart];
             // case "DoughnutChartComponent":
             // return WIDGET_MICRO_SERVICE_TYPES.TYPE_MULTIPLE;
             case "LinearGaugeComponent":
-            return WIDGET_MICRO_SERVICE_TYPES.controlWidgets;
+            return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.controlWidgets];
             case "LineChartComponent":
-            return WIDGET_MICRO_SERVICE_TYPES.lineChart;
+            return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.lineChart];
             case "BarGaugeComponent":
-            return WIDGET_MICRO_SERVICE_TYPES.alarmWidget;
+            return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.alarmWidget];
             // case "PolarChartComponent":
             // return WIDGET_MICRO_SERVICE_TYPES.TYPE_MULTIPLE;
             case "CircularGaugeComponent":
-            return WIDGET_MICRO_SERVICE_TYPES.analogGauge;
+            return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.analogGauge];
             case "GisMapComponent":
-            return WIDGET_MICRO_SERVICE_TYPES.cards;
+            return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.cards];
         }
     }
 
@@ -266,41 +266,36 @@ export class AddWidgetsComponent implements AfterViewInit {
         devices.forEach(element => {
             var parameters = [];
             parameters.push({
-                "id": 1,
                "name": "device_name",
                "value": element.name,
-               "operator": null
+               "operator": "="
 
             });
             parameters.push({
-                "id": 2,
                 "name": "device_id",
                 "value": element.entity_name,
-                "operator": null
+                "operator": "="
  
              });
              parameters.push({
-                "id": 3,
                 "name": "attribute",
                 "value": this.selectedAttribute,
-                "operator": null
+                "operator": "="
  
              });
             var url = `https://platform.fiwoo.eu/api/device-management/devices/historics?${element.entity_name}&attribute=${this.selectedAttribute}`;
             if (this.showDateControls){
                 url = url.concat(`&from=${this.changeDate(this.fromDate)}&to=${this.changeDate(this.toDate)}`);
                 parameters.push({
-                    "id": 4,
                     "name": "from",
                     "value": this.changeDate(this.fromDate),
-                    "operator": null
+                    "operator": "="
      
                  });
                  parameters.push({
-                    "id": 5,
                     "name": "to",
                     "value": this.changeDate(this.toDate),
-                    "operator": null
+                    "operator": "="
      
                  });
             }

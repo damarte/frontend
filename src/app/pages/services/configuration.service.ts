@@ -20,6 +20,7 @@ export class ConfigurationService {
      */
     // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
     remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
+    // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
 
     
 
@@ -136,9 +137,10 @@ export class ConfigurationService {
                 board.isNew = false;
                 return this._http.post(this.remoteConfigurationRepository + '/', JSON.stringify(board), {headers: headers});
             }else{
-                board = this.updateBoardForSend(board);
+                var sendBoard = Object.assign({},board);
+                sendBoard = this.updateBoardForSend(sendBoard);
                 console.log(JSON.stringify(board));
-                return this._http.put(this.remoteConfigurationRepository + '/' + board.id, JSON.stringify(board), {headers: headers});
+                return this._http.put(this.remoteConfigurationRepository + '/' + board.id, JSON.stringify(sendBoard), {headers: headers});
             }
             
         }
@@ -150,28 +152,35 @@ export class ConfigurationService {
             board.name = board.title;
             board.rows.forEach(row => {
                 row.columns.forEach(column => {
-                    column.widgets = Object.assign([], column.gadgets);
-                    column.widgets.forEach(widget => {
-                        widget.type = this.getWidgetType(widget.componentType);
-                        widget.id = widget.instanceId;
-                        widget.propertyPages = widget.config.propertyPages;
-                        widget.propertyPages.forEach(propertyPage => {
-                            propertyPage.groupId = "run";
-                            propertyPage.position =  10;
-                            var i = 0;
-                            propertyPage.properties.forEach(property => {
-                                property.id = i
-                                property._controlType = property.controlType;
-                                property._key = property.key;
-                                property._label = property.label;
-                                property._value = property.value;
-                                property._required = property.required;
-                                property._order = property.order;  
-                                i++;     
+                    // if (column.gadgets.length == 0){
+                    //     row.columns.pop(column);                           
+                    // }else{
+                        column.widgets = Object.assign([], column.gadgets);
+                        column.widgets.forEach(widget => {
+                            widget.type = this.getWidgetType(widget.componentType);
+                            widget.id = widget.instanceId;
+                            widget.propertyPages = widget.config.propertyPages;
+                            widget.propertyPages.forEach(propertyPage => {
+                                propertyPage.groupId = "run";
+                                propertyPage.position =  10;
+                                var i = 0;
+                                propertyPage.properties.forEach(property => {
+                                    // property.id = i
+                                    property._controlType = property.controlType;
+                                    property._key = property.key;
+                                    property._label = property.label;
+                                    property._value = property.value;
+                                    property._required = property.required;
+                                    property._order = property.order;  
+                                    i++;     
+                                });
                             });
                         });
-                    });
-                });    
+                    // }
+                });
+                // if (row.columns.length == 0){
+                //     board.rows.pop(row);    
+                // }  
             });
             
         }

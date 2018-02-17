@@ -12,6 +12,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
     instanceId: number;
     config: any;
     widget: any;
+    refreshTime = 5000;
 
     /**
      * Used to determine when to show the controls that appear in the gadgets

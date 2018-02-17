@@ -372,9 +372,10 @@ export class GridComponent {
            case "analogGauge":
            return "CircularGaugeComponent";
            case "cards":
-           return "GisMapComponen";
+           return "GisMapComponent";
        }
    }
+
 
     //TODO CHANGE WHEN WS Ok
     private updateBoard(board){
@@ -383,15 +384,27 @@ export class GridComponent {
             if (board.structure == null){
                 board.structure = "8-8";
             }
-            var columnEmptyObject = {"styleClass": "eight wide", gadgets: []};
-            var rowEmptyObject = {columns: [columnEmptyObject, columnEmptyObject]}
+            var columnEmptyObject1 = {"styleClass": "eight wide", gadgets: []};
+            var columnEmptyObject2 = {"styleClass": "eight wide", gadgets: []};
+            var rowEmptyObject = {columns: [columnEmptyObject1, columnEmptyObject2]}
+
+
             if (board.rows.length == 0){
-                board.rows.push(rowEmptyObject);
+
+                for (var i=0; i < 3; i++){
+
+                    board.rows.push({"columns": [{"styleClass": "eight wide", gadgets: []}, {"styleClass": "eight wide", gadgets: []}]});
+                }
+
+               
             }
             else{
                 board.rows.forEach(row => {
-                    row.columns.forEach(column => {
-                        column.gadgets = Object.assign([], column.widgets);
+                    if (row.columns.length == 1){
+                        row.columns.push(columnEmptyObject1);
+                    }   
+                    row.columns.forEach(column => {                                               
+                        column.gadgets = Object.assign([], column.widgets);                        
                         column.gadgets.forEach(gadget => {
                             gadget.componentType = this.getLocalWidgetType(gadget.type);
                             gadget.instanceId = gadget.id;
@@ -409,7 +422,30 @@ export class GridComponent {
                                     property.order = property._order;        
                                 });
                             });
-                        });
+
+                            // gadget.sources.forEach(source => {
+
+                            //     if (source.parameters.length == 0){
+                                    
+                            //         source.parameters.push({
+                            //            "name": "device_name",
+                            //            "value": "Antwerp2",
+                            //            "operator": "="
+                            //         });
+                            //         source.parameters.push({
+                            //             "name": "device_id",
+                            //             "value": "antwerp_a2",
+                            //             "operator": "="
+                            //          });
+                            //          source.parameters.push({
+                            //             "name": "attribute",
+                            //             "value": "temperature",
+                            //             "operator": "="
+                            //          });
+                            //     }
+                            // });
+
+                        });                        
                     });    
                 });
             }
@@ -437,17 +473,17 @@ export class GridComponent {
 
     private loadDefaultBoard() {
 
-        this.clearGridModelAndGadgetInstanceStructures();
+        // this.clearGridModelAndGadgetInstanceStructures();
 
-        this._configurationService.getDefaultBoard().subscribe(board => {
+        // this._configurationService.getDefaultBoard().subscribe(board => {
 
-            console.log('loading default board');
-            this.setModel(board);
-            this.updateServicesAndGridWithModel();
-            this.saveBoard('Initialization of a default board', true);
+        //     console.log('loading default board');
+        //     this.setModel(board);
+        //     this.updateServicesAndGridWithModel();
+        //     this.saveBoard('Initialization of a default board', true);
 
 
-        });
+        // });
     }
 
     private loadNewBoard(name: string) {
@@ -486,6 +522,7 @@ export class GridComponent {
                 if (alertBoardListenerThatTheMenuShouldBeUpdated) {
                     this.boardUpdateEvent.emit(this.getModel().title);
                 }
+                this.loadBoardById(this.model.id);
             },
             error => console.error('Error' + error),
             () => console.debug('Saving configuration to store!'));

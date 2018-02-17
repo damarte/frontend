@@ -64,6 +64,16 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     }
 
     private loadDataGeneral (){
+        var context = this;
+        this.loadData();
+        setInterval(function(){
+            context.loadRepeatData();
+        }
+        , context.refreshTime);         
+    }
+
+    loadData (){
+        this.deviceData = [];
         this.devices.forEach(device => {
             this.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
                 console.log(res);
@@ -74,32 +84,31 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                         "active": true});
                 }
                 this.devicesToValues();
-            });
-
-            // this.deviceService.getHistorics(device.entity_name, "temperature").subscribe(res => {
-            //     if (res instanceof Array){
-            //         var element = res[res.length - 1];
-            //         if (element != null){
-            //             var result = parseInt(element.attrValue, 10);
-            //             if (result < this.startValue){
-            //                 this.startValue = result;
-            //             }
-            //             if (result > this.endValue){
-            //                 this.endValue = result;
-            //             }
-            //             console.log(device.name, result);
-            //             this.deviceData.push(
-            //                 {"name": device.name,
-            //                 "value": result,
-            //                 "active": true});
-            //         }
-            //     }
-            //     this.devicesToValues();
-            // });
-            
-        });   
+            });            
+        }); 
+    }
+    loadRepeatData (){
+        this.devices.forEach(device => {
+            this.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
+                console.log(res);
+                if (res.value != undefined){
+                    var data: any = this.getValueData(device.device_name);
+                    data.value = res.value;
+                }
+                this.devicesToValues();
+            });            
+        }); 
     }
 
+    getValueData (name){
+        var result: any = null;
+        this.deviceData.forEach(deviceData => {
+            if (deviceData.name == name){
+                result = deviceData;
+            }
+        });
+        return result;
+    }
 
     customizeTooltip(arg) {
         return {
@@ -132,15 +141,6 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                 this.endValue = this.getPropFromPropertyPages("max");
             }        
         }
-
-        // if (this.widget != null){
-        //     this.devices = this.widget.extra_data;
-        //     this.deviceData = new Array<DeviceData>();
-        //     this.loadDataGeneral();
-
-        //     this.startValue = this.getPropFromPropertyPages("min");
-        //     this.endValue = this.getPropFromPropertyPages("max");
-        // }
     }
 
     public run() {     

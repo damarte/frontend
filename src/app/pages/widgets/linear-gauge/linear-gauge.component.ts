@@ -128,7 +128,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
                     });
     
                     this.titleNew = device_name;
-                    this.loadData(device_id, attribute);
+                    this.loadDataGeneral(device_id, attribute);
 
                     this.minValue = this.getPropFromPropertyPages("min");
                     this.maxValue = this.getPropFromPropertyPages("max");
@@ -140,8 +140,17 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     currentValue: number = 0;
 
-    private loadData(deviceId, attribute){
-       this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
+    private loadDataGeneral (deviceId, attribute){
+        var context = this;
+        this.loadData(deviceId, attribute);
+        setInterval(function(){
+            context.loadData(deviceId, attribute);
+        }
+        , context.refreshTime);         
+    }
+
+    loadData (deviceId, attribute){
+        this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
             console.log(res);
             if (res.value != undefined){
                 this.currentValue = res.value;
