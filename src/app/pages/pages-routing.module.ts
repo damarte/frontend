@@ -6,6 +6,8 @@ import { DevicesComponent } from './devices/devices.component';
 import { UsersComponent } from './users/users.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { AboutComponent } from './about/about.component';
+import { RolesComponent } from './users/roles/roles.component';
+import { AssetsComponent } from './users/assets/assets.component';
 
 
 
@@ -30,7 +32,16 @@ const routes: Routes = [
       path: 'users', 
       component: UsersComponent, 
     },
-    {
+    { 
+      path: 'roles', 
+      component: RolesComponent, 
+    },
+    { 
+      path: 'assets', 
+      component: AssetsComponent, 
+    },
+    
+    /*{
       path: 'ui-features',
       loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
     }, {
@@ -48,7 +59,7 @@ const routes: Routes = [
     }, {
       path: 'forms',
       loadChildren: './forms/forms.module#FormsModule',
-    },   
+    },   */
     { 
       path: '',
       redirectTo: 'dashboard',
@@ -57,7 +68,7 @@ const routes: Routes = [
     {
       path: 'about',
       component: AboutComponent,
-    }
+    }   
   ]
 }];
 

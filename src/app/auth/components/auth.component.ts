@@ -13,8 +13,8 @@ import { UsersService } from 'um_fiwoo/api/users.service';
   styleUrls: ['./auth.component.scss'],
   template: `
     <nb-layout>
-      <nb-layout-column>
-        <nb-card>
+      <nb-layout-column class="login-layout">
+        <nb-card class="login-card">
           <nb-card-body>
             <div class="flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12">
               <router-outlet></router-outlet>

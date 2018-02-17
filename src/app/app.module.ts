@@ -14,23 +14,22 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';  
 import { ThemeModule } from './@theme/theme.module';  
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ApiModule, Configuration, ConfigurationParameters } from 'dv_fiwoo';
+import { ApiModule } from 'dv_fiwoo';
 import { ApiModule as UmApiModule } from 'um_fiwoo';  
-import { ApiModule as IotModule } from 'iot_devices_fiwoo';
-import { LoginComponent } from './login/login.component';
-import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
-import { NbAuthModule } from './auth/auth.module';
+import { ApiModule as IotModule, Configuration, ConfigurationParameters } from 'iot_devices_fiwoo';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material'; 
+import { NbAuthModule } from './auth/auth.module'; 
  
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    ApiModule.forRoot(apiConfigFactory),
+    // ApiModule.forRoot(apiConfigFactory),
     UmApiModule.forRoot(apiConfigFactory),
     IotModule.forRoot(apiConfigFactory),
     NgbModule.forRoot(),
@@ -39,7 +38,7 @@ import { NbAuthModule } from './auth/auth.module';
     NbAuthModule.forRoot({
       forms: {
         login: {
-          redirectDelay: 3000,
+          redirectDelay: 10,
         },
       },   
     })
