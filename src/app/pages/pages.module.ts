@@ -18,6 +18,7 @@ import { AboutService } from './about/about.service';
 import { RolesComponent } from './users/roles/roles.component';
 import { AssetsComponent } from './users/assets/assets.component';
 import { EditDevicesComponent } from './devices/edit-devices/edit-devices.component';
+import { RouterModule } from '@angular/router'
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -39,7 +40,8 @@ const PAGES_COMPONENTS = [
     MatRadioModule,
     MatChipsModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    RouterModule
   ],
   providers: [
     AboutService
