@@ -20,8 +20,9 @@ export class UserService {
   };*/
 
 
-  userlogin: any = JSON.parse(localStorage.getItem('email'));
-
+  // userlogin: any = JSON.parse(localStorage.getItem('email'));
+  userlogin = "user@user.com";
+ 
 
   private users = {
     first: {

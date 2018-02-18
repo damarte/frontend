@@ -1,19 +1,12 @@
-export class User {
-
-
-
-  id: number;
+export interface User {
+  id?: string;
   name: string;
   surname: string;
-  username: string;
   email: string;
+  username:string;
+  date_of_birth?: number;
   password: string;
-  gender: string;
-  terms: boolean;
-
-  constructor(values: Object = {}) {
-    //Constructor initialization
-    Object.assign(this, values);
-  }
-
+  gender?: string;
+  assets?: Array<string>;
+  role: string;
 }

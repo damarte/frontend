@@ -1,96 +1,10 @@
 {
-  "library": [   
-    {
-      "componentType": "BarChartComponent",
-      "name": "Bar Chart",
-      "description": "Energy Consumption in 2004.",
-      "icon": "assets/images/charts.png",
-      "instanceId": -1,
-      "tags": [
-      {
-        "facet": "Graphic Charts",
-        "name": "Bar Chart"
-      }
-    ],
-      "config": {
-        "propertyPages": [
-          {
-            "displayName": "Configuration",
-            "groupId": "run",
-            "position": 10,
-            "properties": [
-              {
-                "controlType": "textbox",
-                "key": "title",
-                "label": "Title",
-                "value": "Energy Consumption in 2004.",
-                "required": true,
-                "order": 1
-              },
-             
-              {
-                "controlType": "textbox",
-                "key": "instanceId",
-                "label": "Widget Id",
-                "value": 999,
-                "required": true,
-                "order": -1
-              }
-            ]
-          }          
-        ]
-      },
-      "actions":[{
-        "name": "Select"
-      }]
-    },
-    {
-      "componentType": "DoughnutChartComponent",
-      "name": "Doughnut Chart",
-      "description": "Air Quality.",
-      "icon": "assets/images/doughnut.png",
-      "instanceId": -1,
-      "tags": [
-        {
-          "facet": "Graphic Charts",
-          "name": "Doughnut Chart"
-        } 
-      ],
-      "config": {
-        "propertyPages": [
-          {
-            "displayName": "Configuration",
-            "groupId": "run",
-            "position": 10,
-            "properties": [
-              {
-                "controlType": "textbox",
-                "key": "title",
-                "label": "Title",
-                "value": "Air Quality",
-                "required": true,
-                "order": 1
-              },
-              {
-                "controlType": "textbox",
-                "key": "instanceId",
-                "label": "Widget Id",
-                "value": 2,
-                "required": true,
-                "order": -1
-              }
-            ]
-          }
-        ]
-      },
-      "actions":[{
-        "name": "Select"
-      }]
-    },
+  "library": [       
+    
     {
       "componentType": "LinearGaugeComponent",
       "name": "Linear Gauge",
-      "description": "Show Humidity from Sensors", 
+      "description": "", 
       "icon": "assets/images/linear_gauge.png",
       "instanceId": -1,
       "tags": [
@@ -110,7 +24,7 @@
                 "controlType": "textbox",
                 "key": "title",
                 "label": "Title",
-                "value": "Show Humidity from Sensors",
+                "value": "",
                 "required": true,
                 "order": 1
               },
@@ -149,7 +63,7 @@
     {
       "componentType": "LineChartComponent",
       "name": "Line Chart",
-      "description": "Temperature in Barcelona, 2012.", 
+      "description": "", 
       "icon": "assets/images/line.png",
       "instanceId": -1,
       "tags": [        
@@ -169,7 +83,7 @@
                 "controlType": "textbox",
                 "key": "title",
                 "label": "Title",
-                "value": "Temperature from Sensor",
+                "value": "",
                 "required": true,
                 "order": 1
               },
@@ -192,7 +106,7 @@
     {
       "componentType": "BarGaugeComponent",
       "name": "Bar Gauge",
-      "description": "Monitors temperature from sensors",
+      "description": "",
       "icon": "assets/images/bar_gauge.png",
       "instanceId": -1,
       "tags": [
@@ -212,7 +126,7 @@
                 "controlType": "textbox",
                 "key": "title",
                 "label": "Title",
-                "value": "Monitors temperature from sensors",
+                "value": "",
                 "required": true,
                 "order": 1
               },
@@ -248,49 +162,7 @@
         "name": "Select"
       }]
     },   
-    {
-      "componentType": "PolarChartComponent",
-      "name": "Polar Chart",
-      "description": "Energy consumed.",
-      "icon": "assets/images/polar.png",
-      "instanceId": -1,
-      "tags": [
-        {
-          "facet": "Graphic Charts",
-          "name": "Polar Chart"
-        }
-      ],
-      "config": {
-        "propertyPages": [
-          {
-            "displayName": "Configuration",
-            "groupId": "run",
-            "position": 10,
-            "properties": [              
-              {
-                "controlType": "textbox",
-                "key": "title",
-                "label": "Title",
-                "value": "Energy consumed",
-                "required": true,
-                "order": 1
-              },              
-              {
-                "controlType": "textbox",
-                "key": "instanceId",
-                "label": "Widget Id",
-                "value": 2,
-                "required": true,
-                "order": -1
-              }
-            ]
-          }         
-        ]
-      },
-      "actions":[{
-        "name": "Select"
-      }]
-    },    
+   
     {
       "componentType": "CircularGaugeComponent",
       "name": "Circular Gauge",
@@ -354,8 +226,8 @@
     {
       "componentType": "GisMapComponent",
       "name": "Gis Map",
-      "description": "Localization.",
-      "icon": "assets/images/gmaps.png",
+      "description": "",
+      "icon": "assets/images/maps.png",
       "instanceId": -1,
       "tags": [
         {

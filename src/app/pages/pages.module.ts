@@ -9,7 +9,7 @@ import { UsersComponent } from "./users/users.component";
 import { TemplatesComponent } from './templates/templates.component';
 import { AddDevicesComponent } from './devices/add-devices/add-devices.component';
 import { MatButtonModule, MatSelectModule, MatSlideToggleModule, MatCardModule,
-MatIconModule, MatInputModule, MatListModule, MatRadioModule, MatChipsModule, MatDialogModule, MatExpansionModule } from '@angular/material';
+MatIconModule, MatInputModule, MatListModule, MatRadioModule, MatChipsModule, MatDialogModule, MatExpansionModule, MatDatepickerModule } from '@angular/material';
 import { DialogOverviewExampleDialog } from './templates/add-template/add-template.component';
 import { AddTemplateComponent } from './templates/add-template/add-template.component';
 import { DevicesFilterComponent } from './devices/devices-filter/devices-filter.component';
@@ -19,6 +19,9 @@ import { RolesComponent } from './users/roles/roles.component';
 import { AssetsComponent } from './users/assets/assets.component';
 import { EditDevicesComponent } from './devices/edit-devices/edit-devices.component';
 import { RouterModule } from '@angular/router'
+import { AddUsersComponent } from './users/add-users/add-users.component';
+import { AddAssetsComponent } from './users/assets/add-assets/add-assets.component';
+import { AddRolesComponent } from './users/roles/add-roles/add-roles.component';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -41,7 +44,11 @@ const PAGES_COMPONENTS = [
     MatChipsModule,
     MatDialogModule,
     MatExpansionModule,
+<<<<<<< HEAD
     RouterModule
+=======
+    MatDatepickerModule
+>>>>>>> 545e38f930c27e48d5833152a30c74211f00da93
   ],
   providers: [
     AboutService
@@ -58,7 +65,7 @@ const PAGES_COMPONENTS = [
     AboutComponent,
     RolesComponent,
     AssetsComponent,    
-    EditDevicesComponent
+    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent
   ],
   entryComponents: [DialogOverviewExampleDialog],
 })

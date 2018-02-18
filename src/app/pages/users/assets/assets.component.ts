@@ -67,7 +67,7 @@ export class AssetsComponent {
 
 
   source: LocalDataSource = new LocalDataSource();
-  urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+  urlBase: string = 'https://platform.fiwoo.eu/api/user-management/users';
 
   constructor(private _assetsService: AssetsService,              
               private http: Http) { 
