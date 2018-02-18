@@ -12,28 +12,31 @@ export class FiwooService {
     
     
     let token = localStorage.getItem('access_token');    
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', 'Bearer '+ token );
+    // headers.append('Content-Type', 'application/json');
+     headers.append('Authorization', 'Bearer '+ token );
 
     console.log('Headers: ', headers);
   }
 
-  urlBaseUser: string = 'https://platform.fiwoo.eu/api/user-management/users';  
+   urlBaseUser: string = 'https://platform.fiwoo.eu/api/user-management/users';  
+  // urlBaseUser: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users'; 
 
   // users service
 
   // GET USERS
-  public getUsers():any {
+  public getUsers():any {    
     return this.http.get(`${this.urlBaseUser}/users`, {headers: headers}).map(res => res.json());
   } 
 
   // POST USERS
-  public postUser(user:any):any{    
+  public postUser(user:any):any{  
+    headers.append('Content-Type', 'application/json');  
     return this.http.post(`${this.urlBaseUser}/users`, user, {headers: headers});     
   }
 
   // PUT USERS
   public updateUser(user_id:string, user:any ):any{
+    headers.append('Content-Type', 'application/json');
      return this.http.put(`${this.urlBaseUser}/users/${user_id}`, user, {headers: headers});
   }
 
@@ -51,11 +54,13 @@ export class FiwooService {
 
   // POST ASSETS
   public postAsset(asset:any):any{    
+    headers.append('Content-Type', 'application/json');
     return this.http.post(`${this.urlBaseUser}/assets`, asset, {headers: headers});     
   }
 
   // PUT ASSETS
   public updateAsset(asset_id:string, asset:any ):any{
+    headers.append('Content-Type', 'application/json');
      return this.http.put(`${this.urlBaseUser}/assets/${asset_id}`, asset, {headers: headers});
   }
 
@@ -72,12 +77,14 @@ export class FiwooService {
   } 
 
   // POST ROLES
-  public postRol(rol:any):any{    
+  public postRol(rol:any):any{   
+    headers.append('Content-Type', 'application/json'); 
     return this.http.post(`${this.urlBaseUser}/roles`, rol, {headers: headers});     
   }
 
   // PUT ROLES
   public updateRol(rol_id:string, rol:any ):any{
+    headers.append('Content-Type', 'application/json');
      return this.http.put(`${this.urlBaseUser}/roles/${rol_id}`, rol, {headers: headers});
   }
 

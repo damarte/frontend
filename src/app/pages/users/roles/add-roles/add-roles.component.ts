@@ -86,10 +86,7 @@ export class AddRolesComponent implements OnInit {
         console.log(err);      
       }
     );    
-  } 
-
-
- 
+  }  
 
   ngOnInit() {
   }
@@ -124,7 +121,8 @@ export class AddRolesComponent implements OnInit {
     if (this.editedRole != null){
       
       this.modalTitle = "Edit Role";      
-      this.name = this.editedRole.name;     
+      this.name = this.editedRole.name;  
+      this.description = this.editedRole.description;    
       this.resourceSelected = this.editedRole.resources;   
 
     }else{
@@ -181,8 +179,8 @@ export class AddRolesComponent implements OnInit {
           this.role = {
             name: this.name,
             description: this.description,        
-            // resources: allResources   
-            resources: []
+            resources: allResources   
+            //resources: []
           };
 
           console.log(JSON.stringify(this.role));

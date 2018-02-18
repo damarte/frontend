@@ -1,3 +1,4 @@
+import { UserLogin } from 'um_fiwoo';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -20,23 +21,25 @@ export class UserService {
   };*/
 
 
-  userlogin: any = JSON.parse(localStorage.getItem('email'));
-  // userlogin = "user@user.com";  
-  
-
-  
-
-  private users = {
-    first: {
-      name: (this.userlogin.match(/^([^@]*)@/)[1]),
-      picture: 'assets/images/user.png'
-    }
-  };
+  userlogin: any;
+  users: any; 
 
   private userArray: any[];
 
   constructor() {
-    // this.userArray = Object.values(this.users);
+   
+    if  (this.userlogin) {
+      this.userlogin = JSON.parse(localStorage.getItem('email'));
+    } else {
+      this.userlogin = "user@user.com";  
+    }
+
+   this.users = {
+      first: {
+        name: (this.userlogin.match(/^([^@]*)@/)[1]),
+        picture: 'assets/images/user.png'
+      }
+    };
   }
 
   getUsers(): Observable<any> {

@@ -272,11 +272,8 @@ export class AddUsersComponent implements OnInit {
           this._fiwooService.postUser(this.user).subscribe(
             res => {
               console.log(res);                    
-          });    
-    
-          /*this.http.post(`${this.urlBase}/users`, this.user).subscribe(res => {            
-            console.log('Add User',res);            
-          }); */   
+          });       
+        
         
         }
 

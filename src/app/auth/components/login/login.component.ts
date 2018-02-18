@@ -59,7 +59,7 @@ export class NbLoginComponent {
   }
 
   private doLogin() {
-    let url: string = "http://us1.fiwoo.eu:7000/users/login";
+    let url: string = "https://us1.fiwoo.eu:7000/users/login";
    
     let grant_type: string = "grant_type";
     let username: string = "username";
