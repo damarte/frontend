@@ -1,13 +1,13 @@
   <div class="ui modal" #addDeviceModal>
       <div class="header">
             <div class="ui grid">
-                <div class="ten wide column">
+                <div class="eight wide column">
                     {{ modalTitle }}
                 </div>
-                <div class="two wide column">
+                <div class="four wide column" style="text-align:right">
                         <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
                 </div>
-                <div class="two wide column">
+                <div class="four wide column" style="text-align:right">
                         <button mat-raised-button color="primary" (click)="sendDevices()">Create Devices</button>
                 </div>
             </div>  
@@ -28,9 +28,9 @@
             </mat-form-field>
              
 
-          <div class="ui grid" style="margin-top: 20px">
+          <div class="doubling stackable three column ui grid container" style="margin-top: 20px">
               <!-- col1-->
-              <div class="four wide column">
+              <div class="column">
                   <div class="field">
                       <mat-form-field>
                             <input matInput type="text" placeholder="Name of the device" [(ngModel)]="device_name" [formControl]="deviceNameFormControl"/>
@@ -45,7 +45,7 @@
               </div>
               
               <!-- col3-->
-              <div class="four wide column">
+              <div class="column">
                     <div class="field">
                         <mat-form-field>
                             <input matInput type="text" placeholder="Entity name" [(ngModel)]="entity_type" [formControl]="entityNameFormControl"/>
@@ -60,7 +60,7 @@
               </div>
 
               <!-- col4-->
-              <div class="four wide column">
+              <div class="column">
                 <mat-slide-toggle
                     class="example-margin"
                     color="accent"
