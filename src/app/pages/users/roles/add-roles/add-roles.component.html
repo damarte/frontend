@@ -1,3 +1,65 @@
-<p>
-  add-roles works!
-</p>
+<div class="ui modal" #addTemplateModal>
+    <div class="header">
+        <div class="ui grid">
+            <div class="twelve wide column">
+                {{modalTitle}}
+            </div>            
+        </div>
+
+    </div>
+    <div class="scrolling content">
+        <div class="ui grid">
+
+            <!-- col1-->
+            <div class="sixteen wide column">
+                <mat-card class="result">
+                    <mat-card-content>
+                        <div class="field">
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Name" [(ngModel)]="name" [formControl]="nameFormControl" />
+                                <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="nameFormControl.hasError('required')">
+                                    Name
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Description" [(ngModel)]="description" [formControl]="descriptionFormControl" />
+                                <button mat-button *ngIf="description" matSuffix mat-icon-button aria-label="Clear" (click)="description=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="descriptionFormControl.hasError('required')">
+                                    Description
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field style="width: 100%">
+                                <mat-select placeholder="Select a resource" [formControl]="resourceFormControl" [(value)]="resourceSelected" multiple>
+                                    <mat-option *ngFor="let resource of resources" [value]="resource">
+                                        {{ resource.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+        </div>
+        <div class="ui two column centered grid">
+
+            <div class="four column centered row">
+                <div class="column">
+                    <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+                </div>
+                <div class="column">
+                    <button mat-raised-button color="primary" (click)="sendTemplate()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

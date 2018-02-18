@@ -19,7 +19,8 @@
         <div id="chart-demo">
             <dx-chart
                 [dataSource]="coordinates"
-                [useAggregation]="true">
+                [useAggregation]="true"
+                [redrawOnResize]="true">
                 <dxi-series>
                     <dxo-point [size]="7"></dxo-point>
                 </dxi-series>

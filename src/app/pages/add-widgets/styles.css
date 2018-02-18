@@ -1,4 +1,17 @@
 .modal{
     background-color:#f7f7f7;
+}
 
+.ui.grid.widget-attr {
+    margin: 5px;
+    max-width: 97%;
+    min-width: 97%;
+}
+
+.mat-form-field-infix {
+    width: 150px !important;
+}
+
+.title-wid {
+    text-align: center;
 }
