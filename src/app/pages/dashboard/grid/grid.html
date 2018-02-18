@@ -5,7 +5,7 @@
              [dropZones]="['c' + c]" (onDropSuccess)="updateGadgetPositionInBoard($event, c, r, 'column')">
 
             <div *ngIf="!col.gadgets || col.gadgets.length== 0" class="ui center aligned massive info message"
-                 style="text-align:center" [ngClass]="{'short-row': row.columns.length > 3, 'tall-row': row.columns.length <= 3 }">
+                 style="text-align:center" [ngClass]="{'short-row': row.columns.length > 3, 'tall-row': row.columns.length <= 3 }" (click)="clickEmptyWidget()">
 
                 <span style="font-size: .75em">Add Widget!</span>
 

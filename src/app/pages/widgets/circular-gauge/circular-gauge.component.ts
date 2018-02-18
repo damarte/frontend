@@ -7,10 +7,13 @@ import { CircularGaugeService } from './service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 import { DevicesService } from 'iot_devices_fiwoo';
+import { Router, NavigationStart } from '@angular/router';
 
 
 
 declare var d3: any;
+
+var interval;
 
 @Component({
     selector: 'app-dynamic-component',
@@ -38,7 +41,8 @@ export class CircularGaugeComponent extends WidgetsBase {
                 protected _changeDetectionRef: ChangeDetectorRef,
                 protected _circularGaugeService: CircularGaugeService,
                 iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
-                private devicesService: DevicesService) {
+                private devicesService: DevicesService,
+                router:Router) {
         super(_runtimeService,
             _widgetsInstanceService,
             _propertyService,            
@@ -46,8 +50,18 @@ export class CircularGaugeComponent extends WidgetsBase {
 
         iconRegistry.addSvgIcon(
             'thumbs-up',
-            sanitizer.bypassSecurityTrustResourceUrl('assets/images/svg-icons/ic_add_white_36px.svg'));   
+            sanitizer.bypassSecurityTrustResourceUrl('assets/images/svg-icons/ic_add_white_36px.svg'));  
+
+            clearInterval(interval);
+
+            router.events.subscribe(event => {
+                if(event instanceof NavigationStart) {
+                   
+                    clearInterval(interval);
+                }
+              });
             
+              
             
     }
 
@@ -103,7 +117,7 @@ export class CircularGaugeComponent extends WidgetsBase {
     private loadDataGeneral (deviceId, attribute){
         var context = this;
         this.loadData(deviceId, attribute);
-        setInterval(function(){
+        interval = setInterval(function(){
             context.loadData(deviceId, attribute);
         }
         , context.refreshTime);         

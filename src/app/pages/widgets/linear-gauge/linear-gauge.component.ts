@@ -6,9 +6,12 @@ import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
 import { LinearGaugeService } from './service'; 
 import { DevicesService } from 'iot_devices_fiwoo';
+import { Router, NavigationStart } from '@angular/router';
 
 
 declare var jQuery: any;
+
+var interval;
 
 @Component({
     selector: 'app-dynamic-component',
@@ -81,7 +84,8 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
                 protected _propertyService: WidgetsPropertyService,                
                 private _changeDetectionRef: ChangeDetectorRef,
                 private _linearGaugeService: LinearGaugeService,
-                private devicesService: DevicesService) {
+                private devicesService: DevicesService,
+                router:Router) {
         super(_procMonRuntimeService,
             _widgetsInstanceService,
             _propertyService,            
@@ -91,24 +95,18 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
         Object.assign(this, {single});
 
+        router.events.subscribe(event => {
+            if(event instanceof NavigationStart) {
+               
+                clearInterval(interval);
+            }
+          });
+
         
     }
 
     public configDone(){
         if(this.devicesService != null){
-            // if (this.widget != undefined && this.widget.extra_data != undefined){
-            //     var extra_data: any;
-            //     if (this.widget.extra_data.length > 0){
-            //         extra_data = this.widget.extra_data[0];
-            //     }
-            //     this.titleNew = extra_data.device_name;
-            //     this.loadData(extra_data.device_id, extra_data.attribute);
-
-            //     this.minValue = this.getPropFromPropertyPages("min");
-            //     this.maxValue = this.getPropFromPropertyPages("max");
-    
-            // }
-
             if (this.widget != undefined && this.widget.sources != undefined){
                 var source: any;
                 
@@ -143,7 +141,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
     private loadDataGeneral (deviceId, attribute){
         var context = this;
         this.loadData(deviceId, attribute);
-        setInterval(function(){
+        interval = setInterval(function(){
             context.loadData(deviceId, attribute);
         }
         , context.refreshTime);         

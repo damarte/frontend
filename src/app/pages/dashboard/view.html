@@ -8,7 +8,7 @@
             </a>
         
           
-            <a class="item" (click)="boardConfigModal.showBoardConfigurationModal('Configuration')">               
+            <a class="item" (click)="boardConfigModal.showBoardConfigurationModal('Dashboard Configuration')">               
                 <button mat-raised-button color="accent">Add Dashboard</button>
             </a>
         </div>
@@ -34,7 +34,7 @@
         </app-add-gadget-modal>
         
         <!-- the grid component will create the requested gadget dynamically -->
-        <app-grid-component #gadgetGrid (boardUpdateEvent)="updateDashboardMenu($event)">
+        <app-grid-component #gadgetGrid (boardUpdateEvent)="updateDashboardMenu($event)" (addWidgetEvent)="addGadgetModal.showComponentLibraryModal('Add Widget')">
         </app-grid-component>
         
         <app-board-configuration-modal #boardConfigModal (dashboardCreateEvent)="gadgetGrid.createBoard($event)" (dashboardEditEvent)="gadgetGrid.editBoard($event)"

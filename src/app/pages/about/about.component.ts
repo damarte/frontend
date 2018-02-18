@@ -20,6 +20,9 @@ export class AboutComponent{
       name: {
         title: 'Name',
         type: 'string',
+        filter: {
+          placeholder: 'asdaadasdasdasdas'
+        }
       },
       license: {
         title: 'License',

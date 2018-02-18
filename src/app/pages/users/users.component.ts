@@ -97,7 +97,7 @@ export class UsersComponent {
       data => {          
           let users: any[] = data.json(); 
          /* users.forEach(element => {
-            this.source.prepend(element);   
+            this.source.prepend(element);     
           });     */
           
           this.source.load(users);

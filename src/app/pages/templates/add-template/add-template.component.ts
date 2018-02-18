@@ -256,7 +256,7 @@ export class AddTemplateComponent implements OnInit {
 
       this.template_name = this.editedTemplate.name;
       this.entity_type = this.editedTemplate.entity_type;
-      this.isPublic = this.editedTemplate._public;
+      this.isPublic = this.editedTemplate.public;
       this.setCurrentProtocolFromId(this.editedTemplate.protocol);
       this.setCurrentTransportProtocolFromId(this.editedTemplate.transport_protocol);
       // owner: "";

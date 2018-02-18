@@ -44,11 +44,8 @@ const PAGES_COMPONENTS = [
     MatChipsModule,
     MatDialogModule,
     MatExpansionModule,
-<<<<<<< HEAD
-    RouterModule
-=======
+    RouterModule,
     MatDatepickerModule
->>>>>>> 545e38f930c27e48d5833152a30c74211f00da93
   ],
   providers: [
     AboutService

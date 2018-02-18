@@ -7,6 +7,9 @@ import { Observable } from 'rxjs/Observable';
 import { ObservableWebSocketService } from '../../services/websocket-service';
 import { Product, Service, DeviceData } from './service';
 import { DevicesService, Device } from 'iot_devices_fiwoo';
+import { Router, NavigationStart } from '@angular/router';
+
+var interval;
 
 @Component({
     selector: 'app-dynamic-component',
@@ -44,11 +47,21 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                 protected _propertyService: WidgetsPropertyService,                
                 private _changeDetectionRef: ChangeDetectorRef,
                 private _webSocketService: ObservableWebSocketService,
-                private service: Service, public deviceService: DevicesService) {
+                private service: Service, public deviceService: DevicesService,
+                router:Router) {
         super(_runtimeService,
             _widgetsInstanceService,
             _propertyService,            
             _changeDetectionRef);
+
+            clearInterval(interval);
+
+            router.events.subscribe(event => {
+                if(event instanceof NavigationStart) {
+                   
+                    clearInterval(interval);
+                }
+              });
     }
 
     devicesToValues() {
@@ -66,7 +79,7 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     private loadDataGeneral (){
         var context = this;
         this.loadData();
-        setInterval(function(){
+        interval = setInterval(function(){
             context.loadRepeatData();
         }
         , context.refreshTime);         

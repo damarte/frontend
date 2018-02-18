@@ -21,8 +21,8 @@
 
             <table class="ui padded table" dnd-sortable-container [sortableData]="dashboardList">
                 <thead>
-                <th class="c-col">#</th>
-                <th>name</th>
+                <th class="c-col">Nº</th>
+                <th>Dashboard's name</th>
                 <th></th>
                 </thead>
                 <tr class="ui basic segment" *ngFor="let board of dashboardList; let i = index" dnd-sortable
@@ -44,9 +44,10 @@
                         <input [(ngModel)]="newDashboardItem" matInput placeholder="Enter Dashboard Name">
                     </mat-input-container>
 
-                    <a mat-mini-fab routerLink="." color='primary'(click)="createBoard(newDashboardItem)">
+                    <button mat-raised-button color="primary" (click)="createBoard(newDashboardItem)">Create</button>
+                    <!-- <a mat-mini-fab routerLink="." color='primary'(click)="createBoard(newDashboardItem)">
                     <mat-icon>add</mat-icon>
-                </a>
+                    </a> -->
                 </div>
 
             </div>

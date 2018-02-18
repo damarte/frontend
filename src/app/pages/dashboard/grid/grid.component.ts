@@ -14,6 +14,7 @@ import { ToastService } from '../../toast/toast.service';
 })
 export class GridComponent {
     @Output() boardUpdateEvent: EventEmitter<any> = new EventEmitter();
+    @Output() addWidgetEvent: EventEmitter<any> = new EventEmitter();
 
     model: any = {};
     noGadgets = true;
@@ -69,6 +70,10 @@ export class GridComponent {
                 me.gadgetLibrary.push(item);
             });
         });
+    }
+
+    clickEmptyWidget(){
+        this.addWidgetEvent.emit();
     }
 
     getGadgetFromLibrary(gadgetType: string) {
@@ -422,29 +427,6 @@ export class GridComponent {
                                     property.order = property._order;        
                                 });
                             });
-
-                            // gadget.sources.forEach(source => {
-
-                            //     if (source.parameters.length == 0){
-                                    
-                            //         source.parameters.push({
-                            //            "name": "device_name",
-                            //            "value": "Antwerp2",
-                            //            "operator": "="
-                            //         });
-                            //         source.parameters.push({
-                            //             "name": "device_id",
-                            //             "value": "antwerp_a2",
-                            //             "operator": "="
-                            //          });
-                            //          source.parameters.push({
-                            //             "name": "attribute",
-                            //             "value": "temperature",
-                            //             "operator": "="
-                            //          });
-                            //     }
-                            // });
-
                         });                        
                     });    
                 });
@@ -500,8 +482,6 @@ export class GridComponent {
 
             this.updateServicesAndGridWithModel();
             this.saveBoard('Initialization of a new board', true);
-
-
         });
     }
 
@@ -515,14 +495,24 @@ export class GridComponent {
 
         this.updateServicesAndGridWithModel();
 
-        this._configurationService.saveBoard(this.getModel()).subscribe(result => {
+        this._configurationService.saveBoard(this.getModel()).subscribe(result => { 
 
                 this._toastService.sendMessage(this.getModel().title + ' has been updated!', '');
 
                 if (alertBoardListenerThatTheMenuShouldBeUpdated) {
                     this.boardUpdateEvent.emit(this.getModel().title);
                 }
-                this.loadBoardById(this.model.id);
+                // result = result.json();              
+                // if (result){
+                //     this.clearGridModelAndGadgetInstanceStructures();
+                //     result = this.updateBoard(result);
+                //     this.setModel(result);
+                //     this.updateServicesAndGridWithModel();
+                //     this.boardUpdateEvent.emit(result.id);
+                // }else{
+                    this.loadBoardById(this.model.id);
+                // }
+
             },
             error => console.error('Error' + error),
             () => console.debug('Saving configuration to store!'));

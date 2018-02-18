@@ -90,7 +90,7 @@ export class ConfigurationService {
         }
     }
 
-    public saveBoard(board: any) {
+    public saveBoard(board: any): any {
 
         this.model = board;
 
@@ -205,7 +205,7 @@ export class ConfigurationService {
            case "CircularGaugeComponent":
             name = "analogGauge";
            break;
-           case "GisMapComponen":
+           case "GisMapComponent":
             name = "cards";
            break;
         

@@ -106,7 +106,7 @@ export class TemplatesComponent {
   onModalHidden(reload){
     //Recargamos los templates
     if (reload){
-     this.loadTemplates(null);
+     this.loadTemplates(this.filterData);
     }
   }
 

@@ -16,7 +16,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AssetsComponent {
   router: any;
 
-  settings = {    
+  settings = {   
+    mode: 'external',
+    actions: {
+      add: false
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -67,17 +71,10 @@ export class AssetsComponent {
 
 
   source: LocalDataSource = new LocalDataSource();
-  urlBase: string = 'https://platform.fiwoo.eu/api/user-management/users';
+  urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
 
   constructor(private _assetsService: AssetsService,              
               private http: Http) { 
-        
-      /* Connect with SDK
-      const data = this._usersService.getUsers().subscribe(res => {       
-      this.source.prepend(res);
-      console.log(res);
-      });*/
-
        this.getAssets();  
   }
 
@@ -89,19 +86,24 @@ export class AssetsComponent {
       data => {
           
           let assets: any[] = data.json(); 
-
-          assets.forEach(element => {
-            this.source.prepend(element);   
-          });                      
+          this.source.load(assets);                   
 
           console.log('getAssets: ', assets);      
 
         },
+
       err => {        
         console.log(err);          
       } 
     );  
-  } 
+  }
+
+  onModalHidden(reload){
+    //Recargamos los templates
+    if (reload){
+     this.getAssets();
+    }
+  }
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete the asset: '+ event.data.name +' ?')) {

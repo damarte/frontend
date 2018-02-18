@@ -123,7 +123,7 @@ export class DevicesComponent {
   onModalHidden(reload){
     //Recargamos los templates
     if (reload){
-      this.loadDevices(null);
+      this.loadDevices(this.filterData);
     }
   }
 
