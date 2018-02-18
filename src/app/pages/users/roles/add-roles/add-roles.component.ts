@@ -120,9 +120,9 @@ export class AddRolesComponent implements OnInit {
 
     if (this.editedRole != null){
       
-      this.modalTitle = "Edit Role";      
-      this.name = this.editedRole.name;  
-      this.description = this.editedRole.description;    
+      this.modalTitle = "Edit Role";
+      this.name = this.editedRole.name;
+      this.description = this.editedRole.description;  
       this.resourceSelected = this.editedRole.resources;   
 
     }else{

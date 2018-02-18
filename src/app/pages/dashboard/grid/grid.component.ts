@@ -339,8 +339,8 @@ export class GridComponent {
                     this.loadBoardById(sortedBoard[0].id);
                 }
             } else {
-
-                this.loadDefaultBoard();
+                this.boardUpdateEvent.emit('');
+                // this.loadDefaultBoard();
             }
         });
     }

@@ -71,6 +71,8 @@ export class DashboardComponent implements OnInit {
                     this.selectBoard(newBoard);
                 }
                 this.selectBoard(newBoard);
+            }else{
+                this.dashboardList = [];
             }
         });
     }

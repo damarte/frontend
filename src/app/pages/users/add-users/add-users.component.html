@@ -90,15 +90,21 @@
                                     {{ role.name  }}
                                     </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="roleFormControl.hasError('required')">
+                                     Role <strong>required</strong>
+                                </mat-error>
                             </mat-form-field>
 
                             <mat-form-field style="width: 100%">
-                                        <mat-select placeholder="Select an asset" [formControl]="assetFormControl" [(value)]="assetSelected" multiple>
-                                            <mat-option *ngFor="let asset of assets" [value]="asset" >
-                                            {{ asset.name  }}
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                <mat-select placeholder="Select an asset" [formControl]="assetFormControl" [(value)]="assetSelected" multiple>
+                                    <mat-option *ngFor="let asset of assets" [value]="asset" >
+                                    {{ asset.name  }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="assetFormControl.hasError('required')">
+                                    Asset <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
 
                             <mat-form-field style="width: 100%">
                                 <mat-select placeholder="Select a gender" [(value)]="genderSelected"  [formControl]="genderFormControl" >
@@ -106,13 +112,19 @@
                                     {{ gender }}
                                     </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="genderFormControl.hasError('required')">
+                                        Gender <strong>required</strong>
+                                   </mat-error>
                             </mat-form-field>
 
                             <mat-form-field style="width: 100%">
-                                        <input matInput [matDatepicker]="dateOfBirth" placeholder="Select from date" [(ngModel)]="date_of_birth" [formControl]="birthFormControl">
-                                        <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
-                                        <mat-datepicker #dateOfBirth ></mat-datepicker>
-                                </mat-form-field>                      
+                                    <input matInput [matDatepicker]="dateOfBirth" placeholder="Birth date" [(ngModel)]="date_of_birth" [formControl]="birthFormControl">
+                                    <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                                    <mat-datepicker #dateOfBirth ></mat-datepicker>
+                                    <mat-error *ngIf="birthFormControl.hasError('required')">
+                                        Birth date <strong>required</strong>
+                                    </mat-error>
+                            </mat-form-field>                      
                         </mat-card-content>
                     </mat-card>  
                 </div>

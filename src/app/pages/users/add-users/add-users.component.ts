@@ -81,6 +81,7 @@ export class AddUsersComponent implements OnInit {
   birthFormControl = new FormControl('', [
     Validators.required
   ]);
+  
 
 
  
@@ -148,7 +149,7 @@ export class AddUsersComponent implements OnInit {
     this.genderSelected = "";
     this.roleSelected = [];
     this.assetSelected = [];
-    this.date_of_birth = new Date();
+    this.date_of_birth = null;
      
   }
 
@@ -179,7 +180,7 @@ export class AddUsersComponent implements OnInit {
       this.username = this.editedUser.username;
       this.email = this.editedUser.email;
       this.password = this.editedUser.password;
-      this.confirmPassword = this.editedUser.confirmPassword;
+      this.confirmPassword = this.editedUser.password;
       this.genderSelected = this.editedUser.gender;
       this.roleSelected = this.editedUser.roles;
       this.assetSelected= this.editedUser.assets;
@@ -203,12 +204,17 @@ export class AddUsersComponent implements OnInit {
   sendTemplate (){
     //TODOD VALIDATIONS
     console.log('sendTemplate');
-
+    
     if (!this.nameFormControl.hasError('required') &&
         !this.surnameFormControl.hasError('required') &&
         !this.usernameFormControl.hasError('required') &&
         !this.emailFormControl.hasError('required') &&
-        !this.passwordFormControl.hasError('required')){
+        !this.passwordFormControl.hasError('required') &&
+        // !this.roleFormControl.hasError('required') &&
+        // !this.assetFormControl.hasError('required') && 
+        !this.genderFormControl.hasError('required') && 
+        this.password == this.confirmPassword
+      ){
         
         let allRoles = [];
 
