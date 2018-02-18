@@ -110,7 +110,7 @@ export class AddRolesComponent implements OnInit {
       closable  : true,
       onHidden  : function(){
         context.cleanValues();
-        context.onHidden.emit(context.saved);
+        context.onHidden.emit(true);
       }
     })
     .modal('show');
@@ -170,7 +170,7 @@ export class AddRolesComponent implements OnInit {
             res => {
               console.log(res);
               this.saved = true;              
-              this.hideModal();         
+              this.hideModal();           
           });          
 
         }else{
@@ -179,13 +179,13 @@ export class AddRolesComponent implements OnInit {
           this.role = {
             name: this.name,
             description: this.description,        
-            resources: allResources   
+            resources: []   
             //resources: []
           };
 
           console.log(JSON.stringify(this.role));
 
-          this._fiwooService.postUser(this.role).subscribe(
+          this._fiwooService.postRol(this.role).subscribe(
             res => {
               console.log(res);                    
           });         

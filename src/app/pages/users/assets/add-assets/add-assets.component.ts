@@ -127,7 +127,7 @@ export class AddAssetsComponent implements OnInit {
       closable  : true,
       onHidden  : function(){
         context.cleanValues();
-        context.onHidden.emit(context.saved);
+        context.onHidden.emit(true);
       }
     })
     .modal('show');
