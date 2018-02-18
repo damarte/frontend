@@ -44,7 +44,7 @@ export class NbRegisterComponent implements OnInit {
     this.provider = this.getConfigValue('forms.register.provider');
   }
 
-  urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+  urlBase: string = 'https://platform.fiwoo.eu/api/user-management/users';
 
   //Property for the user
   private user: User;
@@ -85,8 +85,15 @@ export class NbRegisterComponent implements OnInit {
       this.http.post(`${this.urlBase}/users`, this.user).subscribe( 
         res => {
            console.log('Register post: ', res); 
-           sweetAlert("Ok!", "You are registered!", "success");
-           this.router.navigate['/login'];
+           sweetAlert({
+            title: "OK!",
+            text: "You have registered!",
+            type: "success"
+          }).then(okay => {
+            if (okay) {
+              window.location.href = "/#/auth/login";
+            }
+          });
           },
         err => { 
            console.error(err);   

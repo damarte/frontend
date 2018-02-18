@@ -20,7 +20,8 @@ export class HeaderComponent implements OnInit {
 
   user: any;
 
-  userMenu = [{ title: 'Profile' }, { title: 'Log out', type:"logout" }];
+  // userMenu = [{ title: 'Profile' }, { title: 'Log out', type:"logout" }];
+  userMenu = [{ title: 'Log out', type:"logout" }];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
   onMenuClick(value): void {
     if (value != undefined && value.type == "logout"){
       // TODO LOGOUT
+      localStorage.removeItem('access_token');
       this.router.navigate(['../auth/login']);
     }
   }

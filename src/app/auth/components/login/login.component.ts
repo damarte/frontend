@@ -59,8 +59,8 @@ export class NbLoginComponent {
   }
 
   private doLogin() {
-    let url: string =
-      "http://stg-sac-fase-dos.emergyalabs.com:7000/users/login";
+    let url: string = "http://us1.fiwoo.eu:7000/users/login";
+   
     let grant_type: string = "grant_type";
     let username: string = "username";
     let password: string = "password";
@@ -84,30 +84,23 @@ export class NbLoginComponent {
         
         let user_login = data.json();
         let token = user_login.access_token;
-        localStorage.setItem('access_token', JSON.stringify(token));
-        
+        localStorage.setItem('access_token', JSON.stringify(token)); 
+        localStorage.setItem('email', JSON.stringify(this.form.value.username));
+            
         sweetAlert({
           title: "OK!",
           text: "You have logged in!",
           type: "success"
         }).then(okay => {
-          if (okay) {
+          if (okay) {            
             window.location.href = "/#/pages/dashboard";
           }
         });
+        
       },
-      err => {
-        // uncomment this lines when the ws is ok
+      err => {      
         console.error(err);
-        sweetAlert("Oops!", "Something went wrong!", "error");
-
-        // remove this lines when the ws is ok
-        // get the email user and save it in to the localstorage
-        /*localStorage.setItem('email', JSON.stringify(this.username));
-        sweetAlert("Ok!", "You are login!", "success")
-        .then((result) => {
-          this.router.navigate(['../pages/dashboard']);          
-        })     */
+        sweetAlert("Oops!", "Something went wrong!", "error");      
       }
     );
   }

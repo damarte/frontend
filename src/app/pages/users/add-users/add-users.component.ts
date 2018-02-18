@@ -13,6 +13,8 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { Http } from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FiwooService } from '../../services/fiwoo.service';
+
 
 declare var jQuery: any;
 var context: any;
@@ -92,7 +94,9 @@ export class AddUsersComponent implements OnInit {
   saved: boolean = false;  
 
   constructor(private devicesService: DevicesService,
-              private http: Http) {
+              private http: Http,
+              private _fiwooService: FiwooService ) {
+
     context = this;     
     this.getRoles();
     this.getAssets();
@@ -106,28 +110,27 @@ export class AddUsersComponent implements OnInit {
   assets: any[];
 
   private getRoles(){ 
-    this.http.get(`${this.urlBase}/roles`).subscribe( data => {          
-          let roles: any[] = data.json(); 
-          this.roles = roles;
-        },
-      err => {        
-        console.log(err);          
-      } 
+    this._fiwooService.getRoles().subscribe( 
+      data => {           
+        let roles: any[] = data; 
+        this.roles = roles;
+      },
+      err => {
+        console.log(err);      
+      }
     );  
   } 
 
 
   private getAssets(){     
-    this.http.get(`${this.urlBase}/assets`).subscribe(
-      data => {
-          
-          let assets: any[] = data.json(); 
-          this.assets = assets;
-          console.log('getAssets: ', assets);
-        },
-      err => {        
-        console.log(err);          
-      } 
+     this._fiwooService.getAssets().subscribe( 
+      data => {           
+        let assets: any[] = data; 
+        this.assets = assets;
+      },
+      err => {
+        console.log(err);      
+      }
     );  
   } 
 
@@ -241,12 +244,12 @@ export class AddUsersComponent implements OnInit {
           // PUT
           console.log(JSON.stringify(this.user));
 
-          this.http.put(`${this.urlBase}/users/${this.editedUser.id}`, this.user).subscribe(
+          this._fiwooService.updateUser(this.editedUser.id, this.user).subscribe(
             res => {
               console.log(res);
               this.saved = true;              
               this.hideModal();         
-          });        
+          });          
 
         }else{
 
@@ -265,10 +268,15 @@ export class AddUsersComponent implements OnInit {
           };
 
           console.log(JSON.stringify(this.user));
-    
-          this.http.post(`${this.urlBase}/users`, this.user).subscribe(res => {            
-            console.log('Add User',res);            
+
+          this._fiwooService.postUser(this.user).subscribe(
+            res => {
+              console.log(res);                    
           });    
+    
+          /*this.http.post(`${this.urlBase}/users`, this.user).subscribe(res => {            
+            console.log('Add User',res);            
+          }); */   
         
         }
 

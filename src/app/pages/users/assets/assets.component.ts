@@ -3,6 +3,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { AssetsService } from 'um_fiwoo';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FiwooService } from "../../services/fiwoo.service";
 
 
 @Component({
@@ -71,103 +72,42 @@ export class AssetsComponent {
 
 
   source: LocalDataSource = new LocalDataSource();
-  urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+ 
 
   constructor(private _assetsService: AssetsService,              
-              private http: Http) { 
-       this.getAssets();  
+              private http: Http,
+              private _fiwooService: FiwooService) { 
+       this.loadAssets();  
   }
 
   
 
-  private getAssets(){   
-  
-    this.http.get(`${this.urlBase}/assets`).subscribe(
+  private loadAssets() {
+    this._fiwooService.getAssets().subscribe(
       data => {
-          
-          let assets: any[] = data.json(); 
-          this.source.load(assets);                   
-
-          console.log('getAssets: ', assets);      
-
-        },
-
-      err => {        
-        console.log(err);          
-      } 
-    );  
+        this.source.load(data);
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
-  onModalHidden(reload){
-    //Recargamos los templates
+  onModalHidden(reload){   
     if (reload){
-     this.getAssets();
+     this.loadAssets();
     }
   }
 
   onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete the asset: '+ event.data.name +' ?')) {
-      event.confirm.resolve();
-      // Call service to delete this role
-      this.http.delete(`${this.urlBase}/assets/${event.data.id}`).subscribe(res => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete the asset: " + event.data.name + " ?"
+      )
+    ) {
+      this._fiwooService.deleteAsset(event.data.id).subscribe(res => {
         console.log(res);
-      },
-    ); 
-    } else {
-      event.confirm.reject();
-    }
-  }
-
-  // add
-  onCreateConfirm(event) {
-    if (window.confirm('Are you sure you want to create?')) {    
-      
-      let body = {  
-        "id": event.newData.id,
-        "name": event.newData.name,
-        "description": event.newData.description,
-        "type": event.newData.type,
-        "parents": [],
-        "childrens": []    
-      }
-
-      this.http.post(`${this.urlBase}/assets`, body).subscribe(res => {
-        
-        event.confirm.resolve(event.newData);
       });
-
-    } else {
-      event.confirm.reject();
     }
   }
-
-
-
-  // update 
-  onSaveConfirm(event) {
-    
-    let body = {  
-      "id": event.newData.id,
-      "name": event.newData.name,
-      "description": event.newData.description,
-      "type": event.newData.type,
-      "parents": [],
-      "childrens": [] 
-    }
-
-  this.http.put(`${this.urlBase}/assets/${event.data.id}`, body).subscribe(
-        res => {
-          console.log(res);
-          event.confirm.resolve(event.newData);
-      },
-      (err: HttpErrorResponse) => {
-        if (err.error instanceof Error) {
-          console.log("Client-side error occured.");
-        } else {
-          console.log("Server-side error occured.");
-        }
-      });
-  }
- 
-
 }

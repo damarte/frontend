@@ -13,6 +13,7 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { Http } from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FiwooService } from '../../../services/fiwoo.service';
 
 declare var jQuery: any;
 var context: any;
@@ -65,7 +66,8 @@ export class AddRolesComponent implements OnInit {
   saved: boolean = false;  
 
   constructor(private devicesService: DevicesService,
-              private http: Http) {
+              private http: Http,
+              private _fiwooService: FiwooService) {
     context = this;     
     this.getResources();
    
@@ -75,14 +77,15 @@ export class AddRolesComponent implements OnInit {
   resource: any[];
 
   private getResources(){ 
-    this.http.get(`${this.urlBase}/resources`).subscribe( data => {          
-          let resources: any[] = data.json(); 
-          this.resource = resources;
-        },
-      err => {        
-        console.log(err);          
-      } 
-    ); 
+    this._fiwooService.getResources().subscribe( 
+      data => {           
+        let resources: any[] = data; 
+        this.resource = resources;
+      },
+      err => {
+        console.log(err);      
+      }
+    );    
   } 
 
 
@@ -163,14 +166,14 @@ export class AddRolesComponent implements OnInit {
         if (this.editedRole != undefined){
 
           // PUT
-          console.log(JSON.stringify(this.role));
-
-          this.http.put(`${this.urlBase}/roles/${this.editedRole.id}`, this.role).subscribe(
+          console.log(JSON.stringify(this.role));        
+          
+          this._fiwooService.updateRol(this.editedRole.id, this.role).subscribe(
             res => {
               console.log(res);
               this.saved = true;              
               this.hideModal();         
-          });        
+          });          
 
         }else{
 
@@ -183,10 +186,11 @@ export class AddRolesComponent implements OnInit {
           };
 
           console.log(JSON.stringify(this.role));
-    
-          this.http.post(`${this.urlBase}/roles`, this.role).subscribe(res => {            
-            console.log('Add Role',res);            
-          });    
+
+          this._fiwooService.postUser(this.role).subscribe(
+            res => {
+              console.log(res);                    
+          });         
         
         }
 

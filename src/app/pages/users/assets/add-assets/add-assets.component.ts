@@ -13,6 +13,8 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { Http } from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FiwooService } from '../../../services/fiwoo.service';
+
 
 declare var jQuery: any;
 var context: any;
@@ -73,7 +75,9 @@ export class AddAssetsComponent implements OnInit {
   saved: boolean = false;  
 
   constructor(private devicesService: DevicesService,
-              private http: Http) {
+              private http: Http,
+              private _fiwooService: FiwooService) {
+                
     context = this;
     this.getAssets();
   }
@@ -85,18 +89,17 @@ export class AddAssetsComponent implements OnInit {
   roles: any[];
   assets: any[];
 
-  private getAssets(){     
-    this.http.get(`${this.urlBase}/assets`).subscribe(
-      data => {
-          
-          let assets: any[] = data.json(); 
-          this.assets = assets;
-          console.log('getAssets: ', assets);
-        },
-      err => {        
-        console.log(err);          
-      } 
-    );  
+  private getAssets(){   
+
+    this._fiwooService.getAssets().subscribe( 
+      data => {           
+        let assets: any[] = data; 
+        this.assets = assets;
+      },
+      err => {
+        console.log(err);      
+      }
+    );    
   } 
 
   ngOnInit() {
@@ -192,7 +195,7 @@ export class AddAssetsComponent implements OnInit {
           // PUT
           console.log(JSON.stringify(this.asset));
 
-          this.http.put(`${this.urlBase}/assets/${this.editedAsset.id}`, this.asset).subscribe(
+          this._fiwooService.updateAsset(this.editedAsset.id, this.asset).subscribe(
             res => {
               console.log(res);
               this.saved = true;              
@@ -201,11 +204,12 @@ export class AddAssetsComponent implements OnInit {
 
         }else{
 
-          console.log(JSON.stringify(this.asset));
-    
-          this.http.post(`${this.urlBase}/assets`, this.asset).subscribe(res => {            
-                 
-          });    
+          console.log(JSON.stringify(this.asset));    
+         
+          this._fiwooService.postAsset(this.asset).subscribe(
+            res => {
+              console.log(res);                    
+          });      
         
         }
 

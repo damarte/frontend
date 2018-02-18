@@ -22,6 +22,9 @@ import { RouterModule } from '@angular/router'
 import { AddUsersComponent } from './users/add-users/add-users.component';
 import { AddAssetsComponent } from './users/assets/add-assets/add-assets.component';
 import { AddRolesComponent } from './users/roles/add-roles/add-roles.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FiwooService } from './services/fiwoo.service';
+
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -45,10 +48,12 @@ const PAGES_COMPONENTS = [
     MatDialogModule,
     MatExpansionModule,
     RouterModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    HttpClientModule
   ],
   providers: [
-    AboutService
+    AboutService,
+    FiwooService
   ],
   declarations: [
     ...PAGES_COMPONENTS, 
