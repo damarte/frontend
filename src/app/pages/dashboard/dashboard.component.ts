@@ -64,14 +64,13 @@ export class DashboardComponent implements OnInit {
 
                 });
 
-                if (selectedBoard === '') {
-
-                    this.selectBoard(this.dashboardList[0]);
-
+                if (!selectedBoard.id) {
+                    var newBoard = this.dashboardList[0];
                 } else {
-
-                    this.selectBoard(selectedBoard);
+                    newBoard = {id: selectedBoard.id, title: selectedBoard.title};
+                    this.selectBoard(newBoard);
                 }
+                this.selectBoard(newBoard);
             }
         });
     }

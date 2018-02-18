@@ -353,7 +353,7 @@ export class GridComponent {
                 board = this.updateBoard(board);
                 this.setModel(board);
                 this.updateServicesAndGridWithModel();
-                this.boardUpdateEvent.emit(boardId);
+                this.boardUpdateEvent.emit(board);
             },
             error => {
                 console.error(error);
@@ -386,11 +386,12 @@ export class GridComponent {
     private updateBoard(board){
         if (board != null){
             board.title = board.name;
-            if (board.structure == null){
-                board.structure = "8-8";
+            if (board.structure == null){   
+                board.structure = "8-4-4";
             }
             var columnEmptyObject1 = {"styleClass": "eight wide", gadgets: []};
-            var columnEmptyObject2 = {"styleClass": "eight wide", gadgets: []};
+            var columnEmptyObject2 = {"styleClass": "four wide", gadgets: []};
+            var columnEmptyObject2 = {"styleClass": "four wide", gadgets: []};
             var rowEmptyObject = {columns: [columnEmptyObject1, columnEmptyObject2]}
 
 
@@ -398,7 +399,7 @@ export class GridComponent {
 
                 for (var i=0; i < 3; i++){
 
-                    board.rows.push({"columns": [{"styleClass": "eight wide", gadgets: []}, {"styleClass": "eight wide", gadgets: []}]});
+                    board.rows.push({"columns": [{"styleClass": "eight wide", gadgets: []}, {"styleClass": "four wide", gadgets: []}, {"styleClass": "four wide", gadgets: []}]});
                 }
 
                
@@ -491,6 +492,7 @@ export class GridComponent {
         this.updateGridState();
     }
 
+
     private saveBoard(operation: string, alertBoardListenerThatTheMenuShouldBeUpdated: boolean) {
 
         this.updateServicesAndGridWithModel();
@@ -500,18 +502,33 @@ export class GridComponent {
                 this._toastService.sendMessage(this.getModel().title + ' has been updated!', '');
 
                 if (alertBoardListenerThatTheMenuShouldBeUpdated) {
-                    this.boardUpdateEvent.emit(this.getModel().title);
+                    this.boardUpdateEvent.emit(this.getModel());
                 }
-                // result = result.json();              
-                // if (result){
-                //     this.clearGridModelAndGadgetInstanceStructures();
-                //     result = this.updateBoard(result);
-                //     this.setModel(result);
-                //     this.updateServicesAndGridWithModel();
-                //     this.boardUpdateEvent.emit(result.id);
-                // }else{
-                    this.loadBoardById(this.model.id);
-                // }
+                if (this.getModel().isNew){
+                    this.getModel().isNew = false;
+                    result = result.json();              
+                    if (result){
+                        this.clearGridModelAndGadgetInstanceStructures();
+                        result = this.updateBoard(result);
+                        this.setModel(result);
+                        this.updateServicesAndGridWithModel();
+                        this.boardUpdateEvent.emit(result);
+                    }else{
+                        this.loadBoardById(this.model.id);
+                    }
+                }else{
+                    // result = result.json();              
+                    // if (result){
+                    //     this.clearGridModelAndGadgetInstanceStructures();
+                    //     result = this.updateBoard(result);
+                    //     this.setModel(result);
+                    //     this.updateServicesAndGridWithModel();
+                    //     this.boardUpdateEvent.emit(result);
+                    // }else{
+                        this.loadBoardById(this.model.id);
+                    // }
+                }
+                
 
             },
             error => console.error('Error' + error),

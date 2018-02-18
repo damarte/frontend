@@ -19,8 +19,8 @@ export class ConfigurationService {
      * @type {string}
      */
     // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
-    remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
-    // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
+    // remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
+    remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
 
     
 
@@ -134,7 +134,6 @@ export class ConfigurationService {
             const headers = new Headers();
             headers.append('Content-Type', 'application/json');
             if (board.isNew){
-                board.isNew = false;
                 return this._http.post(this.remoteConfigurationRepository + '/', JSON.stringify(board), {headers: headers});
             }else{
                 var sendBoard = Object.assign({},board);
