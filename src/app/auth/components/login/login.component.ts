@@ -86,15 +86,20 @@ export class NbLoginComponent {
         let token = user_login.access_token;
         localStorage.setItem('access_token', JSON.stringify(token)); 
         localStorage.setItem('email', JSON.stringify(this.form.value.username));
+        
             
         sweetAlert({
           title: "OK!",
-          text: "You have logged in!",
-          type: "success"
-        }).then(okay => {
-          if (okay) {            
-            window.location.href = "/#/pages/dashboard";
-          }
+          text: "You have logged in!",         
+          showLoaderOnConfirm: true,
+          preConfirm: (email) => {
+            return new Promise((resolve) => {
+              window.location.href = "/#/pages/dashboard";
+              setTimeout(() => {                               
+                resolve()                
+              }, 5000)
+            })
+          },
         });
         
       },

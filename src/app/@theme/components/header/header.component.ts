@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit {
     if (value != undefined && value.type == "logout"){
       // TODO LOGOUT
       localStorage.removeItem('access_token');
+      localStorage.removeItem('email');
       this.router.navigate(['../auth/login']);
     }
   }

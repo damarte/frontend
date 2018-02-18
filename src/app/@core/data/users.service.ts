@@ -21,14 +21,14 @@ export class UserService {
   };*/
 
 
-  userlogin: any;
+  userlogin: any = JSON.parse(localStorage.getItem('email'));
   users: any; 
 
   private userArray: any[];
 
   constructor() {
    
-    if  (this.userlogin) {
+    if  (this.userlogin !== undefined) {
       this.userlogin = JSON.parse(localStorage.getItem('email'));
     } else {
       this.userlogin = "user@user.com";  
