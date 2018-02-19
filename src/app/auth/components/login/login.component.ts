@@ -9,6 +9,7 @@ import { UsersService, UserLogin } from "um_fiwoo";
 import { Http, Headers, RequestOptions, URLSearchParams } from "@angular/http";
 import "rxjs/Rx";
 import sweetAlert from "sweetalert2";
+import { FiwooService } from "../../../pages/services/fiwoo.service";
 
 @Component({
   selector: "nb-login",
@@ -35,6 +36,7 @@ export class NbLoginComponent {
     @Inject(NB_AUTH_OPTIONS_TOKEN) protected config = {},
     protected router: Router,
     protected _usersService: UsersService,
+    private fiwooService: FiwooService,
     private http: Http
   ) {
     this.redirectDelay = this.getConfigValue("forms.login.redirectDelay");
@@ -59,8 +61,6 @@ export class NbLoginComponent {
   }
 
   private doLogin() {
-    let url: string = "https://us1.fiwoo.eu:7000/users/login";
-   
     let grant_type: string = "grant_type";
     let username: string = "username";
     let password: string = "password";
@@ -70,15 +70,7 @@ export class NbLoginComponent {
     body.append(username, this.form.value.username);
     body.append(password, this.form.value.password);
 
-    let headers = new Headers();
-    headers.append(
-      "Authorization",
-      "Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G"
-    );
-
-    let options = new RequestOptions({ headers: headers });
-
-    this.http.post(url, body, options).subscribe(
+    this.fiwooService.doLogin(body).subscribe(
       data => {
         console.log("Login Data: ", data);
         
