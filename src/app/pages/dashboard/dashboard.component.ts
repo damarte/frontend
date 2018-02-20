@@ -3,7 +3,6 @@ import { ConfigurationService } from '../services/configuration.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/Rx';
-import { setTimeout } from 'timers';
 
 
 declare var jQuery: any;

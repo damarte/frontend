@@ -3,6 +3,8 @@
 /tmp
 /out-tsc
 
+/dist
+
 package-lock.json
 
 # dependencies
