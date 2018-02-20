@@ -90,11 +90,12 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
                 var southWest = L.latLng(this.maps['bbox'][0], this.maps['bbox'][1]);
                 var northEast = L.latLng(this.maps['bbox'][2],this.maps['bbox'][3]);
                 var bounds = L.latLngBounds(southWest, northEast);
+                console.log(this.maps['bbox'],bounds);
                 var map = L.map('mapid'+instanceId,{
                     layers:[layer1, layer2],
-                    //maxBounds: bounds,
+                    maxBounds: bounds,
                     center: [0,0],
-                    zoom:12,
+                    zoom:18,
                     maxBoundsViscosity: 1,
                     bounceAtZoomLimits: false,
                     worldCopyJump: true,
@@ -103,6 +104,8 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
 
                 this.map = map;
                 this.features = this.maps['features'];
+
+                map.fitBounds(bounds); // [2]
 
                 map.on('mousemove ', function(e){
                     document.getElementById('location').innerHTML =  parseFloat(e['latlng']['lat']).toFixed(3) + " / " + parseFloat(e['latlng']['lng']).toFixed(3);      
