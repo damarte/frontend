@@ -13,18 +13,47 @@ crossorigin=""></script>
             [actionInitiated]="actionInitiated"
             [showOperationControls]="false"
             [gadgetHasOperationControls]="false"
-            [showConfigurationControl]="showConfigurationControl"
             [showControls]="showControls"
             (toggleConfigModeEvent)="toggleConfigMode()"
             (removeEvent)="remove()"            
             (helpEvent)="helpModal.showHelp()">
     </app-gadget-header>
 
-    <div id="mapid{{instanceId}}" class="mapid"></div>
+    <div id="mapid{{instanceId}}" class="mapid" (click)="map.on('click', this.onMapClick, this);"></div>
+    <div id="wrapper">
+        <div id="location"></div>
+        <div id="device"></div>
+        <div id="properties"></div>
+    </div>
 
+    <div *ngIf="attrs">
+        <select (change)="this.history($event.target.value)">
+            <option [ngValue]="null" disabled [selected]="true"> Please select one option </option>
+            <option *ngFor="let attr of attrs" value="{{attr}}">{{attr | uppercase}}</option>
+        </select>
+    </div>
+
+    <div  *ngIf="showLineChart">
+       
+        <div id="chart-demo">
+            <dx-chart
+                [dataSource]="coordinates"
+                [useAggregation]="true">
+                <dxi-series>
+                    <dxo-point [size]="7"></dxo-point>
+                </dxi-series>
+                <dxo-argument-axis [valueMarginsEnabled]="false">
+                </dxo-argument-axis>
+                <dxi-value-axis>
+                    <dxo-label>
+                        <dxo-format type="fixedPoint"></dxo-format>
+                    </dxo-label>
+                </dxi-value-axis>
+                <dxo-legend [visible]="false"></dxo-legend>  
+                <dxo-size [height]="320"></dxo-size>
+                <dxo-adaptive-layout [width]="250"></dxo-adaptive-layout>             
+            </dx-chart>
+        </div>
+    </div>
 </div>
-
-<style>
-.mapid { height: 450px; width: 340px;}
-</style>
 

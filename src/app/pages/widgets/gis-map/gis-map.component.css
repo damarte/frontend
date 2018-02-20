@@ -1,0 +1,22 @@
+.mapid { height: 450px; width: 340px;}
+
+.mat-raised-button {    line-height: 16px; }
+/*Line Chart*/
+dx-select-box#selectbox {
+    margin-top: 10px;
+}
+
+.action {
+    margin-top: 20px;
+}
+
+
+.dx-placeholder {
+    background: transparent !important;
+    color: transparent !important;
+}
+
+input.dx-texteditor-input {
+    margin-left: 14px;
+}
+
