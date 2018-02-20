@@ -4,7 +4,7 @@ import { AddWidgetsComponent } from './add-widgets-component';
 import { AddWidgetsService } from './service';
 import { HttpClientModule } from '@angular/common/http';
 import { DataListModule } from '../datalist/data-list.module';
-import { MatButtonModule, MatSelectModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatInputModule, MatCheckboxModule } from '@angular/material';
+import { MatButtonModule, MatSelectModule, MatCardModule, MatDatepickerModule, MatNativeDateModule, MatInputModule, MatCheckboxModule, MatChipsModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -19,7 +19,8 @@ import { FormsModule } from '@angular/forms';
         MatDatepickerModule,
         MatNativeDateModule,
         MatInputModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatChipsModule
         
     ],
     declarations: [

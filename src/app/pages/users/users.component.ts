@@ -7,6 +7,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Http } from "@angular/http";
 import { DatePipe } from "@angular/common";
 import { FiwooService } from "../services/fiwoo.service";
+import swal from "sweetalert2";
 
 @Component({
   selector: "app-users",
@@ -54,20 +55,21 @@ export class UsersComponent {
       surname: {
         title: "Surname",
         type: "string"
-      },
-      gender: {
-        title: "Gender",
-        type: "string"
-      },
-      date_of_birth: {
-        title: "Date of birth",
-        type: "string",
-        valuePrepareFunction: date => {
-          var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, "dd MMM yyyy");
-          return formatted;
-        }
-      }
+      },     
+      roles: {
+        title:"Role",
+        valuePrepareFunction: (roles) => {
+          return roles.map(s => " " + s.name + " ").toString()
+        },
+        filterFunction(roles?: any, search?: string): boolean {
+          let match = roles.map(s => s.name).indexOf(search) > -1
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },     
     }
   };
 
@@ -98,17 +100,29 @@ export class UsersComponent {
         console.log(err);
       }
     );
-  }
+  } 
 
   onDeleteConfirm(event): void {
-    if (
-      window.confirm(
-        "Are you sure you want to delete the user: " + event.data.name + " ?"
-      )
-    ) {
-      this._fiwooService.deleteUser(event.data.id).subscribe(res => {
-        console.log(res);
-      });
-    }
+    swal({
+      title: 'Are you sure you want to delete this user?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this._fiwooService.deleteUser(event.data.id).subscribe(res => {
+          console.log(res);
+          this.loadUsers();
+        });
+        swal(
+          'Deleted!',
+          'Your user has been deleted.',
+          'success'
+        )
+      }
+    });
   }
 }

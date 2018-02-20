@@ -60,7 +60,7 @@
                     <mat-card-content>                          
                         <mat-form-field style="width: 100%">
                             <mat-select placeholder="Select a children" [formControl]="assetChildrenFormControl" [(value)]="assetChildrenSelected" multiple>
-                                <mat-option *ngFor="let asset of assets" [value]="asset" >
+                                <mat-option *ngFor="let asset of assets" [value]="asset.name" >
                                 {{ asset.name  }}
                                 </mat-option>
                             </mat-select>

@@ -15,3 +15,8 @@
 .title-wid {
     text-align: center;
 }
+
+.chip-tag {
+    padding: 6px;
+    border-radius: 14px;
+}
