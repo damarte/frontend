@@ -4,7 +4,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { DevicesService } from 'iot_devices_fiwoo';
 //import { isDevMode } from '@angular/core';
 import { DatePipe } from '@angular/common';
-
+import swal from "sweetalert2";
 
 @Component({
   selector: 'ngx-smart-table',
@@ -125,20 +125,33 @@ export class DevicesComponent {
     if (reload){
       this.loadDevices(this.filterData);
     }
-  }
+  }  
 
   onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      // event.confirm.resolve();
-      //Call service to delete this device
-      this.devicesService.deleteDevice(event.data.entity_name).subscribe(res => {
-        console.log(res);
-        this.loadDevices(null);
-      });
-    } else {
-      // event.confirm.reject();
-    }
+    swal({
+      title: 'Are you sure you want to delete this device?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this.devicesService.deleteDevice(event.data.entity_name).subscribe(res => {
+          console.log(res);
+          this.loadDevices(null);
+        });
+        swal(
+          'Deleted!',
+          'Your device has been deleted.',
+          'success'
+        )
+      }
+    });
   }
+
+
   onSaveConfirm(event) {
     if (window.confirm('Are you sure you want to save?')) {
       // event.newData['name'] += ' + added in code';

@@ -203,7 +203,7 @@ export class AddUsersComponent implements OnInit {
 
   sendTemplate (){
     //TODOD VALIDATIONS
-    console.log('sendTemplate');
+    console.log('Edited User: ', this.editedUser);
     
     if (!this.nameFormControl.hasError('required') &&
         !this.surnameFormControl.hasError('required') &&

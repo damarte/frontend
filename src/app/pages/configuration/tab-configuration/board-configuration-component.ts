@@ -13,6 +13,7 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/take';
 import {tabsModel} from '../../dashboard/models/dashboard-configtabs.model';
 import {ConfigurationService} from '../../services/configuration.service';
+import swal from "sweetalert2";
 
 
 declare var jQuery: any;
@@ -120,7 +121,25 @@ export class BoardConfigurationComponent implements AfterViewInit {
         if (this._configurationService.demo){
             this.dashboardDeleteEvent.emit(board.title);
         }else{
-            this.dashboardDeleteEvent.emit(board.id);
+            swal({
+                title: 'Are you sure you want to delete the dashboard?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.value) {
+                  this.dashboardDeleteEvent.emit(board.id);
+                  swal(
+                    'Deleted!',
+                    'Your dashboard has been deleted.',
+                    'success'
+                  )
+                }
+              });
+            
         }
     }
 

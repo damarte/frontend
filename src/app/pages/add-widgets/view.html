@@ -96,8 +96,7 @@
                         </div>
                     </div>
                     <div class="ui bottom attached">
-                        <button *ngFor="let tag of item.tags" class="ui basic gray compact button">{{tag.name}}
-                        </button>
+                        <mat-chip class="chip-tag" *ngFor="let tag of item.tags" >{{tag.name}}</mat-chip>
                     </div>
                 </div>
     

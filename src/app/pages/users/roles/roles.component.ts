@@ -7,7 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
 import { FiwooService } from '../../services/fiwoo.service';
-
+import swal from "sweetalert2";
 
 
 @Component({
@@ -85,16 +85,29 @@ export class RolesComponent {
         console.log(err);      
       }
     );  
-}
+} 
 
   onDeleteConfirm(event): void {
-    if (
-      window.confirm("Are you sure you want to delete the rol: " + event.data.name + " ?"
-      )
-    ) {
-      this._fiwooService.deleteRol(event.data.id).subscribe(res => {
-        console.log(res);
-      });
-    }
+    swal({
+      title: 'Are you sure you want to delete the role?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this._fiwooService.deleteRol(event.data.id).subscribe(res => {
+          console.log(res);
+          this.loadRoles();
+        });
+        swal(
+          'Deleted!',
+          'Your role has been deleted.',
+          'success'
+        )
+      }
+    });
   }
 }

@@ -4,6 +4,7 @@ import { AssetsService } from 'um_fiwoo';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FiwooService } from "../../services/fiwoo.service";
+import swal from "sweetalert2";
 
 
 @Component({
@@ -100,14 +101,27 @@ export class AssetsComponent {
   }
 
   onDeleteConfirm(event): void {
-    if (
-      window.confirm(
-        "Are you sure you want to delete the asset: " + event.data.name + " ?"
-      )
-    ) {
-      this._fiwooService.deleteAsset(event.data.id).subscribe(res => {
-        console.log(res);
-      });
-    }
+    swal({
+      title: 'Are you sure you want to delete the asset?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this._fiwooService.deleteAsset(event.data.id).subscribe(res => {
+          console.log(res);
+          this.loadAssets();
+        });
+        this.source.refresh();
+        swal(
+          'Deleted!',
+          'Your asset has been deleted.',
+          'success'
+        )
+      }
+    });
   }
 }

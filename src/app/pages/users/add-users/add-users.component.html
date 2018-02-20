@@ -85,7 +85,7 @@
                     <mat-card class="result">
                         <mat-card-content>                          
                             <mat-form-field style="width: 100%">
-                                <mat-select placeholder="Select a role" [formControl]="roleFormControl" [(value)]="roleSelected" multiple>
+                                <mat-select placeholder="Select a role" [formControl]="roleFormControl" [(value)]="roleSelected">
                                     <mat-option *ngFor="let role of roles" [value]="role" >
                                     {{ role.name  }}
                                     </mat-option>

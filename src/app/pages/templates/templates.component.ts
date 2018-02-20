@@ -4,7 +4,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Output } from '@angular/core/src/metadata/directives';
 import { HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
-
+import swal from "sweetalert2";
 
 @Component({
   selector: 'app-templates',
@@ -126,16 +126,27 @@ export class TemplatesComponent {
   }
 
   onDeleteConfirm(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      // event.confirm.resolve();
-      //Call service to delete this device
-      this._templatesService.deleteTemplateById(event.data._id).subscribe(res => {
-        //console.log(res);
-        this.loadTemplates(null);
-      });
-    } else {
-      // event.confirm.reject();
-    }
+    swal({
+      title: 'Are you sure you want to delete this template?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        this._templatesService.deleteTemplateById(event.data._id).subscribe(res => {
+          //console.log(res);
+          this.loadTemplates(null);
+        });
+        swal(
+          'Deleted!',
+          'Your template has been deleted.',
+          'success'
+        )
+      }
+    });
   }
 
   onSaveConfirm(event) {

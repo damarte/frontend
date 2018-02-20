@@ -19,3 +19,35 @@
   // loading progress bar
   @include ngx-pace-theme();
 };
+
+
+.nb-theme-default .menu-item > .menu-items > .menu-item a.active{
+  border-color: #4983FF !important;
+}
+
+.nb-theme-default .compacted .menu-item a.active::before,
+.nb-theme-default nav.ng2-smart-pagination-nav .pagination li.active > span {
+  background: #4983FF !important;
+}
+
+.nb-theme-default a:hover,  {
+  color: #ccc !important;
+}
+
+
+.nb-theme-default nb-user .user-context-menu {
+  border: 2px solid #4983FF !important;
+}
+
+.nb-theme-default nb-user .user-context-menu ul > li.arrow {
+  border-bottom: 11px solid #4983FF !important;
+}
+
+.nb-theme-default nb-user .user-context-menu ul > li > a:focus, .nb-theme-default nb-user .user-context-menu ul > li > a:active, .nb-theme-default nb-user .user-context-menu ul > li > a:hover {  
+  background: #4983FF !important;  
+}
+
+
+.ui.button, .ui.button:hover {
+  background: none !important;
+}
