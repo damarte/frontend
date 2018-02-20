@@ -19,13 +19,12 @@ crossorigin=""></script>
             (helpEvent)="helpModal.showHelp()">
     </app-gadget-header>
 
-    <div id="mapid{{instanceId}}" class="mapid" (click)="map.on('click', this.onMapClick, this);"></div>
+    <div id="mapid{{instanceId}}" class="mapid" (click)="map.on('click', this.onMapClick, this);" style="width: 100%;"></div>
     <div id="wrapper">
         <div id="location"></div>
         <div id="device"></div>
         <div id="properties"></div>
     </div>
-
     <div *ngIf="attrs">
         <select (change)="this.history($event.target.value)">
             <option [ngValue]="null" disabled [selected]="true"> Please select one option </option>

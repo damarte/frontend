@@ -1,7 +1,7 @@
 export const  defaultBoard = {
     title: 'Dashboard',
     name: "Dashboard",
-    structure: '8-8',
+    structure: '8-4-4',
     _public: true,
     owner: 861,
     id: 0,

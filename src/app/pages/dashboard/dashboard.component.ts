@@ -3,6 +3,7 @@ import { ConfigurationService } from '../services/configuration.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/Rx';
+import { setTimeout } from 'timers';
 
 
 declare var jQuery: any;
@@ -23,6 +24,10 @@ export class DashboardComponent implements OnInit {
 
     constructor(private _configurationService: ConfigurationService,
         public http: Http) {
+    }
+
+    onLoadFinished(){
+        
     }
 
     ngOnInit() {
@@ -74,6 +79,11 @@ export class DashboardComponent implements OnInit {
             }else{
                 this.dashboardList = [];
             }
+
+            setTimeout(function (){
+                window.dispatchEvent(new Event('resize'));            
+            }, 1000);
+
         });
     }
 

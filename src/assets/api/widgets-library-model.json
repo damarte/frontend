@@ -30,14 +30,6 @@
               },
               {
                 "controlType": "textbox",
-                "key": "instanceId",
-                "label": "Widget Id",
-                "value": 999,
-                "required": true,
-                "order": -1
-              },
-              {
-                "controlType": "textbox",
                 "key": "min",
                 "label": "Min value",
                 "value": 0,
@@ -86,14 +78,6 @@
                 "value": "",
                 "required": true,
                 "order": 1
-              },
-              {
-                "controlType": "textbox",
-                "key": "instanceId",
-                "label": "Widget id",
-                "value": 123,
-                "required": true,
-                "order": -1
               }
             ]
           }          
@@ -132,14 +116,6 @@
               },
               {
                 "controlType": "textbox",
-                "key": "instanceId",
-                "label": "Widget Id",
-                "value": 2,
-                "required": true,
-                "order": -1
-              },
-              {
-                "controlType": "textbox",
                 "key": "min",
                 "label": "Min value",
                 "value": 0,
@@ -166,7 +142,7 @@
     {
       "componentType": "CircularGaugeComponent",
       "name": "Circular Gauge",
-      "description": "Temperature.",
+      "description": "",
       "icon": "assets/images/circular_gauge.png",
       "instanceId": -1,
       "tags": [
@@ -187,17 +163,9 @@
                 "controlType": "textbox",
                 "key": "title",
                 "label": "Title",
-                "value": "Temperature",
+                "value": "",
                 "required": true,
                 "order": 1
-              },
-              {
-                "controlType": "textbox",
-                "key": "instanceId",
-                "label": "Widget Id",
-                "value": 2,
-                "required": true,
-                "order": -1
               },
               {
                 "controlType": "textbox",

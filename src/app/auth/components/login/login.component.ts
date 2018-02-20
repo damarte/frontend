@@ -79,26 +79,40 @@ export class NbLoginComponent {
         localStorage.setItem('access_token', JSON.stringify(token)); 
         localStorage.setItem('email', JSON.stringify(this.form.value.username));
         
+        this.fiwooService.isLoggedIn = true;
             
+        // sweetAlert({
+        //   title: "OK!",
+        //   text: "You have logged in!",         
+        //   showLoaderOnConfirm: false,
+
+        //   preConfirm: (email) => {
+        //     return new Promise((resolve) => {
+        //       window.location.href = "/#/pages/dashboard";
+        //       setTimeout(() => {                               
+        //         resolve()                
+        //       }, 5000)
+        //     })
+        //   },
+        // });
+
         sweetAlert({
-          title: "OK!",
-          text: "You have logged in!",         
-          showLoaderOnConfirm: true,
-          preConfirm: (email) => {
-            return new Promise((resolve) => {
+            title: "OK!",
+            text: "You have logged in!",
+            timer: 5000,
+            onOpen: () => {
+              sweetAlert.showLoading();
               window.location.href = "/#/pages/dashboard";
-              setTimeout(() => {                               
-                resolve()                
-              }, 5000)
-            })
-          },
-        });
-        
-      },
-      err => {      
-        console.error(err);
-        sweetAlert("Oops!", "Something went wrong!", "error");      
-      }
+            }
+          }).then((result) => {
+            sweetAlert.close();
+          });
+          
+        },
+        err => {      
+          console.error(err);
+          sweetAlert("Oops!", "Something went wrong!", "error");      
+        }
     );
   }
 

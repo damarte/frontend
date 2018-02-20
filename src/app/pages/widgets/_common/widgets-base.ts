@@ -79,7 +79,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
 
     public ngOnInit() {
         // this.toggleConfigMode();
-        // this.changeDetectionRef.detectChanges();
+        this.changeDetectionRef.detectChanges();
        
         // var context = this;
         // setTimeout(function(){
@@ -103,7 +103,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
                 this.changeDetectionRef.detectChanges();
             }
         }
-        this.preRun();        
+        this.preRun();
     }
 
     public initializeState() {

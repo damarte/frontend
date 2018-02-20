@@ -1,9 +1,10 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
 import { WidgetsInstanceService } from './grid.service';
 import { ConfigurationService } from '../../services/configuration.service';
 import { WidgetsConfigModel } from '../../widgets/_common/widgets-config-model';
 import { AddWidgetsService } from '../../add-widgets/service';
 import { ToastService } from '../../toast/toast.service';
+import { FiwooService } from '../../services/fiwoo.service';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { ToastService } from '../../toast/toast.service';
 export class GridComponent {
     @Output() boardUpdateEvent: EventEmitter<any> = new EventEmitter();
     @Output() addWidgetEvent: EventEmitter<any> = new EventEmitter();
+    
 
     model: any = {};
     noGadgets = true;
@@ -45,7 +47,8 @@ export class GridComponent {
     constructor(private _widgetsInstanceService: WidgetsInstanceService,
                 private _configurationService: ConfigurationService,
                 private _widgetsLibraryService: AddWidgetsService,
-                private _toastService: ToastService) {
+                private _toastService: ToastService,
+                private _fiwooService: FiwooService) {
 
         this._widgetsInstanceService.listenForInstanceRemovedEventsFromGadgets().subscribe((message: string) => {
             this.saveBoard('Gadget Removed From Board: ' + message, false);
@@ -482,6 +485,15 @@ export class GridComponent {
             this.getModel().isNew = true;
 
             this.updateServicesAndGridWithModel();
+
+            //NEW GET ME to GET USER ASSETS
+            this._fiwooService.getMe().subscribe(data => {
+                    console.log(data);
+                },
+                error => {
+
+                }
+            );
             this.saveBoard('Initialization of a new board', true);
         });
     }

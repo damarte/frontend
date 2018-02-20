@@ -10,6 +10,8 @@ let auth: any;
 @Injectable()
 export class FiwooService {  
 
+  isLoggedIn: boolean;
+  redirectUrl: string;
 
   constructor(private http: Http) {
     token = localStorage.getItem('access_token');
@@ -43,11 +45,24 @@ export class FiwooService {
    
   // users service
 
-  // GET USERS
+  // LOGIN
   public doLogin(login):any {
     this.configureLogin();
     return this.http.post(`${this.urlLogin}/login`, login, {headers: headers});     
   }
+
+  // LOGOUT
+  public doLogout():any {
+    this.configureGET();
+    return this.http.get(`${this.urlLogin}/users/logout`, {headers: headers});     
+  }
+
+
+  // GET USERS
+  public getMe():any {
+    this.configureGET();
+    return this.http.get(`${this.urlBaseUser}/me`, {headers: headers}).map(res => res.json());
+  } 
 
 
   // GET USERS
