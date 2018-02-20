@@ -5,6 +5,7 @@ import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
 import { Observable } from 'rxjs/Observable';
 import { ObservableWebSocketService } from '../../services/websocket-service';
+import { LineChartService, Coordinate } from '../line-chart/service';
 //import { Product, Service, DeviceData } from './service';
 //import { WFSService } from 'gis_fiwoo';
 
@@ -15,17 +16,27 @@ import 'rxjs/Rx';
 import * as L from 'leaflet';
 import 'style-loader!leaflet/dist/leaflet.css';
 
+import { MouseEvent as AGMMouseEvent } from '@agm/core';
 @Component({
     selector: 'app-dynamic-component',
     moduleId: module.id,
     templateUrl: './view.html', 
-    styleUrls: ['../_common/styles-widgets.css']
+    styleUrls: ['../_common/styles-widgets.css', './gis-map.component.css'] 
    
 })
 export class GisMapComponent extends WidgetsBase implements OnDestroy {
 
 	maps: any[];
-
+    map:any;
+    prop: any;
+    test: any;
+    attrs:any[];
+    features:any[];
+    lng:any[];
+    deviceId: any;
+    attrHistoric:any;
+    coordinates: Coordinate[]; 
+    showLineChart: boolean; 
 
   	constructor(protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
@@ -38,6 +49,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
                     _widgetsInstanceService,
                     _propertyService,            
                     _changeDetectionRef);
+
     }
 
 	ngOnInit() {
@@ -49,7 +61,6 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     }
 
     public configDone(){
-        
     }
 
     public run() {  
@@ -67,40 +78,102 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     public ngOnDestroy() {
         this.stop();
     }
+
     public ngAfterViewInit(){
-        
-        this.maps = [{"type":"FeatureCollection","totalFeatures":4,"features":[{"type":"Feature","id":"devices.1","geometry":{"type":"Point","coordinates":[-3.783,43.4673]},"geometry_name":"geometry","properties":{"_id":"5a5f0e9c2c260400131897e8","name":"devices_general_3","protocol":"IoTA-UL","entity_type":"glucometer-type-1","transport_protocol":"HTTP","public":"true","assets":null,"owner":"507f191e810c19729de860ed","attributes":null,"lazy":null,"static_attributes":null,"commands":null,"internal_attributes":null,"createdAt":null,"updatedAt":null,"expiresAt":null,"latitude":null,"longitude":null,"bbox":[-3.783,43.4673,-3.783,43.4673]}},{"type":"Feature","id":"devices.2","geometry":{"type":"Point","coordinates":[-3.7828,43.4698]},"geometry_name":"geometry","properties":{"_id":"5a5f123c2c260422131897I9","name":"devices_test","protocol":"IoTA-UL","entity_type":"glucometer-type-2","transport_protocol":"HTTP","public":"true","assets":null,"owner":"507f191e810c19729de860ed","attributes":null,"lazy":null,"static_attributes":null,"commands":null,"internal_attributes":null,"createdAt":null,"updatedAt":null,"expiresAt":null,"latitude":null,"longitude":null,"bbox":[-3.7828,43.4698,-3.7828,43.4698]}},{"type":"Feature","id":"devices.3","geometry":{"type":"Point","coordinates":[-3.788,43.4702]},"geometry_name":"geometry","properties":{"_id":"5a5f6f9e2c260400131897fe","name":"void_devices","protocol":"IoTA-UL","entity_type":"glucometer-type-1","transport_protocol":"HTTP","public":"true","assets":null,"owner":"507f191e810c19729de860ed","attributes":null,"lazy":null,"static_attributes":null,"commands":null,"internal_attributes":null,"createdAt":null,"updatedAt":null,"expiresAt":null,"latitude":null,"longitude":null,"bbox":[-3.788,43.4702,-3.788,43.4702]}},{"type":"Feature","id":"devices.4","geometry":{"type":"Point","coordinates":[-3.7928,43.4694]},"geometry_name":"geometry","properties":{"_id":"5a606735e445980013c24904","name":"devices_test_1","protocol":"IoTA-UL","entity_type":"glucometer-type-1","transport_protocol":"HTTP","public":"true","assets":null,"owner":"507f191e810c19729de860ed","attributes":null,"lazy":null,"static_attributes":null,"commands":null,"internal_attributes":null,"createdAt":null,"updatedAt":null,"expiresAt":null,"latitude":null,"longitude":null,"bbox":[-3.7928,43.4694,-3.7928,43.4694]}}],"crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:EPSG::4326"}},"bbox":[43.4673,-3.7928,43.4702,-3.7828]}]; 
 
         this.http.get(
           'http://us2.fiwoo.eu:8080/geoserver/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices&outputFormat=JSON')
           .map(res => res.json()).subscribe(
-            data => { this.maps = data; },
-            err => {console.log(err); }
-         );
+            data => {
+                this.maps = data; 
 
-       
+                var southWest = L.latLng(this.maps['bbox'][0], this.maps['bbox'][1]);
+                var northEast = L.latLng(this.maps['bbox'][2],this.maps['bbox'][3]);
+                var bounds = L.latLngBounds(southWest, northEast);
+                var map = L.map('mapid'+instanceId,{
+                    layers:[layer1, layer2],
+                    //maxBounds: bounds,
+                    center: [0,0],
+                    zoom:12,
+                    maxBoundsViscosity: 1,
+                    bounceAtZoomLimits: false,
+                    worldCopyJump: true,
+                    attributionControl: false
+                });
+
+                this.map = map;
+                this.features = this.maps['features'];
+
+                map.on('mousemove ', function(e){
+                    document.getElementById('location').innerHTML =  parseFloat(e['latlng']['lat']).toFixed(3) + " / " + parseFloat(e['latlng']['lng']).toFixed(3);      
+                });
+               
+         },
+            err => {console.log(err); }
+        );
+
         var instanceId = this.instanceId;
         var layer1 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');     
         var layer2 = L.tileLayer.wms("http://us2.fiwoo.eu:8080/geoserver/ows?", {
             layers: 's4c:devices',
+            version: '2.0.0',
             format: 'image/png',
             transparent: true,
         });
 
+    }
+    
+    history(event){
+         console.log(this.deviceId, event);
+        this.attrHistoric = event;
+        this.http.get(
+            'https://platform.fiwoo.eu/api/device-management/devices/historics/?id='+this.deviceId+'&attribute='+event+'')
+             .map(res => res.json()).subscribe(
+                data => {
+                    if (data instanceof Array){
+                        this.coordinates = new  Array<Coordinate>();
+                        var i = 0;
+                        data.forEach(element => {
+                            this.coordinates.push({ arg: element.recvTime, val: parseInt(element.attrValue, 10)});
+                            i++;
+                        });
+                    }
+                    this.showLineChart = true;
+            },
+                err => {console.log(err); this.showLineChart = false;}
+            );
+    }
 
-        var southWest = L.latLng(this.maps[0].bbox[0], this.maps[0].bbox[1]);
-        var northEast = L.latLng(this.maps[0].bbox[2],this.maps[0].bbox[3]);
-        var bounds = L.latLngBounds(southWest, northEast);
-        var map = L.map('mapid'+instanceId,{
-            layers:[layer1, layer2],
-            maxBounds: bounds,
-            center: [0,0],
-            zoom:12,
-            maxBoundsViscosity: 1,
-            bounceAtZoomLimits: false,
-            worldCopyJump: true,
-            attributionControl: false
+    onMapClick(e) {
+
+        var features = this.features;
+        this.showLineChart = false;
+        this.attrHistoric = '';
+        document.getElementById('device').innerHTML = "";
+        document.getElementById('properties').innerHTML = "";
+        var attrNames;
+        var id;
+        features.forEach( function(valor, indice, array) {
+            
+            if(valor.geometry){               
+               if(valor.geometry.coordinates[0].toFixed(3) == parseFloat(e['latlng']['lng']).toFixed(3)  && valor.geometry.coordinates[1].toFixed(3) == parseFloat(e['latlng']['lat']).toFixed(3) ){
+                   console.log(valor);
+                    id = JSON.parse(valor['id']);
+                    id = id['id'];
+                    document.getElementById('device').innerHTML =  "Device: "  + id;      
+                    document.getElementById('properties').innerHTML =  "Properties: ";    
+                    var properties = valor.properties;
+                    attrNames = JSON.parse(properties['attrNames']);                      
+                }
+            }else{
+                console.log('no tiene');
+                // attrNames = '';
+                // id  = '';
+            }
         });
+
+        this.attrs = attrNames;
+        this.deviceId  = id;
 
     }
 
