@@ -19,8 +19,8 @@ export class ConfigurationService {
      * @type {string}
      */
     // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
-    remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
-    // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
+    // remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
+    remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
 
     
 
