@@ -11,6 +11,8 @@ import { Router, NavigationStart } from '@angular/router';
 
 var interval;
 
+var context;
+
 @Component({
     selector: 'app-dynamic-component',
     moduleId: module.id,
@@ -30,8 +32,6 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     startValue = 0;
     endValue = 100;
 
-
-
     view: any[];
     colorScheme = {
         domain: ['#A13F51', '#5AA454', '#C7B42C']
@@ -41,6 +41,8 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     previousValue = '0';
     webSocket: any;
     waitForConnectionDelay = 2000;
+
+    textNew: string = "";
 
     constructor(protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
@@ -55,6 +57,8 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
             _changeDetectionRef);
 
             clearInterval(interval);
+
+            context = this;
 
             router.events.subscribe(event => {
                 if(event instanceof NavigationStart) {
@@ -92,9 +96,9 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                 console.log(res);
                 if (res.value != undefined){
                     this.deviceData.push(
-                        {"name": device.device_name,
-                        "value": res.value,
-                        "active": true});
+                        {name: device.device_name,
+                        value: res.value,
+                        active: true});
                 }
                 this.devicesToValues();
             });            
@@ -124,16 +128,15 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     }
 
     customizeTooltip(arg) {
+        var device = context.deviceData[arg.index];
         return {
-            text: arg.valueText + ""
+            text: device.name
         };       
     }
     public preRun(): void {
     }
 
     public configDone(){
-
-
         if (this.widget != undefined && this.widget.sources != undefined){
             var source: any;
             this.devices = [];
@@ -146,6 +149,11 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                     });
                     this.devices.push(device);
                 });
+
+                if (this.devices && this.devices.length){
+                    this.textNew = this.devices[0].attribute;
+                }
+               
 
                 this.deviceData = new Array<DeviceData>();
                 this.loadDataGeneral();

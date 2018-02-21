@@ -34,6 +34,9 @@
                             [customizeTooltip]="customizeTooltip"
                         ></dxo-tooltip>
                         <dxo-export [enabled]="true"></dxo-export>
+                        <dxo-title [text]="textNew">
+                            <dxo-font [size]="22"></dxo-font>
+                        </dxo-title>
                     </dx-bar-gauge>
                     <div id="panel">
                         <dx-check-box *ngFor="let device of deviceData"
@@ -43,7 +46,6 @@
                         ></dx-check-box>                       
                     </div>
                 </div>
-              
 
             </div>
         

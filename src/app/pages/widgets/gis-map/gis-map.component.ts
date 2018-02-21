@@ -82,7 +82,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     public ngAfterViewInit(){
 
         this.http.get(
-          'http://us2.fiwoo.eu:8080/geoserver/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices&outputFormat=JSON')
+          'http://us2.fiwoo.eu:8080/geoserver/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices1&outputFormat=JSON')
           .map(res => res.json()).subscribe(
             data => {
                 this.maps = data; 
@@ -118,7 +118,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
         var instanceId = this.instanceId;
         var layer1 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');     
         var layer2 = L.tileLayer.wms("http://us2.fiwoo.eu:8080/geoserver/ows?", {
-            layers: 's4c:devices',
+            layers: 's4c:devices1',
             version: '2.0.0',
             format: 'image/png',
             transparent: true,
