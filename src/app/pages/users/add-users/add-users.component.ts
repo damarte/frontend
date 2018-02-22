@@ -69,19 +69,12 @@ export class AddUsersComponent implements OnInit {
   confirmPasswordFormControl = new FormControl('', [
     Validators.required
   ]);
-  genderFormControl = new FormControl('', [
-    Validators.required
-  ]);
   roleFormControl = new FormControl('', [
     Validators.required
   ]);
-  assetFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  birthFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  
+  genderFormControl = new FormControl();  
+  assetFormControl = new FormControl();
+  birthFormControl = new FormControl(); 
 
 
  
@@ -198,6 +191,8 @@ export class AddUsersComponent implements OnInit {
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
     this.modal = jQuery(this.addTemplateModalRef.nativeElement);
+    // select multiple
+    jQuery('.dropdown1').dropdown();
   }
   
 
@@ -210,9 +205,7 @@ export class AddUsersComponent implements OnInit {
         !this.usernameFormControl.hasError('required') &&
         !this.emailFormControl.hasError('required') &&
         !this.passwordFormControl.hasError('required') &&
-        // !this.roleFormControl.hasError('required') &&
-        // !this.assetFormControl.hasError('required') && 
-        !this.genderFormControl.hasError('required') && 
+        !this.roleFormControl.hasError('required') &&
         this.password == this.confirmPassword
       ){
         
@@ -241,8 +234,8 @@ export class AddUsersComponent implements OnInit {
           roles: allRoles,
           assets: allAssets,
           gender: this.genderSelected,
-          date_of_birth: this.changeDate(this.date_of_birth)   
-          // date_of_birth: this.date_of_birth     
+          // date_of_birth: this.changeDate(this.date_of_birth)   
+           date_of_birth: this.date_of_birth     
         };
 
         if (this.editedUser != undefined){
@@ -269,8 +262,8 @@ export class AddUsersComponent implements OnInit {
             roles: allRoles,
             assets: allAssets,
             gender: this.genderSelected,
-            date_of_birth: this.changeDate(this.date_of_birth)
-            // date_of_birth: this.date_of_birth
+            //date_of_birth: this.changeDate(this.date_of_birth)
+           date_of_birth: this.date_of_birth
           };
 
           console.log(JSON.stringify(this.user));
