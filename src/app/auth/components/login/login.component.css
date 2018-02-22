@@ -37,5 +37,5 @@
 .btn-google {
     background: #D9534F;
     margin: 12px 0px;
-    cursor: pointer;
+    cursor: pointer !important;
 }

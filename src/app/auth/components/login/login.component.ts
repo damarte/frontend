@@ -5,11 +5,12 @@ import { getDeepFromObject } from "../../helpers";
 import { NbAuthResult, NbAuthService } from "../../services/auth.service";
 import { NgForm } from "@angular/forms";
 import { UsersService, UserLogin } from "um_fiwoo";
-
 import { Http, Headers, RequestOptions, URLSearchParams } from "@angular/http";
 import "rxjs/Rx";
 import sweetAlert from "sweetalert2";
 import { FiwooService } from "../../../pages/services/fiwoo.service";
+import { AuthService, SocialUser } from "angularx-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 
 @Component({
   selector: "nb-login",
@@ -18,17 +19,15 @@ import { FiwooService } from "../../../pages/services/fiwoo.service";
   providers: [UsersService]
 })
 export class NbLoginComponent {
-  rememberMe: boolean = false;
 
+  rememberMe: boolean = false;
   redirectDelay: number = 0;
   showMessages: any = {};
   provider: string = "";
-
   errors: string[] = [];
   messages: string[] = [];
   user: any = {};
   submitted: boolean = false;
-
   form: NgForm;
 
   constructor(
@@ -37,12 +36,32 @@ export class NbLoginComponent {
     protected router: Router,
     protected _usersService: UsersService,
     private fiwooService: FiwooService,
-    private http: Http
+    private http: Http,
+    private authService: AuthService
   ) {
     this.redirectDelay = this.getConfigValue("forms.login.redirectDelay");
     this.showMessages = this.getConfigValue("forms.login.showMessages");
     this.provider = this.getConfigValue("forms.login.provider");
   }
+
+  private googleUser: SocialUser;
+  private loggedIn: boolean;
+
+  ngOnInit() {
+    this.authService.authState.subscribe((user) => {
+      this.googleUser = user;
+      this.loggedIn = (user != null);
+    });
+  }
+
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  signOut(): void {
+    this.authService.signOut();
+  }
+  
 
   username: string;
   password: string;
@@ -114,36 +133,9 @@ export class NbLoginComponent {
         sweetAlert("Oops!", "Something went wrong!", "error");
       }
     );
-  }
+  } 
 
   getConfigValue(key: string): any {
     return getDeepFromObject(this.config, key, null);
   }
-
-
-
-  // Google SignIn
-  /*gapi: any;
-  public auth2: any
-  ngAfterViewInit() {
-    this.gapi.load('auth2', () => {
-      this.auth2 = this.gapi.auth2.init({
-        client_id: '352539043251-g4d0icnve239dsvhr34nj6133jrircp5.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        scope: 'profile email'
-      });
-      this.attachSignin(document.getElementById('glogin'));
-    });
-  }
-
-  public attachSignin(element) {
-    this.auth2.attachClickHandler(element, {},
-      (loggedInUser) => {
-        console.log(loggedInUser);
-
-      }, function (error) {
-        // alert(JSON.stringify(error, undefined, 2));
-      });
-
-  }*/
 }
