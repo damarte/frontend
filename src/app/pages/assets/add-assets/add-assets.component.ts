@@ -166,8 +166,7 @@ export class AddAssetsComponent implements OnInit {
   
 
   sendAsset(){
-    //TODOD VALIDATIONS
-
+  
     if (!this.nameFormControl.hasError('required') &&
         !this.descriptionFormControl.hasError('required') &&
         !this.typeFormControl.hasError('required')){

@@ -44,12 +44,9 @@ export class AddRolesComponent implements OnInit {
   editedRole:any = null;
   modalTitle: string = "";
 
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  descriptionFormControl = new FormControl('', [
-    Validators.required
-  ]);
+  // validations
+  nameFormControl = new FormControl('', [Validators.required]);
+  descriptionFormControl = new FormControl();
   resourceFormControl = new FormControl();
  
   visible: boolean = true;
@@ -66,9 +63,11 @@ export class AddRolesComponent implements OnInit {
               private _fiwooService: FiwooService) {
     context = this;     
     this.getResources();
+
+  
    
   }
-
+ 
   
   resources: any[];
 

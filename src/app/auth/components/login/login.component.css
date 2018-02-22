@@ -33,3 +33,9 @@
 .login-remember label:hover {
     border-color: #fff !important;
 }   
+
+.btn-google {
+    background: #D9534F;
+    margin: 12px 0px;
+    cursor: pointer;
+}

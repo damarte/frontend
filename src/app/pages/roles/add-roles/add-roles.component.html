@@ -30,13 +30,12 @@
                         <mat-form-field style="width: 100%">
                             <mat-select placeholder="Select a resource" [compareWith]="compareFn" [formControl]="resourceFormControl" [(ngModel)]="resourceSelected" multiple>
                                 <mat-option *ngFor="let resource of resources" [value]="resource">
-                                    {{ resource.name }}
+                                    {{ resource.name }} 
                                 </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
+                            </mat-select>                                    
+                        </mat-form-field> 
                     </div>
-                </mat-card-content>
+                </mat-card-content>  
             </mat-card>
         </div>
     </div>

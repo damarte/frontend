@@ -1,4 +1,4 @@
-import { Component, Inject } from "@angular/core";
+import { Component, Inject  } from "@angular/core";
 import { Router } from "@angular/router";
 import { NB_AUTH_OPTIONS_TOKEN } from "../../auth.options";
 import { getDeepFromObject } from "../../helpers";
@@ -73,14 +73,14 @@ export class NbLoginComponent {
     this.fiwooService.doLogin(body).subscribe(
       data => {
         console.log("Login Data: ", data);
-        
+
         let user_login = data.json();
         let token = user_login.access_token;
-        localStorage.setItem('access_token', JSON.stringify(token)); 
+        localStorage.setItem('access_token', JSON.stringify(token));
         localStorage.setItem('email', JSON.stringify(this.form.value.username));
-        
+
         this.fiwooService.isLoggedIn = true;
-            
+
         // sweetAlert({
         //   title: "OK!",
         //   text: "You have logged in!",         
@@ -97,26 +97,53 @@ export class NbLoginComponent {
         // });
 
         sweetAlert({
-            title: "OK!",
-            text: "You have logged in!",
-            timer: 5000,
-            onOpen: () => {
-              sweetAlert.showLoading();
-              window.location.href = "/#/pages/dashboard";
-            }
-          }).then((result) => {
-            sweetAlert.close();
-          });
-          
-        },
-        err => {      
-          console.error(err);
-          sweetAlert("Oops!", "Something went wrong!", "error");      
-        }
+          title: "OK!",
+          text: "You have logged in!",
+          timer: 5000,
+          onOpen: () => {
+            sweetAlert.showLoading();
+            window.location.href = "/#/pages/dashboard";
+          }
+        }).then((result) => {
+          sweetAlert.close();
+        });
+
+      },
+      err => {
+        console.error(err);
+        sweetAlert("Oops!", "Something went wrong!", "error");
+      }
     );
   }
 
   getConfigValue(key: string): any {
     return getDeepFromObject(this.config, key, null);
   }
+
+
+
+  // Google SignIn
+  /*gapi: any;
+  public auth2: any
+  ngAfterViewInit() {
+    this.gapi.load('auth2', () => {
+      this.auth2 = this.gapi.auth2.init({
+        client_id: '352539043251-g4d0icnve239dsvhr34nj6133jrircp5.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+        scope: 'profile email'
+      });
+      this.attachSignin(document.getElementById('glogin'));
+    });
+  }
+
+  public attachSignin(element) {
+    this.auth2.attachClickHandler(element, {},
+      (loggedInUser) => {
+        console.log(loggedInUser);
+
+      }, function (error) {
+        // alert(JSON.stringify(error, undefined, 2));
+      });
+
+  }*/
 }
