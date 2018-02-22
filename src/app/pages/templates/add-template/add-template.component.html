@@ -79,9 +79,11 @@
                         <h4 class="example-h2">Add new property</h4>
                         <mat-form-field style="width: 100%">
                             <mat-select placeholder="Choose property" [(value)]="currentAttributeToCreate" (change)="onAttributeChanged()">
-                                <mat-option *ngFor="let property of properties" [value]="property">
-                                {{ property.type | uppercase}}
-                                </mat-option>
+                                <section *ngFor="let property of propertiesSelect">
+                                    <mat-option [value]="property">
+                                    {{ property.type | uppercase}}
+                                    </mat-option>
+                                </section>
                             </mat-select>
                         </mat-form-field>
 

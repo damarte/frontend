@@ -85,6 +85,12 @@ export class AddRolesComponent implements OnInit {
   } 
  
 
+  compareFn: ((f1: any, f2: any) => boolean)|null = this.compareByValue;
+
+  compareByValue(f1: any, f2: any) { 
+    return f1 && f2 && f1.id === f2.id; 
+  }
+
 
   ngOnInit() {
   }
@@ -120,10 +126,9 @@ export class AddRolesComponent implements OnInit {
       
       this.modalTitle = "Edit Role";
       this.name = this.editedRole.name;
-      this.description = this.editedRole.description;  
+      this.description = this.editedRole.description;
       this.resourceSelected = this.editedRole.resources;   
-
-    }else{
+     }else{
       this.modalTitle = "Add Role"
     }
   }

@@ -56,7 +56,7 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
             _propertyService,            
             _changeDetectionRef);
 
-            clearInterval(interval);
+            // clearInterval(interval);
 
             context = this;
 
@@ -83,10 +83,12 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     private loadDataGeneral (){
         var context = this;
         this.loadData();
-        interval = setInterval(function(){
-            context.loadRepeatData();
-        }
+        interval = setInterval(
+            this.launchTimer(this)
         , context.refreshTime);         
+    }
+    launchTimer(context){
+        context.loadRepeatData();
     }
 
     loadData (){
@@ -128,9 +130,9 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     }
 
     customizeTooltip(arg) {
-        var device = context.deviceData[arg.index];
+        // var device = context.deviceData[arg.index];
         return {
-            text: device.name
+            text: arg.valueText
         };       
     }
     public preRun(): void {
@@ -149,9 +151,12 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                     });
                     this.devices.push(device);
                 });
-
+               
                 if (this.devices && this.devices.length){
-                    this.textNew = this.devices[0].attribute;
+                    var context = this;
+                    this.devices.forEach(function (currentValue, index, array){
+                        context.textNew = context.textNew.concat(currentValue.device_name.concat((index < (array.length - 1)) ? "-": ""));                       
+                    });
                 }
                
 

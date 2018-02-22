@@ -1,112 +1,112 @@
 <div class="ui long modal center aligned" #messagemodal_tag>
-        <div class="header">
-            <h2>{{modalheader}}</h2>
+    <div class="header">
+        <h2>{{modalheader}}</h2>
+    </div>
+
+    <div *ngIf="widgetSelected">
+        <h3 class="title-wid">{{getTitle()}}</h3>
+
+        <div class="ui four column grid widget-attr doubling stackable column container">
+
+            <!--sensor-->
+            <div class=" column">
+                <mat-form-field>
+                    <mat-select placeholder="Choose a sensor" [(value)]="selectedDevice" (change)="onDeviceChanged($event.value)" *ngIf="isMultiple"
+                        multiple>
+                        <mat-option *ngFor="let sensor of sensors" [value]="sensor" [disabled]="!sensor.canBeSelected">
+                            {{ sensor.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-select placeholder="Choose a sensor" [(value)]="selectedDevice" (change)="onDeviceChanged($event.value)" *ngIf="!isMultiple">
+                        <mat-option *ngFor="let sensor of sensors" [value]="sensor">
+                            {{ sensor.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!--attribute-->
+            <div class=" column" *ngIf="selectedDevice && attributes.length > 0">
+                <mat-form-field>
+                    <mat-select placeholder="Choose an attribute" [(value)]="selectedAttribute" (change)="onAttributeChanged($event.value)">
+                        <mat-option *ngFor="let attribute of attributes" [value]="attribute">
+                            {{ attribute }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!--dates-->
+            <div class=" column" *ngIf="selectedAttribute && showDateControls">
+                <mat-form-field>
+                    <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="fromDatePicker" placeholder="Select from date" [(ngModel)]="fromDate"
+                        disabled>
+                    <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromDatePicker disabled="false"></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class=" column" *ngIf="selectedAttribute && showDateControls">
+                <mat-form-field>
+                    <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="toDatePicker" placeholder="Select to date" [(ngModel)]="toDate"
+                        disabled>
+                    <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toDatePicker disabled="false"></mat-datepicker>
+                </mat-form-field>
+            </div>
+
         </div>
-    
-        <div *ngIf="widgetSelected">
-            <h3 class="title-wid">{{getTitle()}}</h3>
-    
-            <div class="ui four column grid widget-attr doubling stackable column container">
-    
-                <!--sensor-->
-                <div class=" column">
-                    <mat-form-field>
-                        <mat-select placeholder="Choose a sensor" [(value)]="selectedDevice" (change)="onDeviceChanged($event.value)" *ngIf="isMultiple"
-                            multiple>
-                            <mat-option *ngFor="let sensor of sensors" [value]="sensor" [disabled]="!sensor.canBeSelected">
-                                {{ sensor.name }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-select placeholder="Choose a sensor" [(value)]="selectedDevice" (change)="onDeviceChanged($event.value)" *ngIf="!isMultiple">
-                            <mat-option *ngFor="let sensor of sensors" [value]="sensor">
-                                {{ sensor.name }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+
+        <div class="ui two column centered grid">
+            <div class="four column centered row">
+                <div class="column">
+                    <button style="margin-top: 10px" mat-raised-button color="accent" (click)="restart()">Restart</button>
                 </div>
-    
-                <!--attribute-->
-                <div class=" column" *ngIf="selectedDevice && attributes.length > 0">
-                    <mat-form-field>
-                        <mat-select placeholder="Choose an attribute" [(value)]="selectedAttribute" (change)="onAttributeChanged($event.value)">
-                            <mat-option *ngFor="let attribute of attributes" [value]="attribute">
-                                {{ attribute }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                <div class="column">
+                    <button style="margin-top: 10px" mat-raised-button color="primary" (click)="addWidget(data)">Add Widget</button>
                 </div>
-    
-                <!--dates-->
-                <div class=" column" *ngIf="selectedAttribute && showDateControls">
-                    <mat-form-field>
-                        <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="fromDatePicker" placeholder="Select from date" [(value)]="fromDate"
-                            disabled>
-                        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #fromDatePicker disabled="false"></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div class=" column" *ngIf="selectedAttribute && showDateControls">
-                    <mat-form-field>
-                        <input [min]="minDate" [max]="maxDate" matInput [matDatepicker]="toDatePicker" placeholder="Select to date" [(value)]="toDate"
-                            disabled>
-                        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
-                        <mat-datepicker #toDatePicker disabled="false"></mat-datepicker>
-                    </mat-form-field>
-                </div>
-    
-            </div>     
-    
-            <div class="ui two column centered grid">               
-                    <div class="four column centered row">
-                      <div class="column">
-                            <button style="margin-top: 10px" mat-raised-button color="accent" (click)="restart()">Restart</button>
-                      </div>
-                      <div class="column">
-                            <button style="margin-top: 10px" mat-raised-button color="primary" (click)="addWidget(data)">Add Widget</button>
-                      </div>
-                    </div>
-                  </div>
-    
-    
-    
-        </div>
-    
-    
-    
-        <app-data-list [objectList]="gadgetObjectList" [objectTitleList]="gadgetObjectTitleList" [placeHolderText]="placeHolderText"
-            [layoutColumnOneWidth]="layoutColumnOneWidth" [layoutColumnTwoWidth]="layoutColumnTwoWidth" [listHeader]="listHeader"
-            [facetTags]="facetTags">
-    
-            <ng-template let-item="$implicit">
-    
-                <div [@showHideAnimation] class="ui segment" [style.background-color]="item.selected ? styleSelected : styleNoSelected">
-                    <div class="ui large middle aligned divided list">
-                        <div class="item">
-                            <div class="right floated content">
-                                <a *ngIf="item.actions.length == 1" mat-raised-button routerLink="." (click)="actionHandler(item, item.actions[0].name)"
-                                    color="primary">
-                                    {{item.actions[0].name}}
-                                </a>
-                            </div>
-                            <img class="ui image" src="{{item.icon}}">
-                            <div class="content">
-                                <div class="header">{{item.name}}</div>
-                                {{item.description}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui bottom attached">
-                        <mat-chip class="chip-tag" *ngFor="let tag of item.tags" >{{tag.name}}</mat-chip>
-                    </div>
-                </div>
-    
-            </ng-template>
-    
-        </app-data-list>
-    
-        <div class="actions">
-            <div class="ui approve button">
-                <button mat-raised-button color="accent">Close</button>
             </div>
         </div>
+
+
+
     </div>
+
+
+
+    <app-data-list [objectList]="gadgetObjectList" [objectTitleList]="gadgetObjectTitleList" [placeHolderText]="placeHolderText"
+        [layoutColumnOneWidth]="layoutColumnOneWidth" [layoutColumnTwoWidth]="layoutColumnTwoWidth" [listHeader]="listHeader"
+        [facetTags]="facetTags">
+
+        <ng-template let-item="$implicit">
+
+            <div [@showHideAnimation] class="ui segment" [style.background-color]="item.selected ? styleSelected : styleNoSelected">
+                <div class="ui large middle aligned divided list">
+                    <div class="item">
+                        <div class="right floated content">
+                            <a *ngIf="item.actions.length == 1" mat-raised-button routerLink="." (click)="actionHandler(item, item.actions[0].name)"
+                                color="primary">
+                                {{item.actions[0].name}}
+                            </a>
+                        </div>
+                        <img class="ui image" src="{{item.icon}}">
+                        <div class="content">
+                            <div class="header">{{item.name}}</div>
+                            {{item.description}}
+                        </div>
+                    </div>
+                </div>
+                <div class="ui bottom attached">
+                    <mat-chip class="chip-tag" *ngFor="let tag of item.tags">{{tag.name}}</mat-chip>
+                </div>
+            </div>
+
+        </ng-template>
+
+    </app-data-list>
+
+    <div class="actions">
+        <div class="ui approve button">
+            <button mat-raised-button color="accent">Close</button>
+        </div>
+    </div>
+</div>

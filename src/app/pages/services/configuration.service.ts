@@ -21,8 +21,6 @@ export class ConfigurationService {
     // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
     remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
     
-    
-
     constructor(private _http: Http) {
 
         Object.assign(this, {defaultBoard});

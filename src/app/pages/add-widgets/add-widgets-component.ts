@@ -258,11 +258,13 @@ export class AddWidgetsComponent implements AfterViewInit {
         }else if (this.selectedDevice != undefined){
             devices.push(this.selectedDevice);
         }
-        widget.extra_data = [];
         widget.sources = [];
         widget.type = this.getCustomWidgetType();
-    
-
+        //GIS MAP DOESN'T HAVE ATTRIBUTE
+        if (widget.type != WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.cards]){
+            widget = this.updateWidgetField(widget, "title", this.selectedAttribute);
+        }
+      
         devices.forEach(element => {
             var parameters = [];
             parameters.push({
@@ -321,6 +323,23 @@ export class AddWidgetsComponent implements AfterViewInit {
             this.hideMessageModal(); 
         }
 
+    }
+
+    private updateWidgetField (actionItem, field, value){
+        if (actionItem != null && actionItem.config){
+            if (actionItem.config.propertyPages){
+                actionItem.config.propertyPages.forEach(propertyPage => {
+                    if (propertyPage.properties && propertyPage.properties.length){
+                        propertyPage.properties.forEach(property => {
+                            if (property != null && property.key == field){
+                                property.value = value;
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        return actionItem;
     }
 
     saveWidget(actionItem){

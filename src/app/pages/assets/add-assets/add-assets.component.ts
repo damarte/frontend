@@ -89,6 +89,13 @@ export class AddAssetsComponent implements OnInit {
   roles: any[];
   assets: any[];
 
+  compareFn: ((f1: any, f2: any) => boolean)|null = this.compareByValue;
+
+  compareByValue(f1: any, f2: any) { 
+    return f1 && f2 && f1.id === f2.id; 
+  }
+
+
   private getAssets(){   
 
     this._fiwooService.getAssets().subscribe( 

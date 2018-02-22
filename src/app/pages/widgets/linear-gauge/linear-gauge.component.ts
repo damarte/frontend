@@ -12,6 +12,7 @@ import { Router, NavigationStart } from '@angular/router';
 declare var jQuery: any;
 
 var interval;
+var context;
 
 @Component({
     selector: 'app-dynamic-component',
@@ -93,6 +94,8 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
         const single = [];
 
+        context = this;
+
         Object.assign(this, {single});
 
         router.events.subscribe(event => {
@@ -130,16 +133,15 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
                     this.minValue = this.getPropFromPropertyPages("min");
                     this.maxValue = this.getPropFromPropertyPages("max");
-                }        
+                }
             }
         }
-        this.run();
+        this.run();        
     }
 
     currentValue: number = 0;
 
     private loadDataGeneral (deviceId, attribute){
-        var context = this;
         this.loadData(deviceId, attribute);
         interval = setInterval(function(){
             context.loadData(deviceId, attribute);
@@ -158,7 +160,20 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     public preRun(): void {
         this.detailMenuOpen = 'out';
+       
     }
+
+    // private reload (){
+    //     this.toggleState();
+    // }
+
+    // private reloadView(context){
+    //     context.toggleConfigMode();
+    // }
+
+    // private toggleState (){
+    //     setTimeout(this.reloadView(this), 100);
+    // }
 
     public run() {           
         

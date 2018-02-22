@@ -73,7 +73,7 @@
                 <mat-card class="result">
                     <mat-card-content>
                         <mat-form-field style="width: 100%">
-                            <mat-select placeholder="Select a role" [formControl]="roleFormControl" [(value)]="roleSelected">
+                            <mat-select placeholder="Select a role" [formControl]="roleFormControl" [(ngModel)]="roleSelected" [compareWith]="compareFn">
                                 <mat-option *ngFor="let role of roles" [value]="role">
                                     {{ role.name }}
                                 </mat-option>
@@ -85,7 +85,7 @@
                         </mat-form-field>
 
                         <mat-form-field style="width: 100%">
-                            <mat-select placeholder="Select an asset" [formControl]="assetFormControl" [(value)]="assetSelected" multiple>
+                            <mat-select placeholder="Select an asset" [formControl]="assetFormControl" [(ngModel)]="assetSelected" multiple [compareWith]="compareFn">
                                 <mat-option *ngFor="let asset of assets" [value]="asset">
                                     {{ asset.name }}
                                 </mat-option>
@@ -108,26 +108,26 @@
                         </mat-form-field>
 
                         <mat-form-field style="width: 100%">
-                                <input matInput type="password" placeholder="Password" [(ngModel)]="password" [formControl]="passwordFormControl" />
+                                <input matInput type="password" placeholder="Password" [(ngModel)]="password" />
                                 <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                                <mat-error *ngIf="passwordFormControl.hasError('required')">
+                                <!-- <mat-error *ngIf="passwordFormControl.hasError('required')">
                                     Password
                                     <strong>required</strong>
-                                </mat-error>
+                                </mat-error> -->
                             </mat-form-field>
 
                             <mat-form-field style="width: 100%">
-                                <input matInput type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" [formControl]="confirmPasswordFormControl"
+                                <input matInput type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword"
                                 />
                                 <button mat-button *ngIf="confirmPassword" matSuffix mat-icon-button aria-label="Clear" (click)="confirmPassword=''">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                                <mat-error *ngIf="confirmPasswordFormControl.hasError('required')">
+                                <!-- <mat-error *ngIf="confirmPasswordFormControl.hasError('required')">
                                     Confirm Password
                                     <strong>required</strong>
-                                </mat-error>
+                                </mat-error> -->
                             </mat-form-field>
                     </mat-card-content>
                 </mat-card>

@@ -81,8 +81,11 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
 
     public ngAfterViewInit(){
 
+        // http://stg-sac-fase-dos-instance-02.emergyalabs.com:10000/
+        // https://platform.fiwoo.eu/api/
+
         this.http.get(
-          'http://us2.fiwoo.eu:8080/geoserver/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices1&outputFormat=JSON')
+          'http://stg-sac-fase-dos-instance-02.emergyalabs.com:10000/gis/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices&outputFormat=JSON')
           .map(res => res.json()).subscribe(
             data => {
                 this.maps = data; 
@@ -117,8 +120,8 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
 
         var instanceId = this.instanceId;
         var layer1 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');     
-        var layer2 = L.tileLayer.wms("http://us2.fiwoo.eu:8080/geoserver/ows?", {
-            layers: 's4c:devices1',
+        var layer2 = L.tileLayer.wms("http://stg-sac-fase-dos-instance-02.emergyalabs.com:10000/gis/ows?", {
+            layers: 's4c:devices',
             version: '2.0.0',
             format: 'image/png',
             transparent: true,

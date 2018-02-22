@@ -46,15 +46,15 @@
                     <mat-card class="result">
                         <mat-card-content>                          
                             <mat-form-field style="width: 100%">
-                                <mat-select placeholder="Select a children" [formControl]="assetChildrenFormControl" [(value)]="assetChildrenSelected" multiple>
-                                    <mat-option *ngFor="let asset of assets" [value]="asset.name" >
+                                <mat-select placeholder="Select a children" [compareWith]="compareFn" [formControl]="assetChildrenFormControl" [(ngModel)]="assetChildrenSelected" multiple>
+                                    <mat-option *ngFor="let asset of assets" [value]="asset" >
                                     {{ asset.name  }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
     
                             <mat-form-field style="width: 100%">
-                                <mat-select placeholder="Select a parent" [formControl]="assetParentFormControl" [(value)]="assetParentSelected" multiple>
+                                <mat-select placeholder="Select a parent" [compareWith]="compareFn" [formControl]="assetParentFormControl" [(ngModel)]="assetParentSelected" multiple>
                                     <mat-option *ngFor="let asset of assets" [value]="asset" >
                                     {{ asset.name  }}
                                     </mat-option>
