@@ -1,87 +1,144 @@
-<div class="ui modal" #addTemplateModal>
+<div class="ui modal" #addUserModal>
     <div class="header">{{modalTitle}}</div>
     <div class="scrolling content">
-        <form class="ui form">
-            <div class="ui centered grid">
-                <div class="six wide tablet eight wide computer column">
-                    <div class="twelve wide field">
-                            <label>Name</label>
-                        <input type="text" [(ngModel)]="name" [formControl]="nameFormControl">
-                        <div class="ui basic red pointing prompt label transition visible" *ngIf="nameFormControl.hasError('required')">Name
-                            <strong>required</strong>
-                        </div>
-                    </div>
-                    <div class="twelve wide field">
-                            <label>Surname</label>
-                        <input type="text" [(ngModel)]="surname" [formControl]="surnameFormControl">
-                        <div class="ui basic red pointing prompt label transition visible" *ngIf="surnameFormControl.hasError('required')">Surname
-                            <strong>required</strong>
-                        </div>
-                    </div>
-                    <div class="twelve wide field">
-                            <label>Username</label>
-                        <input type="text" [(ngModel)]="username" [formControl]="usernameFormControl">
-                        <div class="ui basic red pointing prompt label transition visible" *ngIf="usernameFormControl.hasError('required')">Username
-                            <strong>required</strong>
-                        </div>
-                    </div>
-                    <div class="twelve wide field">
-                            <label>Email</label>
-                        <input type="email" [(ngModel)]="email" [formControl]="emailFormControl">
-                        <div class="ui basic red pointing prompt label transition visible" *ngIf="emailFormControl.hasError('required')">Email
-                            <strong>required</strong>
-                        </div>
-                    </div>
-                    <div class="twelve wide field">
-                            <label>Date of birth</label>
-                        <input type="date" [(ngModel)]="date_of_birth" [formControl]="birthFormControl">
+        <div class="ui grid">
 
-                    </div>
-                </div>
+            <!-- col1-->
+            <div class="eight wide column">
+                <mat-card class="result">
+                    <mat-card-content>
+                        <div class="field">
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Name" [(ngModel)]="name" [formControl]="nameFormControl" />
+                                <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="nameFormControl.hasError('required')">
+                                    Name
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
 
-                <div class="six wide tablet eight wide computer column">
-                    <div class="twelve wide field">
-                            <label>Select a gender</label>
-                        <select [(value)]="genderSelected" [formControl]="genderFormControl">                           
-                            <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
-                        </select>
-                    </div>
-                    <div class="twelve wide field">
-                            <label>Select a role</label>
-                        <select [formControl]="roleFormControl" [(value)]="roleSelected">                            
-                            <option *ngFor="let role of roles" [value]="role">{{ role.name }}</option>
-                            <div class="ui basic red pointing prompt label transition visible" *ngIf="roleFormControl.hasError('required')">Role
-                                <strong>required</strong>
-                            </div>
-                        </select>
-                    </div>
-                    <div class="twelve wide field">
-                            <label>Select an assets</label>
-                        <select class="ui fluid search dropdown1" multiple="" [formControl]="assetFormControl" [(value)]="assetSelected">                           
-                            <option *ngFor="let asset of assets" [value]="asset">{{ asset.name }}</option>
-                        </select>
-                    </div>
-                    <div class="twelve wide field">
-                        <input type="password" placeholder="Password" [(ngModel)]="password" [formControl]="passwordFormControl">
-                        <div class="ui basic red pointing prompt label transition visible" *ngIf="passwordFormControl.hasError('required')">Password
-                            <strong>required</strong>
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Surname" [(ngModel)]="surname" [formControl]="surnameFormControl" />
+                                <button mat-button *ngIf="surname" matSuffix mat-icon-button aria-label="Clear" (click)="surname=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="surnameFormControl.hasError('required')">
+                                    Surname
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Email" [(ngModel)]="email" [formControl]="emailFormControl" />
+                                <button mat-button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="emailFormControl.hasError('required')">
+                                    Email
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Username" [(ngModel)]="username" [formControl]="usernameFormControl" />
+                                <button mat-button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="usernameFormControl.hasError('required')">
+                                    Username
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field style="width: 100%">
+                                    <mat-select placeholder="Select a gender" [(value)]="genderSelected" [formControl]="genderFormControl">
+                                        <mat-option *ngFor="let gender of genders" [value]="gender">
+                                            {{ gender }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="genderFormControl.hasError('required')">
+                                        Gender
+                                        <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>                            
+
                         </div>
-                    </div>
-                    <div class="twelve wide field">
-                        <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" [formControl]="confirmPasswordFormControl">
-                        <div class="ui basic red pointing prompt label transition visible" *ngIf="confirmPasswordFormControl.hasError('required')">Confirm Password
-                            <strong>required</strong>
-                        </div>
-                    </div>
-                </div>
+                    </mat-card-content>
+                </mat-card>
             </div>
-        </form>
+
+            <div class="eight wide column">
+                <mat-card class="result">
+                    <mat-card-content>
+                        <mat-form-field style="width: 100%">
+                            <mat-select placeholder="Select a role" [formControl]="roleFormControl" [(value)]="roleSelected">
+                                <mat-option *ngFor="let role of roles" [value]="role">
+                                    {{ role.name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="roleFormControl.hasError('required')">
+                                Role
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field style="width: 100%">
+                            <mat-select placeholder="Select an asset" [formControl]="assetFormControl" [(value)]="assetSelected" multiple>
+                                <mat-option *ngFor="let asset of assets" [value]="asset">
+                                    {{ asset.name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="assetFormControl.hasError('required')">
+                                Asset
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                       
+
+                        <mat-form-field style="width: 100%">
+                            <input matInput [matDatepicker]="dateOfBirth" placeholder="Birth date" [(ngModel)]="date_of_birth" [formControl]="birthFormControl">
+                            <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfBirth></mat-datepicker>
+                            <mat-error *ngIf="birthFormControl.hasError('required')">
+                                Birth date
+                                <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field style="width: 100%">
+                                <input matInput type="password" placeholder="Password" [(ngModel)]="password" [formControl]="passwordFormControl" />
+                                <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="passwordFormControl.hasError('required')">
+                                    Password
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" [formControl]="confirmPasswordFormControl"
+                                />
+                                <button mat-button *ngIf="confirmPassword" matSuffix mat-icon-button aria-label="Clear" (click)="confirmPassword=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="confirmPasswordFormControl.hasError('required')">
+                                    Confirm Password
+                                    <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
     </div>
     <div class="actions">
         <div class="ui two column centered grid">
             <div class="four column centered row">
                 <div class="column">
-                    <button mat-raised-button color="primary" (click)="sendTemplate()">Save</button>
+                    <button mat-raised-button color="primary" (click)="sendUser()">Save</button>
                 </div>
                 <div class="column">
                     <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>

@@ -27,7 +27,7 @@ var context: any;
 
 export class AddRolesComponent implements OnInit {
 
-  @ViewChild('addTemplateModal') addTemplateModalRef: ElementRef;
+  @ViewChild('addRoleModal') addRoleModalRef: ElementRef;
 
   @Output() onHidden = new EventEmitter<boolean>();
 
@@ -50,11 +50,7 @@ export class AddRolesComponent implements OnInit {
   descriptionFormControl = new FormControl('', [
     Validators.required
   ]);
-  resourceFormControl = new FormControl('', 
-  /*[
-    Validators.required
-  ]*/
-);
+  resourceFormControl = new FormControl();
  
   visible: boolean = true;
   selectable: boolean = true;
@@ -74,19 +70,21 @@ export class AddRolesComponent implements OnInit {
   }
 
   
-  resource: any[];
+  resources: any[];
 
-  private getResources(){ 
+    private getResources(){ 
     this._fiwooService.getResources().subscribe( 
       data => {           
         let resources: any[] = data; 
-        this.resource = resources;
+        this.resources = resources;
       },
       err => {
         console.log(err);      
       }
-    );    
-  }  
+    );  
+  } 
+ 
+
 
   ngOnInit() {
   }
@@ -136,13 +134,11 @@ export class AddRolesComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    this.modal = jQuery(this.addTemplateModalRef.nativeElement);
+    this.modal = jQuery(this.addRoleModalRef.nativeElement);
   }
   
 
-  sendTemplate (){
-    //TODOD VALIDATIONS
-    console.log('sendTemplate');
+  sendRole (){    
 
     if (!this.nameFormControl.hasError('required') &&
         !this.descriptionFormControl.hasError('required')){
@@ -158,7 +154,7 @@ export class AddRolesComponent implements OnInit {
         this.role = {
           name: this.name,
           description: this.description,        
-          resources: []
+          resources: allResources
         };
 
         if (this.editedRole != undefined){
@@ -179,8 +175,7 @@ export class AddRolesComponent implements OnInit {
           this.role = {
             name: this.name,
             description: this.description,        
-            resources: []   
-            //resources: []
+            resources: allResources 
           };
 
           console.log(JSON.stringify(this.role));

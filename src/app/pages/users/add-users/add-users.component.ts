@@ -28,7 +28,7 @@ var context: any;
 
 export class AddUsersComponent implements OnInit {
 
-  @ViewChild('addTemplateModal') addTemplateModalRef: ElementRef;
+  @ViewChild('addUserModal') addUserModalRef: ElementRef;
 
   @Output() onHidden = new EventEmitter<boolean>();
 
@@ -190,14 +190,13 @@ export class AddUsersComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    this.modal = jQuery(this.addTemplateModalRef.nativeElement);
+    this.modal = jQuery(this.addUserModalRef.nativeElement);
     // select multiple
     jQuery('.dropdown1').dropdown();
   }
   
 
-  sendTemplate (){
-    //TODOD VALIDATIONS
+  sendUser (){   
     console.log('Edited User: ', this.editedUser);
     
     if (!this.nameFormControl.hasError('required') &&
