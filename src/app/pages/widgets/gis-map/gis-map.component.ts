@@ -100,7 +100,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
                 var bounds = L.latLngBounds(southWest, northEast);
                 var map = L.map('mapid'+instanceId,{
                     layers:[layer1],
-                    maxBounds: bounds,
+                    maxBounds: null,
                     center: [0,0],
                     zoom:18,
                     maxBoundsViscosity: 1,
