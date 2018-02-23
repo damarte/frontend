@@ -149,7 +149,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     loadData (deviceId, attribute){
         this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
-            console.log(res);
+          
             if (res.value != undefined){
                 this.currentValue = res.value;
             }

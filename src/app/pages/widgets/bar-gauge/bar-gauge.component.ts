@@ -91,7 +91,6 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
         this.deviceData = [];
         this.devices.forEach(device => {
             this.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
-                console.log(res);
                 if (res.value != undefined){
                     this.deviceData.push(
                         {name: device.device_name,
@@ -105,7 +104,6 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     loadRepeatData (self){
         self.devices.forEach(device => {
             self.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
-                console.log(res);
                 if (res.value != undefined){
                     var data: any = self.getValueData(device.device_name);
                     data.value = res.value;

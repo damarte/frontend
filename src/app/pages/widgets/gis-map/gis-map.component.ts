@@ -39,6 +39,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     attrHistoric:any;
     coordinates: Coordinate[]; 
     showLineChart: boolean; 
+    
 
     textNew:string = "";
 
@@ -206,6 +207,11 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
                     if (data instanceof Array){
                         this.coordinates = new  Array<Coordinate>();
                         var i = 0;
+
+                        //TODO Only 50 last values
+                        var values = 50;
+                        data = data.slice(Math.max(data.length - 50, 1))
+
                         data.forEach(element => {
                             this.coordinates.push({ arg: this.formatDate(element.recvTime), val: parseInt(element.attrValue, 10)});
                             i++;
@@ -219,7 +225,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     }
 
     private formatDate (date){
-        return (moment(date).format('YYYY-MM-DD HH:mm'));
+        return (moment(date).format('YYYY-MM-DD HH:mm:ss'));
     }
 
     customizeTooltip(arg) {

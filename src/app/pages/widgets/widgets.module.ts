@@ -16,7 +16,8 @@ import {ErrorHandlerModule} from '../error/error.module';
 import {DoughnutChartComponent} from './doughnut-chart/doughnut-chart.component';
 import {
     MatButtonModule, MatCheckboxModule, MatExpansionModule, MatIconModule, MatInputModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatSelectModule
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
 import {DataListModule} from '../datalist/data-list.module';
@@ -62,7 +63,8 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         DxTextBoxModule, 
         DxTemplateModule,
         DxRangeSelectorModule,
-        DxDateBoxModule
+        DxDateBoxModule,
+        MatSelectModule
     ],
     declarations: [
         BarChartComponent,        

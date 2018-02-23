@@ -81,7 +81,7 @@ export class LineChartComponent extends WidgetsBase {
 
     
     private formatDate (date){
-        return (moment(date).format('YYYY-MM-DD HH:mm'));
+        return (moment(date).format('YYYY-MM-DD HH:mm:ss'));
     }
 
     customizeTooltip(arg) {
@@ -91,7 +91,7 @@ export class LineChartComponent extends WidgetsBase {
     }
    
     onValueChanged(data) {
-        console.log(data);        
+           
     }
    
 
@@ -101,8 +101,6 @@ export class LineChartComponent extends WidgetsBase {
     
 
     public configDone() {
-
-        console.log(this.widget);
 
         if (this.widget != undefined && this.widget.sources != undefined){
             var source: any;
