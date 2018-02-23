@@ -90,9 +90,8 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
                 var southWest = L.latLng(this.maps['bbox'][0], this.maps['bbox'][1]);
                 var northEast = L.latLng(this.maps['bbox'][2],this.maps['bbox'][3]);
                 var bounds = L.latLngBounds(southWest, northEast);
-                console.log(this.maps['bbox'],bounds);
                 var map = L.map('mapid'+instanceId,{
-                    layers:[layer1, layer2],
+                    layers:[layer1],
                     maxBounds: bounds,
                     center: [0,0],
                     zoom:18,
@@ -104,6 +103,71 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
 
                 this.map = map;
                 this.features = this.maps['features'];
+
+                var icon = L.icon({
+                    iconUrl: 'assets/images/iconmap.png',
+                    iconSize:     [20, 38], // size of the icon                   
+                    shadowAnchor: [4, 62],  // the same for the shadow
+
+                });
+               
+
+                var features = this.maps['features'];
+                var id;
+                var marker;
+
+                for (var feature in features) {
+                  if(features[feature].geometry){      
+                        id = JSON.parse(features[feature]['id']);
+                        id = id['id'];  
+
+                        marker = L.marker([features[feature].geometry.coordinates[1], features[feature].geometry.coordinates[0]],
+                           {    
+                              'icon': icon,
+                              'title': id,
+
+                           }
+                        ).on('click',
+                              (e) => {
+                                var features = this.features;
+                                this.showLineChart = false;
+                                this.attrHistoric = '';
+                                document.getElementById('device').innerHTML = "";
+                                document.getElementById('properties').innerHTML = "";
+                                var attrNames = null;
+                                var id;
+                                features.forEach( function(valor, indice, array) {
+                                    if(valor.geometry){               
+                                       if(valor.geometry.coordinates[0].toFixed(3) == parseFloat(e['latlng']['lng']).toFixed(3)  && valor.geometry.coordinates[1].toFixed(3) == parseFloat(e['latlng']['lat']).toFixed(3) ){
+                                            id = JSON.parse(valor['id']);
+                                            id = id['id'];
+                                            document.getElementById('device').innerHTML =  "Device: "  + id;      
+                                            //document.getElementById('properties').innerHTML =  "Properties: ";    
+                                            var properties = valor.properties;
+                                            attrNames = JSON.parse(properties['attrNames']);                      
+                                        }
+                                    }
+                                });
+
+                                this.attrs = attrNames;
+                                this.deviceId  = id;
+                        });
+
+                        // var popupLocation1 = new L.LatLng(-50,-80);
+                        // var popupContent1 = 'This is a nice popup';
+
+                        // var popup1 = new L.Popup();
+                        // popup1.setLatLng(popupLocation1);
+                        // popup1.setContent(popupContent1);
+
+                        // marker.bindPopup(popup1);
+
+                        // marker.openPopup();
+                        marker.addTo(map);
+                    }
+                }
+
+               
 
                 map.fitBounds(bounds); // [2]
 
@@ -127,7 +191,6 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     }
     
     history(event){
-         console.log(this.deviceId, event);
         this.attrHistoric = event;
         this.http.get(
             'https://platform.fiwoo.eu/api/device-management/devices/historics/?id='+this.deviceId+'&attribute='+event+'')
@@ -145,39 +208,6 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
             },
                 err => {console.log(err); this.showLineChart = false;}
             );
-    }
-
-    onMapClick(e) {
-
-        var features = this.features;
-        this.showLineChart = false;
-        this.attrHistoric = '';
-        document.getElementById('device').innerHTML = "";
-        document.getElementById('properties').innerHTML = "";
-        var attrNames;
-        var id;
-        features.forEach( function(valor, indice, array) {
-            
-            if(valor.geometry){               
-               if(valor.geometry.coordinates[0].toFixed(3) == parseFloat(e['latlng']['lng']).toFixed(3)  && valor.geometry.coordinates[1].toFixed(3) == parseFloat(e['latlng']['lat']).toFixed(3) ){
-                   console.log(valor);
-                    id = JSON.parse(valor['id']);
-                    id = id['id'];
-                    document.getElementById('device').innerHTML =  "Device: "  + id;      
-                    document.getElementById('properties').innerHTML =  "Properties: ";    
-                    var properties = valor.properties;
-                    attrNames = JSON.parse(properties['attrNames']);                      
-                }
-            }else{
-                console.log('no tiene');
-                // attrNames = '';
-                // id  = '';
-            }
-        });
-
-        this.attrs = attrNames;
-        this.deviceId  = id;
-
     }
 
 }
