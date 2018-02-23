@@ -20,3 +20,8 @@ input.dx-texteditor-input {
     margin-left: 14px;
 }
 
+#location, #device {
+    margin: 5px 0px;
+    font-weight: 500;
+    font-size: 15px;
+}

@@ -34,7 +34,7 @@
         </small>-->
 
             <label for="username" class="sr-only">Email</label>
-            <input type="text" ngModel name="username" id="input-username" class="form-control" placeholder="Username" #username="ngModel"
+            <input type="text" ngModel name="username" id="input-username" class="form-control" placeholder="Email" #username="ngModel"
                 [class.form-control-danger]="username.invalid && username.touched" autofocus [required]="getConfigValue('forms.validation.username.required')">
             <small class="form-text error" *ngIf="username.invalid && username.touched && username.errors?.required">
                 Username is required!
@@ -58,7 +58,7 @@
 
         <div class="form-group accept-group col-sm-12">
             <nb-checkbox name="rememberMe" [(ngModel)]="rememberMe" name="rememberMe" class="login-remember">Remember me</nb-checkbox>
-            <!-- <a class="forgot-password" routerLink="../request-password">Forgot Password?</a>-->
+            <!-- <a class="forgot-password" routerLink="../request-password">Forgot Password?</a> -->
         </div>
 
         <button [disabled]="submitted || !form.valid" class="btn btn-block btn-hero-success btn-login" [class.btn-pulse]="submitted">
@@ -66,15 +66,13 @@
         </button>
 
     </form>
-
+ 
     <div class="links">
 
-        <small class="form-text">Or connect with:</small>
-
-        <!-- Google button -->
-        <button id="glogin" (click)="signInWithGoogle()" class="btn btn-block btn-hero-warn btn-google">
-            Loggin with Google
-        </button>
+        <!-- <small class="form-text">Or connect with:</small>         
+        <button id="glogin" (click)="signInWithGoogle()" class="btn btn-block btn-social btn-google">
+            <i class="fa fa-google"></i> Loggin with Google
+        </button>        -->
 
         <small class="form-text">
             Don't have an account?

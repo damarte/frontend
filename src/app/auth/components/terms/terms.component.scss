@@ -9,4 +9,29 @@
 
 .terms-container h2, .terms-container h3 {
     color: #fff;
+    text-align: center;
+    width: 100%;
 }
+
+.terms-container p {
+    font-size:12px;
+    margin: 14px 0px;    
+}
+
+.nb-theme-default a:hover,  .nb-theme-default a:active, .nb-theme-default a:focus {
+  color: #ccc !important;
+}
+
+.nb-theme-default a {
+    color: #fff !important;
+}
+
+.btn-login {
+    background: #FF284F !important;
+    opacity: 1 !important;                
+}
+.btn-login:hover {
+    background: #FE1D45 !important;
+    cursor:pointer !important;
+    opacity: 0.8 !important; 
+}      
