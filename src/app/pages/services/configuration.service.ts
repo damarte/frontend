@@ -18,8 +18,8 @@ export class ConfigurationService {
      * todo - fix this hard coded store
      * @type {string}
      */
-    // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
-    remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
+    remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
+    // remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
     
     constructor(private _http: Http) {
 
