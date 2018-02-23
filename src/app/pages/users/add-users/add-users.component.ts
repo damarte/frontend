@@ -153,7 +153,6 @@ export class AddUsersComponent implements OnInit {
      
   }
 
-
   showModal(user) {
     this.editedUser = user;
 

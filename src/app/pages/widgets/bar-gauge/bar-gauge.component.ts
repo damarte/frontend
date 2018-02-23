@@ -56,16 +56,7 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
             _propertyService,            
             _changeDetectionRef);
 
-            // clearInterval(interval);
-
-            context = this;
-
-            router.events.subscribe(event => {
-                if(event instanceof NavigationStart) {
-                   
-                    clearInterval(interval);
-                }
-              });
+           context = this
     }
 
     devicesToValues() {
@@ -83,13 +74,18 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     private loadDataGeneral (){
         var context = this;
         this.loadData();
+        
+        //Avoiding repeating widgets context problem.
         interval = setInterval(
-            this.launchTimer(this)
-        , context.refreshTime);         
-    }
-    launchTimer(context){
-        context.loadRepeatData();
-    }
+            (function(self) {         
+                return function() {
+                    self.loadRepeatData(self);
+                }
+            })(this),
+            this.refreshTime
+        ); 
+    
+    }    
 
     loadData (){
         this.deviceData = [];
@@ -106,15 +102,15 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
             });            
         }); 
     }
-    loadRepeatData (){
-        this.devices.forEach(device => {
-            this.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
+    loadRepeatData (self){
+        self.devices.forEach(device => {
+            self.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
                 console.log(res);
                 if (res.value != undefined){
-                    var data: any = this.getValueData(device.device_name);
+                    var data: any = self.getValueData(device.device_name);
                     data.value = res.value;
                 }
-                this.devicesToValues();
+                self.devicesToValues();
             });            
         }); 
     }

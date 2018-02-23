@@ -97,15 +97,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
         context = this;
 
         Object.assign(this, {single});
-
-        router.events.subscribe(event => {
-            if(event instanceof NavigationStart) {
-               
-                clearInterval(interval);
-            }
-          });
-
-        
+       
     }
 
     public configDone(){
@@ -143,10 +135,16 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     private loadDataGeneral (deviceId, attribute){
         this.loadData(deviceId, attribute);
-        interval = setInterval(function(){
-            context.loadData(deviceId, attribute);
-        }
-        , context.refreshTime);         
+       
+         //Avoiding repeating widgets context problem.
+         interval = setInterval(
+            (function(self) {         
+                return function() {
+                    self.loadData(deviceId, attribute);
+                }
+            })(this),
+            this.refreshTime
+        );          
     }
 
     loadData (deviceId, attribute){

@@ -3,6 +3,7 @@ import { ConfigurationService } from '../services/configuration.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/Rx';
+import { Router, NavigationStart } from '@angular/router';
 
 
 declare var jQuery: any;
@@ -24,9 +25,18 @@ export class DashboardComponent implements OnInit {
     detailMenuOpen = 'out';
 
     constructor(private _configurationService: ConfigurationService,
-        public http: Http) {
+        public http: Http, router:Router) {
 
             context = this;
+
+            //Delete all timers.
+            router.events.subscribe(event => {
+                if(event instanceof NavigationStart) {
+                    for(var i=0; i<10000; i++){
+                        clearInterval(i);
+                    }
+                }
+              });
     }
 
     onLoadFinished(){

@@ -309,13 +309,12 @@ export class AddTemplateComponent implements OnInit {
   }
 
   onChangeProtocol(event): void {
-    console.log(event);
-    this.transportSelected = null;
     this.transportProtocols = event.transportProtocols;
+    this.transportSelected = this.transportProtocols.length ? this.transportProtocols[0] : null;
   }
 
   onChangeTransportProtocol(event): void {
-    console.log(event);
+    
   }
 
   sendTemplate (){

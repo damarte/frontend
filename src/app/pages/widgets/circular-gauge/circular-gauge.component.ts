@@ -52,17 +52,6 @@ export class CircularGaugeComponent extends WidgetsBase {
             'thumbs-up',
             sanitizer.bypassSecurityTrustResourceUrl('assets/images/svg-icons/ic_add_white_36px.svg'));  
 
-            clearInterval(interval);
-
-            router.events.subscribe(event => {
-                if(event instanceof NavigationStart) {
-                   
-                    clearInterval(interval);
-                }
-              });
-            
-              
-            
     }
 
     public configDone(){
@@ -117,10 +106,17 @@ export class CircularGaugeComponent extends WidgetsBase {
     private loadDataGeneral (deviceId, attribute){
         var context = this;
         this.loadData(deviceId, attribute);
-        interval = setInterval(function(){
-            context.loadData(deviceId, attribute);
-        }
-        , context.refreshTime);         
+        
+        //Avoiding repeating widgets context problem.
+        interval = setInterval(
+            (function(self) {         
+                return function() {
+                    self.loadData(deviceId, attribute);
+                }
+            })(this),
+            this.refreshTime
+        ); 
+         
     }
 
     loadData (deviceId, attribute){
