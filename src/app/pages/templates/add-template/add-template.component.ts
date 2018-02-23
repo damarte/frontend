@@ -58,12 +58,12 @@ export class AddTemplateComponent implements OnInit {
   editedTemplate:any = null;
   modalTitle: string = "";
 
-  properties: any[] = [
-    {type: "command", showValue: false, prop: this.commands},
-    {type: "internal attribute", showValue: false, prop: this.internalAttrs},
-    {type: "attribute", showValue: false, prop: this.attributes},
-    {type: "lazy", showValue: false, prop: this.lazy},
-    {type: "static attribute", showValue: true, prop: this.statics},
+  properties: any[];
+  propertiesSelect = [
+    {type: "command"},
+    {type: "attribute"},
+    {type: "lazy"},
+    {type: "static attribute"},
   ];
 
   templateNameFormControl = new FormControl('', [
@@ -109,6 +109,8 @@ export class AddTemplateComponent implements OnInit {
   constructor(private devicesService: DevicesService, public dialog: MatDialog) {
 
     context = this;
+
+    this.restartProperties();
 
     var httpTransportProtocol = new TransportProtocol('HTTP', 'HTTP');
     var mqttTransportProtocol = new TransportProtocol('MQTT', 'MQTT');
@@ -222,7 +224,9 @@ export class AddTemplateComponent implements OnInit {
     this.statics = [];
     this.commands = [];
     this.internalAttrs = [];
+  }
 
+  private restartProperties(){
     this.properties = [
       {type: "command", showValue: false, prop: this.commands},
       {type: "internal attribute", showValue: false, prop: this.internalAttrs},

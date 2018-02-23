@@ -40,14 +40,17 @@ export class HeaderComponent implements OnInit {
       localStorage.removeItem('access_token');
       localStorage.removeItem('email');
 
-      this.fiwooService.doLogout().subscribe(
-        data => {
-          this.fiwooService.isLoggedIn = false;
-          this.router.navigate(['../auth/login']);
-        }, error => {
+      // TODO WHEN LOGOUT WORKS, CHANGE IT
+      this.router.navigate(['../auth/login']);
 
-        }
-      );
+      // this.fiwooService.doLogout().subscribe(
+      //   data => {
+      //     this.fiwooService.isLoggedIn = false;
+      //     this.router.navigate(['../auth/login']);
+      //   }, error => {
+
+      //   }
+      // );
     }
   }
 

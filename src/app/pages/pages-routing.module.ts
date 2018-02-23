@@ -6,8 +6,8 @@ import { DevicesComponent } from './devices/devices.component';
 import { UsersComponent } from './users/users.component';
 import { TemplatesComponent } from './templates/templates.component';
 import { AboutComponent } from './about/about.component';
-import { RolesComponent } from './users/roles/roles.component';
-import { AssetsComponent } from './users/assets/assets.component';
+import { RolesComponent } from './roles/roles.component';
+import { AssetsComponent } from './assets/assets.component';
 
 
 

@@ -23,8 +23,10 @@ export class FiwooService {
   }
 
     // urlBaseUser: string = 'https://platform.fiwoo.eu/api/user-management/users';  
+    // urlLogin: string = 'https://us1.fiwoo.eu:7000/users'; 
    urlBaseUser: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-   urlLogin: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users'; 
+   urlLogin: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+   
 
    private configureGET(){
       headers = new Headers();

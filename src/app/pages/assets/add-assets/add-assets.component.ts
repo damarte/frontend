@@ -13,7 +13,7 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { Http } from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from '../../../services/fiwoo.service';
+import { FiwooService } from '../../services/fiwoo.service';
 
 
 declare var jQuery: any;
@@ -89,6 +89,13 @@ export class AddAssetsComponent implements OnInit {
   roles: any[];
   assets: any[];
 
+  compareFn: ((f1: any, f2: any) => boolean)|null = this.compareByValue;
+
+  compareByValue(f1: any, f2: any) { 
+    return f1 && f2 && f1.id === f2.id; 
+  }
+
+
   private getAssets(){   
 
     this._fiwooService.getAssets().subscribe( 
@@ -158,9 +165,8 @@ export class AddAssetsComponent implements OnInit {
   }
   
 
-  sendAsset (){
-    //TODOD VALIDATIONS
-
+  sendAsset(){
+  
     if (!this.nameFormControl.hasError('required') &&
         !this.descriptionFormControl.hasError('required') &&
         !this.typeFormControl.hasError('required')){

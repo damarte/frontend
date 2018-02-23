@@ -31,9 +31,16 @@
                         <dxo-format type="fixedPoint"></dxo-format>
                     </dxo-label>
                 </dxi-value-axis>
+                <dxo-title [text]="textNew | uppercase">
+                    <dxo-font [size]="22"></dxo-font>
+                </dxo-title>
                 <dxo-legend [visible]="false"></dxo-legend>  
                 <dxo-size [height]="320"></dxo-size>
-                <dxo-adaptive-layout [width]="450"></dxo-adaptive-layout>             
+                <dxo-adaptive-layout [width]="450"></dxo-adaptive-layout>  
+                <dxo-tooltip
+                    [enabled]="true"
+                    [customizeTooltip]="customizeTooltip">
+                </dxo-tooltip>     
             </dx-chart>
             <dx-range-selector
                 id="range-selector"

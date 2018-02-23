@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
-import { FiwooService } from '../../services/fiwoo.service';
+import { FiwooService } from '../services/fiwoo.service';
 import swal from "sweetalert2";
 
 
@@ -44,7 +44,7 @@ export class RolesComponent {
       confirmDelete: true,
     },
     columns: {     
-      name: {
+      name: { 
         title: 'Name:',
         type: 'string',
       },
@@ -53,9 +53,19 @@ export class RolesComponent {
         type: 'string',
       },
       resources: {
-        title: 'Resources',
-        type: 'string',
-      },            
+        title:"Resources",
+        valuePrepareFunction: (resources) => {
+          return resources.map(s => " " + s.name + " ").toString()
+        },
+        filterFunction(resources?: any, search?: string): boolean {
+          let match = resources.map(s => s.name).indexOf(search) > -1
+          if (match || search === '') {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },  
     }, 
   };
 

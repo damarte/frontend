@@ -28,7 +28,7 @@ var context: any;
 
 export class AddUsersComponent implements OnInit {
 
-  @ViewChild('addTemplateModal') addTemplateModalRef: ElementRef;
+  @ViewChild('addUserModal') addUserModalRef: ElementRef;
 
   @Output() onHidden = new EventEmitter<boolean>();
 
@@ -63,25 +63,18 @@ export class AddUsersComponent implements OnInit {
   emailFormControl = new FormControl('', [
     Validators.required
   ]);
-  passwordFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  confirmPasswordFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  genderFormControl = new FormControl('', [
-    Validators.required
-  ]);
+  // passwordFormControl = new FormControl('', [
+  //   Validators.required
+  // ]);
+  // confirmPasswordFormControl = new FormControl('', [
+  //   Validators.required
+  // ]);
   roleFormControl = new FormControl('', [
     Validators.required
   ]);
-  assetFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  birthFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  
+  genderFormControl = new FormControl();  
+  assetFormControl = new FormControl();
+  birthFormControl = new FormControl(); 
 
 
  
@@ -105,6 +98,13 @@ export class AddUsersComponent implements OnInit {
 
   
   genders:any = ['Male', 'Female'];
+
+  compareFn: ((f1: any, f2: any) => boolean)|null = this.compareByValue;
+
+  compareByValue(f1: any, f2: any) { 
+    return f1 && f2 && f1.id === f2.id; 
+  }
+
  
 
   roles: any[];
@@ -147,7 +147,7 @@ export class AddUsersComponent implements OnInit {
     this.password = "";
     this.confirmPassword = "";
     this.genderSelected = "";
-    this.roleSelected = [];
+    this.roleSelected = {};
     this.assetSelected = [];
     this.date_of_birth = null;
      
@@ -179,10 +179,10 @@ export class AddUsersComponent implements OnInit {
       this.surname = this.editedUser.surname;
       this.username = this.editedUser.username;
       this.email = this.editedUser.email;
-      this.password = this.editedUser.password;
-      this.confirmPassword = this.editedUser.password;
+      this.password = "";
+      this.confirmPassword = "";
       this.genderSelected = this.editedUser.gender;
-      this.roleSelected = this.editedUser.roles;
+      this.roleSelected = this.editedUser.roles instanceof Array && this.editedUser.roles.length ? this.editedUser.roles[0] : this.editedUser.roles;
       this.assetSelected= this.editedUser.assets;
       this.date_of_birth = this.editedUser.date_of_birth;
 
@@ -197,24 +197,21 @@ export class AddUsersComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    this.modal = jQuery(this.addTemplateModalRef.nativeElement);
+    this.modal = jQuery(this.addUserModalRef.nativeElement);
+    // select multiple
+    jQuery('.dropdown1').dropdown();
   }
   
 
-  sendTemplate (){
-    //TODOD VALIDATIONS
+  sendUser (){   
     console.log('Edited User: ', this.editedUser);
     
     if (!this.nameFormControl.hasError('required') &&
         !this.surnameFormControl.hasError('required') &&
         !this.usernameFormControl.hasError('required') &&
         !this.emailFormControl.hasError('required') &&
-        !this.passwordFormControl.hasError('required') &&
-        // !this.roleFormControl.hasError('required') &&
-        // !this.assetFormControl.hasError('required') && 
-        !this.genderFormControl.hasError('required') && 
-        this.password == this.confirmPassword
-      ){
+        !this.roleFormControl.hasError('required') &&
+        this.password == this.confirmPassword) {
         
         let allRoles = [];
 
@@ -237,13 +234,16 @@ export class AddUsersComponent implements OnInit {
           surname: this.surname,
           username: this.username,
           email: this.email,
-          password: this.password,
+          // password: this.password,
           roles: allRoles,
           assets: allAssets,
           gender: this.genderSelected,
-          date_of_birth: this.changeDate(this.date_of_birth)   
-          // date_of_birth: this.date_of_birth     
+          date_of_birth: this.date_of_birth     
         };
+
+        if (this.password !== ''){
+          this.user.password = this.password;
+        }
 
         if (this.editedUser != undefined){
 
@@ -269,8 +269,8 @@ export class AddUsersComponent implements OnInit {
             roles: allRoles,
             assets: allAssets,
             gender: this.genderSelected,
-            date_of_birth: this.changeDate(this.date_of_birth)
-            // date_of_birth: this.date_of_birth
+            //date_of_birth: this.changeDate(this.date_of_birth)
+           date_of_birth: this.date_of_birth
           };
 
           console.log(JSON.stringify(this.user));

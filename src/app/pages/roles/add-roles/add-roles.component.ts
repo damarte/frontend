@@ -13,7 +13,7 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { Http } from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from '../../../services/fiwoo.service';
+import { FiwooService } from '../../services/fiwoo.service';
 
 declare var jQuery: any;
 var context: any;
@@ -27,7 +27,7 @@ var context: any;
 
 export class AddRolesComponent implements OnInit {
 
-  @ViewChild('addTemplateModal') addTemplateModalRef: ElementRef;
+  @ViewChild('addRoleModal') addRoleModalRef: ElementRef;
 
   @Output() onHidden = new EventEmitter<boolean>();
 
@@ -44,17 +44,10 @@ export class AddRolesComponent implements OnInit {
   editedRole:any = null;
   modalTitle: string = "";
 
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  descriptionFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  resourceFormControl = new FormControl('', 
-  /*[
-    Validators.required
-  ]*/
-);
+  // validations
+  nameFormControl = new FormControl('', [Validators.required]);
+  descriptionFormControl = new FormControl();
+  resourceFormControl = new FormControl();
  
   visible: boolean = true;
   selectable: boolean = true;
@@ -70,23 +63,33 @@ export class AddRolesComponent implements OnInit {
               private _fiwooService: FiwooService) {
     context = this;     
     this.getResources();
-   
-  }
 
   
-  resource: any[];
+   
+  }
+ 
+  
+  resources: any[];
 
-  private getResources(){ 
+    private getResources(){ 
     this._fiwooService.getResources().subscribe( 
       data => {           
         let resources: any[] = data; 
-        this.resource = resources;
+        this.resources = resources;
       },
       err => {
         console.log(err);      
       }
-    );    
-  }  
+    );  
+  } 
+ 
+
+  compareFn: ((f1: any, f2: any) => boolean)|null = this.compareByValue;
+
+  compareByValue(f1: any, f2: any) { 
+    return f1 && f2 && f1.id === f2.id; 
+  }
+
 
   ngOnInit() {
   }
@@ -122,10 +125,9 @@ export class AddRolesComponent implements OnInit {
       
       this.modalTitle = "Edit Role";
       this.name = this.editedRole.name;
-      this.description = this.editedRole.description;  
+      this.description = this.editedRole.description;
       this.resourceSelected = this.editedRole.resources;   
-
-    }else{
+     }else{
       this.modalTitle = "Add Role"
     }
   }
@@ -136,13 +138,11 @@ export class AddRolesComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    this.modal = jQuery(this.addTemplateModalRef.nativeElement);
+    this.modal = jQuery(this.addRoleModalRef.nativeElement);
   }
   
 
-  sendTemplate (){
-    //TODOD VALIDATIONS
-    console.log('sendTemplate');
+  sendRole (){    
 
     if (!this.nameFormControl.hasError('required') &&
         !this.descriptionFormControl.hasError('required')){
@@ -158,7 +158,7 @@ export class AddRolesComponent implements OnInit {
         this.role = {
           name: this.name,
           description: this.description,        
-          resources: []
+          resources: allResources
         };
 
         if (this.editedRole != undefined){
@@ -179,8 +179,7 @@ export class AddRolesComponent implements OnInit {
           this.role = {
             name: this.name,
             description: this.description,        
-            resources: []   
-            //resources: []
+            resources: allResources 
           };
 
           console.log(JSON.stringify(this.role));

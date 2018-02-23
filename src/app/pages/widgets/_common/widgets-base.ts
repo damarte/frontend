@@ -5,6 +5,7 @@ import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DynamicFormComponent } from '../../dynamic-form/dynamic-form.component';
 
+var context;
 
 export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterViewInit {
     @ViewChild(DynamicFormComponent) propertyPageForm: DynamicFormComponent;
@@ -14,6 +15,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
     widget: any;
     refreshTime = 5000;
 
+    
     /**
      * Used to determine when to show the controls that appear in the gadgets
      * heading area. This is set by the mouseover/mouseout events.
@@ -75,19 +77,13 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
                 protected _gadgetInstanceService: WidgetsInstanceService,
                 protected _propertyService: WidgetsPropertyService,
                 protected changeDetectionRef: ChangeDetectorRef) {
+    
+            context = this;
     }
 
     public ngOnInit() {
-        // this.toggleConfigMode();
         this.changeDetectionRef.detectChanges();
-       
-        // var context = this;
-        // setTimeout(function(){
-        //     context.toggleConfigMode();
-        //     this.changeDetectionRef.detectChanges();
-        // }, 10);
     }
-
     public ngAfterViewInit() {
 
         if (this.propertyPageForm) {
@@ -195,11 +191,23 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
 
         this.configDone();
 
+        //TODO TO TRY TO AVOID THE SMALL WIDGET SIZE
+        this.reload();
+
         this.setTitle(this.getPropFromPropertyPages('title'));
         this.preRun();
-
     }
 
+    //TODO: View Widgets deep code to try to avoid this.
+    private reload (){
+        this.changeValue(this);
+        this.changeValue(this);
+    }
+    private changeValue(context){
+        setTimeout(function(){
+            context.toggleConfigMode();
+        }, 10);
+    }
     
     protected setTitle(title: string) {
         this.title = title;

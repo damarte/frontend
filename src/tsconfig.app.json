@@ -11,16 +11,7 @@
       ],
       "@nebular/*": [
         "../node_modules/@nebular/*"
-      ],
-      "um_fiwoo/*": [
-        "../node_modules/um_fiwoo/*"
-      ],
-      "dv_fiwoo/*": [
-        "../node_modules/dv_fiwoo/*"
-      ],     
-      "iot_devices_fiwoo/*": [
-        "../node_modules/iot_devices_fiwoo/*"
-      ]
+      ]      
     }
   },
   "include": [

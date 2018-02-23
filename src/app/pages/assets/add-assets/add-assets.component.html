@@ -1,0 +1,80 @@
+<div class="ui modal" #addAssetsModal>
+    <div class="header">{{modalTitle}}</div>
+    <div class="scrolling content">
+            <div class="ui grid">
+                           
+                <!-- col1-->
+                <div class="eight wide column">
+                                <mat-card class="result">
+                                                <mat-card-content>    
+                    <div class="field">
+                        <mat-form-field style="width: 100%">
+                            <input matInput type="text" placeholder="Name" [(ngModel)]="name" [formControl]="nameFormControl"/>
+                            <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-error *ngIf="nameFormControl.hasError('required')">
+                                Name <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>     
+                        
+                        <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Description" [(ngModel)]="description" [formControl]="descriptionFormControl"/>
+                                <button mat-button *ngIf="description" matSuffix mat-icon-button aria-label="Clear" (click)="description=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="descriptionFormControl.hasError('required')">
+                                    Description <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>   
+                            
+                            <mat-form-field style="width: 100%">
+                                <input matInput type="text" placeholder="Type" [(ngModel)]="type" [formControl]="typeFormControl"/>
+                                <button mat-button *ngIf="type" matSuffix mat-icon-button aria-label="Clear" (click)="type=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="typeFormControl.hasError('required')">
+                                    Type <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>  
+                    </div>
+                </mat-card-content>
+        </mat-card>  
+              </div>                 
+    
+                <div class="eight wide column">
+                    <mat-card class="result">
+                        <mat-card-content>                          
+                            <mat-form-field style="width: 100%">
+                                <mat-select placeholder="Select a children" [compareWith]="compareFn" [formControl]="assetChildrenFormControl" [(ngModel)]="assetChildrenSelected" multiple>
+                                    <mat-option *ngFor="let asset of assets" [value]="asset" >
+                                    {{ asset.name  }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+    
+                            <mat-form-field style="width: 100%">
+                                <mat-select placeholder="Select a parent" [compareWith]="compareFn" [formControl]="assetParentFormControl" [(ngModel)]="assetParentSelected" multiple>
+                                    <mat-option *ngFor="let asset of assets" [value]="asset" >
+                                    {{ asset.name  }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>              
+                        </mat-card-content>
+                    </mat-card>  
+                </div>
+            </div>      
+        </div>
+    <div class="actions">
+        <div class="ui two column centered grid">
+            <div class="four column centered row">
+                <div class="column">
+                    <button mat-raised-button color="primary" (click)="sendAsset()">Save</button>
+                </div>
+                <div class="column">
+                    <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,7 +3,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { AssetsService } from 'um_fiwoo';
 import { Http, RequestOptions, Headers } from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from "../../services/fiwoo.service";
+import { FiwooService } from "../services/fiwoo.service";
 import swal from "sweetalert2";
 
 

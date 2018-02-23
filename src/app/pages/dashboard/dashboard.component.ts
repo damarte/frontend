@@ -7,6 +7,8 @@ import 'rxjs/Rx';
 
 declare var jQuery: any;
 
+var context;
+
 @Component({
     moduleId: module.id,
     templateUrl: './view.html',
@@ -23,6 +25,8 @@ export class DashboardComponent implements OnInit {
 
     constructor(private _configurationService: ConfigurationService,
         public http: Http) {
+
+            context = this;
     }
 
     onLoadFinished(){
@@ -80,11 +84,12 @@ export class DashboardComponent implements OnInit {
             }
 
             setTimeout(function (){
-                window.dispatchEvent(new Event('resize'));            
+                // window.dispatchEvent(new Event('resize'));
             }, 1000);
+           
 
         });
-    }
+    } 
 
     selectBoard(selectedBoard: any) {
         this.selectedBoard = selectedBoard;

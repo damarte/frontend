@@ -1,15 +1,16 @@
-import { Component, Inject } from "@angular/core";
+import { Component, Inject  } from "@angular/core";
 import { Router } from "@angular/router";
 import { NB_AUTH_OPTIONS_TOKEN } from "../../auth.options";
 import { getDeepFromObject } from "../../helpers";
 import { NbAuthResult, NbAuthService } from "../../services/auth.service";
 import { NgForm } from "@angular/forms";
 import { UsersService, UserLogin } from "um_fiwoo";
-
 import { Http, Headers, RequestOptions, URLSearchParams } from "@angular/http";
 import "rxjs/Rx";
 import sweetAlert from "sweetalert2";
 import { FiwooService } from "../../../pages/services/fiwoo.service";
+import { AuthService, SocialUser } from "angularx-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 
 @Component({
   selector: "nb-login",
@@ -18,17 +19,15 @@ import { FiwooService } from "../../../pages/services/fiwoo.service";
   providers: [UsersService]
 })
 export class NbLoginComponent {
-  rememberMe: boolean = false;
 
+  rememberMe: boolean = false;
   redirectDelay: number = 0;
   showMessages: any = {};
   provider: string = "";
-
   errors: string[] = [];
   messages: string[] = [];
   user: any = {};
   submitted: boolean = false;
-
   form: NgForm;
 
   constructor(
@@ -37,12 +36,32 @@ export class NbLoginComponent {
     protected router: Router,
     protected _usersService: UsersService,
     private fiwooService: FiwooService,
-    private http: Http
+    private http: Http,
+    private authService: AuthService
   ) {
     this.redirectDelay = this.getConfigValue("forms.login.redirectDelay");
     this.showMessages = this.getConfigValue("forms.login.showMessages");
     this.provider = this.getConfigValue("forms.login.provider");
   }
+
+  private googleUser: SocialUser;
+  private loggedIn: boolean;
+
+  ngOnInit() {
+    this.authService.authState.subscribe((user) => {
+      this.googleUser = user;
+      this.loggedIn = (user != null);
+    });
+  }
+
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  signOut(): void {
+    this.authService.signOut();
+  }
+  
 
   username: string;
   password: string;
@@ -73,14 +92,14 @@ export class NbLoginComponent {
     this.fiwooService.doLogin(body).subscribe(
       data => {
         console.log("Login Data: ", data);
-        
+
         let user_login = data.json();
         let token = user_login.access_token;
-        localStorage.setItem('access_token', JSON.stringify(token)); 
+        localStorage.setItem('access_token', JSON.stringify(token));
         localStorage.setItem('email', JSON.stringify(this.form.value.username));
-        
+
         this.fiwooService.isLoggedIn = true;
-            
+
         // sweetAlert({
         //   title: "OK!",
         //   text: "You have logged in!",         
@@ -97,24 +116,24 @@ export class NbLoginComponent {
         // });
 
         sweetAlert({
-            title: "OK!",
-            text: "You have logged in!",
-            timer: 5000,
-            onOpen: () => {
-              sweetAlert.showLoading();
-              window.location.href = "/#/pages/dashboard";
-            }
-          }).then((result) => {
-            sweetAlert.close();
-          });
-          
-        },
-        err => {      
-          console.error(err);
-          sweetAlert("Oops!", "Something went wrong!", "error");      
-        }
+          title: "OK!",
+          text: "You have logged in!",
+          timer: 5000,
+          onOpen: () => {
+            sweetAlert.showLoading();
+            window.location.href = "/#/pages/dashboard";
+          }
+        }).then((result) => {
+          sweetAlert.close();
+        });
+
+      },
+      err => {
+        console.error(err);
+        sweetAlert("Oops!", "Something went wrong!", "error");
+      }
     );
-  }
+  } 
 
   getConfigValue(key: string): any {
     return getDeepFromObject(this.config, key, null);

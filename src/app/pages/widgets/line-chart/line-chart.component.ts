@@ -10,6 +10,9 @@ import { DxChartModule, DxChartComponent, DxRangeSelectorModule } from 'devextre
 import { forEach } from '@angular/router/src/utils/collection';
 import { DatePipe } from '@angular/common';
 
+declare var require: any;
+const moment = require('moment');
+
 
 declare var d3: any;
 
@@ -30,11 +33,8 @@ export class LineChartComponent extends WidgetsBase {
     currentDevice: any;
     coordinates: Coordinate[];     
 
-    fromDate:Date;
-    toDate = new Date();
-    minDate = new Date(2017, 0, 1);
-    maxDate = new Date();
-    
+    textNew: string;
+      
     autoScale = true;
     collectors: Array<string> = [];
     eventTimerSubscription: any;
@@ -71,7 +71,7 @@ export class LineChartComponent extends WidgetsBase {
                 this.coordinates = new  Array<Coordinate>();
                 var i = 0;
                 res.forEach(element => {
-                    this.coordinates.push({ arg: element.recvTime, val: parseInt(element.attrValue, 10)});
+                    this.coordinates.push({ arg: this.formatDate(element.recvTime), val: parseInt(element.attrValue, 10)});
                     i++;
                 });
             }
@@ -79,50 +79,30 @@ export class LineChartComponent extends WidgetsBase {
         });
     }
 
+    
+    private formatDate (date){
+        return (moment(date).format('YYYY-MM-DD HH:mm'));
+    }
+
     customizeTooltip(arg) {
         return {
-            text: arg.valueText + '&#176C'
+            text: arg.valueText
         };
     }
-    customizeText(arg) {
-        return arg.valueText + '&#176C';
-    }
+   
     onValueChanged(data) {
         console.log(data);        
     }
-
-    onDeviceChanged(data) {
-        console.log(data);
-        this.currentDevice = data.value;
-        var entityName = this.getEntityNameByDeviceId(this.currentDevice);
-        this.loadData(entityName, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));
-    }
-
-    onDateFromChanged(data) {
-        console.log(data);
-        this.fromDate = data.value;
-        var entityName = this.getEntityNameByDeviceId(this.currentDevice);
-        this.loadData(entityName, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));
-    }
-
-    onDateToChanged(data) {
-        console.log(data);
-        this.toDate = data.value;
-        var entityName = this.getEntityNameByDeviceId(this.currentDevice);
-        this.loadData(entityName, 'temperature', this.changeDate(this.fromDate), this.changeDate(this.toDate));
-    }
-
+   
 
     valueChanged(arg: any) {
         this.chart.instance.zoomArgument(arg.value[0], arg.value[1]);
     }
+    
 
     public configDone() {
 
         console.log(this.widget);
-
-        this.fromDate = new Date();
-        this.fromDate.setDate(this.fromDate.getDate()-7);
 
         if (this.widget != undefined && this.widget.sources != undefined){
             var source: any;
@@ -131,9 +111,11 @@ export class LineChartComponent extends WidgetsBase {
                 
                 source = this.widget.sources[0];
 
-                var device_id, attribute, from, to;
+                var device_name, device_id, attribute, from, to;
                 source.parameters.forEach(param => {
-                    if (param.name === "device_id"){
+                    if (param.name === "device_name"){
+                        device_name = param.value;
+                    }else if (param.name === "device_id"){
                         device_id = param.value;
                     }else if (param.name === "attribute"){
                         attribute = param.value;
@@ -145,6 +127,8 @@ export class LineChartComponent extends WidgetsBase {
                 });
 
                 this.currentDevice = device_id;
+
+                this.textNew = device_name;
 
                 this.loadData(device_id, attribute, from, to);
             }        
