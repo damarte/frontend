@@ -1,5 +1,5 @@
     <div class="ui center aligned segment gadget" dnd-draggable
-     [dragEnabled]="inConfig" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
+     [dragEnabled]="!inConfig" [dragData]="instanceId" [dropZones]="['c0','c1','c2','c3','r0','r1']">
 
     <app-gadget-header (mouseover)="showGadgetControls(true)"
                        (mouseleave)="showGadgetControls(true)"
@@ -63,46 +63,6 @@
                 </dxo-chart>
                 <hr>
             </dx-range-selector>
-            <!-- <div class="action">
-                <div class="dx-field">
-                    <div class="dx-field-label">Choose a device:</div>
-                    <div class="dx-field-value">
-                        <dx-select-box
-                        id="selectbox"
-                        [items]="sensorsDataSource"
-                        [width]="150"
-                        [value]="currentDevice"
-                        valueExpr="_id"
-                        displayExpr="name"
-                        (onValueChanged)="onDeviceChanged($event)"
-                    ></dx-select-box>  
-                    </div>
-                </div>
-                    <div class="dx-fieldset">
-                        <div class="dx-field">
-                            <div class="dx-field-label">From</div>
-                            <div class="dx-field-value">
-                                <dx-date-box id="data-from"
-                                    [min]="minDate"
-                                    [max]="maxDate"
-                                    [(value)]="fromDate"
-                                    (onValueChanged)="onDateFromChanged($event)">
-                                </dx-date-box>
-                            </div>
-                        </div>
-                        <div class="dx-field">
-                            <div class="dx-field-label">To</div>
-                            <div class="dx-field-value">
-                                <dx-date-box id="data-to"
-                                [min]="minDate"
-                                [max]="maxDate"
-                                [(value)]="toDate"
-                                (onValueChanged)="onDateToChanged($event)">
-                            </dx-date-box>    
-                            </div>
-                        </div>
-                </div>
-            </div> -->
         </div>
     </div>
 

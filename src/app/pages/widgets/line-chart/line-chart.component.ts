@@ -86,7 +86,7 @@ export class LineChartComponent extends WidgetsBase {
 
     customizeTooltip(arg) {
         return {
-            text: arg.valueText
+            text: "Date: ".concat(arg.argumentText).concat("\n\n").concat("Value: ").concat(arg.valueText)
         };
     }
    

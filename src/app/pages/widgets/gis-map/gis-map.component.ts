@@ -9,6 +9,8 @@ import { LineChartService, Coordinate } from '../line-chart/service';
 //import { Product, Service, DeviceData } from './service';
 //import { WFSService } from 'gis_fiwoo';
 
+declare var require: any;
+const moment = require('moment');
 
 import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/Rx';
@@ -37,6 +39,8 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     attrHistoric:any;
     coordinates: Coordinate[]; 
     showLineChart: boolean; 
+
+    textNew:string = "";
 
   	constructor(protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
@@ -82,10 +86,10 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     public ngAfterViewInit(){
 
         // http://stg-sac-fase-dos-instance-02.emergyalabs.com:10000/
-        // https://platform.fiwoo.eu/api/
+        // https://platform.fiwoo.eu/api/gis/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices1&outputFormat=JSON
 
         this.http.get(
-          'http://stg-sac-fase-dos-instance-02.emergyalabs.com:10000/gis/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices&outputFormat=JSON')
+          'https://platform.fiwoo.eu/api/gis/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices1&outputFormat=JSON')
           .map(res => res.json()).subscribe(
             data => {
                 this.maps = data; 
@@ -203,14 +207,25 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
                         this.coordinates = new  Array<Coordinate>();
                         var i = 0;
                         data.forEach(element => {
-                            this.coordinates.push({ arg: element.recvTime, val: parseInt(element.attrValue, 10)});
+                            this.coordinates.push({ arg: this.formatDate(element.recvTime), val: parseInt(element.attrValue, 10)});
                             i++;
                         });
                     }
                     this.showLineChart = true;
+                    // this.textNew = 
             },
                 err => {console.log(err); this.showLineChart = false;}
             );
+    }
+
+    private formatDate (date){
+        return (moment(date).format('YYYY-MM-DD HH:mm'));
+    }
+
+    customizeTooltip(arg) {
+        return {
+            text: "Date: ".concat(arg.argumentText).concat("\n\n").concat("Value: ").concat(arg.valueText)
+        };
     }
 
 }
