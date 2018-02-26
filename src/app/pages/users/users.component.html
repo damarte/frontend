@@ -22,9 +22,7 @@
       <ng2-smart-table 
                 [settings]="settings" 
                 [source]="source" 
-                (deleteConfirm)="onDeleteConfirm($event)" 
-                (createConfirm)="onCreateConfirm($event)"
-                (editConfirm)="onSaveConfirm($event)"
+                (deleteConfirm)="onDeleteConfirm($event)"
                 (edit)="addUserModal.showModal($event.data)"
                 (delete)="onDeleteConfirm($event)">
       </ng2-smart-table>

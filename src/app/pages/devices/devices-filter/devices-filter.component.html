@@ -3,7 +3,7 @@
       <mat-panel-title>
           Filter {{title}}
       </mat-panel-title>
-      <mat-panel-description *ngIf="getActiveFilters() != 0">
+      <mat-panel-description *ngIf="getActiveFilters() !== '0'">
           {{getActiveFilters()}} active filters
       </mat-panel-description>
     </mat-expansion-panel-header>
