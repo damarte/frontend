@@ -28,11 +28,11 @@ export class UserService {
 
   constructor() {
    
-    if  (this.userlogin !== undefined) {
-      this.userlogin = JSON.parse(localStorage.getItem('email'));
-    } else {
+    // if  (this.userlogin !== undefined) {
+    //   this.userlogin = JSON.parse(localStorage.getItem('email'));
+    // } else {
       this.userlogin = "user@user.com";  
-    }
+    // }
 
    this.users = {
       first: {

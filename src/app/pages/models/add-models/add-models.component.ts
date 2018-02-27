@@ -27,17 +27,12 @@ export class AddModelsComponent implements OnInit {
   @Output() onHidden = new EventEmitter<boolean>();
 
   modal: any;
-
-  role: any = {};
-
   name: string;
   description: string;
-  resourceSelected: any;
+  editedModel: any;
+  modalTitle: any;
+  model: any = [];
 
-  urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-
-  editedRole: any = null;
-  modalTitle: string = "";
 
   // validations
   nameFormControl = new FormControl('', [Validators.required]);
@@ -50,12 +45,14 @@ export class AddModelsComponent implements OnInit {
   addOnBlur: boolean = true;
 
   showValue: boolean = false;
-
   saved: boolean = false;
 
   separatorKeysCodes = [ENTER, COMMA];
 
-  fruits = [
+  // remove when the ws is up
+  types = ['Glucose', 'Traffic'];
+  languages = ['Python', 'Java'];
+  parameters = [
     { name: 'user' },
     { name: 'pwd' },
     { name: 'Parameter3=DefaultValue' },
@@ -68,7 +65,7 @@ export class AddModelsComponent implements OnInit {
 
     // Add our fruit
     if ((value || '').trim()) {
-      this.fruits.push({ name: value.trim() });
+      this.parameters.push({ name: value.trim() });
     }
 
     // Reset the input value
@@ -77,152 +74,144 @@ export class AddModelsComponent implements OnInit {
     }
   }
 
-  remove(fruit: any): void {
-    let index = this.fruits.indexOf(fruit);
-
+  remove(parameter: any): void {
+    let index = this.parameters.indexOf(parameter);
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.parameters.splice(index, 1);
     }
   }
 
 
-constructor(private http: Http,
-  private _fiwooService: FiwooService) {
-  context = this;
-  this.getResources();
+  constructor(private http: Http,
+    private _fiwooService: FiwooService) {
+    context = this;
+    // this.getResources();
+  }
 
-
-
-}
-
-
-resources: any[];
-
-    private getResources(){
-  this._fiwooService.getResources().subscribe(
-    data => {
-      let resources: any[] = data;
-      this.resources = resources;
-    },
-    err => {
-      console.log(err);
-    }
-  );
-}
-
-
-compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
-
-compareByValue(f1: any, f2: any) {
-  return f1 && f2 && f1.id === f2.id;
-}
-
-
-ngOnInit() {
   
-}
-
-cleanValues(){
-
-  this.name = "";
-  this.description = "";
-  this.resourceSelected = [];
-
-}
 
 
-showModal(role) {
-  this.editedRole = role;
+  // resources: any[];
 
-  this.configureRoleToEdit();
-
-  this.saved = false;
-  this.modal.modal({
-    closable: true,
-    onHidden: function () {
-      context.cleanValues();
-      context.onHidden.emit(true);
-    }
-  })
-    .modal('show');
-}
-
-configureRoleToEdit(){
-
-  if (this.editedRole != null) {
-
-    this.modalTitle = "Edit Model";
-    this.name = this.editedRole.name;
-    this.description = this.editedRole.description;
-    this.resourceSelected = this.editedRole.resources;
-  } else {
-    this.modalTitle = "Register Model"
-  }
-}
-
-hideModal() {
-  this.modal.modal('hide');
-}
-
-// tslint:disable-next-line:use-life-cycle-interface
-ngAfterViewInit() {
-  this.modal = jQuery(this.addModelModalRef.nativeElement);
-}
+  // private getResources() {
+  //   this._fiwooService.getResources().subscribe(
+  //     data => {
+  //       let resources: any[] = data;
+  //       this.resources = resources;
+  //     },
+  //     err => {
+  //       console.log(err);
+  //     }
+  //   );
+  // }
 
 
-sendRole(){
+  // compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
 
-  if (!this.nameFormControl.hasError('required') &&
-    !this.descriptionFormControl.hasError('required')) {
+  // compareByValue(f1: any, f2: any) {
+  //   return f1 && f2 && f1.id === f2.id;
+  // }
 
-    let allResources = [];
 
-    if (this.resourceSelected instanceof Array) {
-      allResources = this.resourceSelected;
-    } else {
-      allResources = [this.resourceSelected];
-    }
-
-    this.role = {
-      name: this.name,
-      description: this.description,
-      resources: allResources
-    };
-
-    if (this.editedRole != undefined) {
-
-      // PUT
-      console.log(JSON.stringify(this.role));
-
-      this._fiwooService.updateRol(this.editedRole.id, this.role).subscribe(
-        res => {
-          console.log(res);
-          this.saved = true;
-          this.hideModal();
-        });
-
-    } else {
-
-      // POST
-      this.role = {
-        name: this.name,
-        description: this.description,
-        resources: allResources
-      };
-
-      console.log(JSON.stringify(this.role));
-
-      this._fiwooService.postRol(this.role).subscribe(
-        res => {
-          console.log(res);
-        });
-
-    }
-
-    this.hideModal();
-
+  ngOnInit() {
 
   }
-} 
+
+  cleanValues() {
+
+    this.name = "";
+    this.description = "";
+    // this.resourceSelected = [];
+
+  }
+
+
+  showModal(model) {
+    this.editedModel = model;
+
+    this.configureModelToEdit();
+
+    this.saved = false;
+    this.modal.modal({
+      closable: true,
+      onHidden: function () {
+        context.cleanValues();
+        context.onHidden.emit(true);
+      }
+    })
+      .modal('show');
+  }
+
+  configureModelToEdit() {
+
+    if (this.editedModel != null) {
+
+      this.modalTitle = "Edit Model";
+      this.name = this.editedModel.name;
+      this.description = this.editedModel.description;
+
+    } else {
+      this.modalTitle = "Register Model"
+    }
+  }
+
+  hideModal() {
+    this.modal.modal('hide');
+  }
+
+
+  ngAfterViewInit() {
+    this.modal = jQuery(this.addModelModalRef.nativeElement);
+  }
+
+
+  sendModel() {
+
+    if (!this.nameFormControl.hasError('required') &&
+      !this.descriptionFormControl.hasError('required')) {
+
+      // let allResources = [];
+
+      // if (this.resourceSelected instanceof Array) {
+      //   allResources = this.resourceSelected;
+      // } else {
+      //   allResources = [this.resourceSelected];
+      // }
+
+
+      if (this.editedModel != undefined) {
+
+        // PUT
+        console.log(JSON.stringify(this.model));
+
+        // this._fiwooService.updateModel(this.editedModel.id, this.model).subscribe(
+        //   res => {
+        //     console.log(res);
+        //     this.saved = true;
+        //     this.hideModal();
+        //   });
+
+      } else {
+
+        // POST
+        this.model = {
+          name: this.name,
+          description: this.description
+        };
+
+        console.log(JSON.stringify(this.model));
+
+        // this._fiwooService.postModel(this.model).subscribe(
+        //   res => {
+        //     console.log(res);
+        //   });
+
+      }
+
+      this.hideModal();
+
+
+    }
+  }
 
 }

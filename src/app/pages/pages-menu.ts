@@ -35,9 +35,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
         icon: 'ion-ios-copy-outline'
       }, 
       {
-        title: 'Density Maps',
-        icon: 'ion-ios-location-outline',
+        title: 'Density Maps',       
         link: '/pages/maps/leaflet',    
+        icon: 'ion-ios-location-outline',
       },    
     ]
   }, 
