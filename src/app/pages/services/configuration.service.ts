@@ -3,10 +3,11 @@ import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { defaultBoard } from '../dashboard/models/dashboard-default';
 import { sampleBoardCollection } from '../dashboard/models/dashboard-collection-sample';
+import { BaseService } from './base.service';
 
 
 @Injectable()
-export class ConfigurationService {
+export class ConfigurationService extends BaseService{
     model: any; // todo review this object closely
     currentModel: any; // this object helps with updates to property page values
     demo = false;
@@ -18,10 +19,14 @@ export class ConfigurationService {
      * todo - fix this hard coded store
      * @type {string}
      */
-    // remoteConfigurationRepository = 'https://platform.fiwoo.eu/api/data-visualization/dashboards';
-    remoteConfigurationRepository = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization/dashboards';
+    
+    remoteConfigurationRepository: any;
     
     constructor(private _http: Http) {
+
+        super(_http);
+
+        this.remoteConfigurationRepository = `${this.urlBaseDataVisualization}${this.endPointDashboards}`;
 
         Object.assign(this, {defaultBoard});
         Object.assign(this, {sampleBoardCollection});
