@@ -24,6 +24,9 @@ import { AddAssetsComponent } from './assets/add-assets/add-assets.component';
 import { AddRolesComponent } from './roles/add-roles/add-roles.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FiwooService } from './services/fiwoo.service';
+import { OpenDataComponent } from './open-data/open-data.component';
+import { OpendataService } from './services/opendata.service';
+import { DensityMapService } from './services/densitymap.service';
 
 
 const PAGES_COMPONENTS = [
@@ -53,7 +56,9 @@ const PAGES_COMPONENTS = [
   ],
   providers: [
     AboutService,
-    FiwooService
+    FiwooService,
+    OpendataService,
+    DensityMapService
   ],
   declarations: [
     ...PAGES_COMPONENTS, 
@@ -67,7 +72,7 @@ const PAGES_COMPONENTS = [
     AboutComponent,
     RolesComponent,
     AssetsComponent,    
-    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent
+    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, OpenDataComponent
   ],
   entryComponents: [DialogOverviewExampleDialog],
 })

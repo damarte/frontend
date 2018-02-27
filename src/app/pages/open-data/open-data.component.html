@@ -1,0 +1,62 @@
+<div class="ui grid stackable">
+  <div class="four wide column">
+    <div class="ui card">
+      <div class="content">
+        <div class="header">TOPICS</div>
+        <div class="description" style="margin-top: 10px">
+            <div class="ui animated list">
+              <div class="item" *ngFor="let topic of topics">
+                <img class="ui image" src="{{topic.icon}}">
+                <a (click)="onClickTopic(topic)">
+                  <b>{{topic.name}}</b>
+                </a>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="ui card">
+      <div class="content">
+        <div class="header">FORMAT</div>
+        <div class="description" style="margin-top: 10px">
+            <div class="ui animated list">
+              <div class="item" *ngFor="let format of formats">
+                <img class="ui image" src="{{format.icon}}">
+                <a (click)="onClickFormat(format)">
+                  <b>{{format.name}}</b>
+                </a>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="twelve wide column">
+    <div class="ui two stackable cards raised">
+      <div class="card" *ngFor="let card of openDataCards" (click)="onClickCard(card)">
+        <div class="content">
+          <div class="ui blue tiny labels">
+              <span class="ui label" *ngFor="let topic of card.topics">
+                  {{topic.name}}
+              </span>
+          </div>
+          <div class="header" style="margin-top: 10px">{{card.title}}</div>
+          <div class="description">
+            <p>{{card.description }}</p>
+            <div>
+                <a class="ui mini image" title="{{resource.name}}" *ngFor="let resource of card.resources" href="{{resource.url}}" target="_blank">
+                  <img src="{{getFormatIcon(resource.format)}}">
+                </a>             
+            </div>
+          </div>
+          <div class="extra content" style="margin-top: 10px">
+              <span class="right floated">
+                  {{card.createdBy}}
+              </span>
+              {{formatDate(card.date)}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
