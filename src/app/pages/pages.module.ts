@@ -9,7 +9,7 @@ import { UsersComponent } from "./users/users.component";
 import { TemplatesComponent } from './templates/templates.component';
 import { AddDevicesComponent } from './devices/add-devices/add-devices.component';
 import { MatButtonModule, MatSelectModule, MatSlideToggleModule, MatCardModule,
-MatIconModule, MatInputModule, MatListModule, MatRadioModule, MatChipsModule, MatDialogModule, MatExpansionModule, MatDatepickerModule } from '@angular/material';
+MatIconModule, MatInputModule, MatListModule, MatGridListModule, MatRadioModule, MatChipsModule, MatDialogModule, MatExpansionModule, MatDatepickerModule } from '@angular/material';
 import { DialogOverviewExampleDialog } from './templates/add-template/add-template.component';
 import { AddTemplateComponent } from './templates/add-template/add-template.component';
 import { DevicesFilterComponent } from './devices/devices-filter/devices-filter.component';
@@ -24,6 +24,15 @@ import { AddAssetsComponent } from './assets/add-assets/add-assets.component';
 import { AddRolesComponent } from './roles/add-roles/add-roles.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FiwooService } from './services/fiwoo.service';
+import { ModelsComponent } from './models/models.component';
+import { AddModelsComponent } from './models/add-models/add-models.component';
+import { ImageUploadModule } from "angular2-image-upload";
+import { TestModelsComponent } from './models/test-models/test-models.component';
+import { StatementsComponent } from './statements/statements.component';
+import { TypesComponent } from './statements/types/types.component';
+import { ExpertComponent } from './statements/expert/expert.component';
+import { BasicComponent } from './statements/basic/basic.component';
+
 
 
 const PAGES_COMPONENTS = [
@@ -49,7 +58,9 @@ const PAGES_COMPONENTS = [
     MatExpansionModule,
     RouterModule,
     MatDatepickerModule,
-    HttpClientModule
+    MatGridListModule,    
+    HttpClientModule,
+    ImageUploadModule.forRoot()
   ],
   providers: [
     AboutService,
@@ -67,7 +78,7 @@ const PAGES_COMPONENTS = [
     AboutComponent,
     RolesComponent,
     AssetsComponent,    
-    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent
+    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, ModelsComponent, AddModelsComponent, TestModelsComponent, StatementsComponent, TypesComponent, ExpertComponent, BasicComponent
   ],
   entryComponents: [DialogOverviewExampleDialog],
 })

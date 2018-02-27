@@ -1,0 +1,29 @@
+<div class="ui tiny modal" #typeStatementModal>
+  <div class="header">New Statement</div>
+  <div class="ui two column centered grid">
+    <div class="four column centered row" style="padding: 70px 0px">
+      <div class="column cstm">
+        <div class="ui icon header">
+          <div class="expert-mode"></div>
+          <a class="item" (click)="expertStatementModal.showModal()">
+            <button mat-raised-button color="accent" style="font-size: 18px">Expert Mode</button>
+          </a>
+        </div>
+      </div>
+      <div class="column cstm">
+        <div class="ui icon header">
+          <div class="basic-mode"></div>
+          <a class="item" (click)="basicStatementModal.showModal()">
+            <button mat-raised-button color="primary" style="font-size: 18px">Basic Mode</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-expert #expertStatementModal (onHidden)="onModalHidden($event)">
+</app-expert>
+
+<app-basic #basicStatementModal (onHidden)="onModalHidden($event)">
+</app-basic>

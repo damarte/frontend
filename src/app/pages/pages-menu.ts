@@ -23,29 +23,32 @@ export const MENU_ITEMS: NbMenuItem[] = [
         icon: 'ion-ios-browsers-outline'
       }
     ]
-  },  
-  /*{
-    title: 'Environment',
-    link: '/pages/charts/echarts',
-    icon: 'ion-ios-partlysunny-outline',    
-  },
+  },   
   {
-    title: 'Mobility',
-    icon: 'ion-ios-location-outline',
-    link: '/pages/maps/gmaps',    
-  },
+    title: 'Business Inteligence',
+    link: '',
+    icon: 'ion-ios-pulse',
+    children: [
+      {
+        title: 'Models',
+        link: '/pages/models',
+        icon: 'ion-ios-copy-outline'
+      },     
+    ]
+  }, 
   {
-    title: 'Governance',
-    icon:'ion-ios-world-outline',    
-  },
-  {
-    title: 'Economy',
-    icon: 'ion-ios-calculator-outline',   
-  },
-  {
-    title: 'Living',
-    icon: 'ion-ios-home-outline',    
-  },*/
+    title: 'Statements',
+    link: '',
+    icon: 'ion-ios-list-outline',
+    children: [
+      {
+        title: 'Statements',
+        link: '/pages/statements',
+        icon: 'ion-ios-compose-outline'
+      },   
+     
+    ]
+  }, 
   {
     title: 'Users',
     link: '',

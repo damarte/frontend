@@ -1,0 +1,30 @@
+<nb-card>
+    <nb-card-header>      
+      <div class="ui grid">
+          <div class="ten wide column">
+              Statements
+          </div>         
+          <div class="six wide column custom-btn">
+                <a class="item" (click)="typeStatementModal.showModal()">
+                    <button mat-raised-button color="primary">Add Statement</button>
+                </a>               
+          </div>
+      </div> 
+    </nb-card-header>
+    <nb-card-body> 
+  
+      <ng2-smart-table 
+                [settings]="settings" 
+                [source]="source" 
+                (deleteConfirm)="onDeleteConfirm($event)" 
+                (createConfirm)="onCreateConfirm($event)"
+                (editConfirm)="onSaveConfirm($event)"
+                (edit)="typeStatementModal.showModal($event.data)"
+                (delete)="onDeleteConfirm($event)">
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+    
+
+  <app-types #typeStatementModal (onHidden)="onModalHidden($event)">
+  </app-types>

@@ -1,0 +1,191 @@
+<div class="ui small modal models" #basicStatementModal>
+  <div class="header"> {{modalTitle}}</div>
+  <div class="scrolling content">
+    <mat-card class="result">
+      <mat-card-content>
+        <mat-form-field style="width: 100%">
+          <input matInput type="text" placeholder="Name of the statement" [(ngModel)]="name" [formControl]="nameFormControl" />
+          <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" style="width:100%">
+          <textarea matInput placeholder="Description" rows="6"></textarea>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Select device" [(value)]="deviceSelected" [formControl]="deviceFormControl">
+            <mat-option *ngFor="let device of devices" [value]="device">
+              {{ device }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+    <br>
+
+    <mat-card class="result">
+      <mat-card-content>
+        <p>CONDITION</p>
+        <div class="add-condition">
+          <a mat-mini-fab routerLink="." color='primary' (click)="onDeviceCreated($event)">
+            <mat-icon>add</mat-icon>
+          </a>
+        </div>
+        <div class="ui grid">
+          <div class="four wide column">
+            <div class="field">
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" placeholder="condition" [(ngModel)]="device_name" [formControl]="deviceNameFormControl"
+                />
+                <button mat-button *ngIf="device_name" matSuffix mat-icon-button aria-label="Clear" (click)="device_name=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="four wide column">
+            <mat-form-field style="width: 100%">
+              <mat-select placeholder="value1" [(value)]="genderSelected" [formControl]="genderFormControl">
+                <mat-option *ngFor="let gender of genders" [value]="gender">
+                  {{ gender }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+          <div class="four wide column">
+            <mat-form-field style="width: 100%">
+              <mat-select placeholder="filter" [(value)]="genderSelected" [formControl]="genderFormControl">
+                <mat-option *ngFor="let gender of genders" [value]="gender">
+                  {{ gender }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="four wide column">
+            <div class="field">
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" placeholder="value2" [(ngModel)]="entity_type" [formControl]="entityNameFormControl" />
+                <button mat-button *ngIf="entity_type" matSuffix mat-icon-button aria-label="Clear" (click)="entity_type=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="ui two column centered grid">
+          <div class="column centered-btn">
+            <button mat-raised-button color="primary" (click)="addCondition()">ADD CONDITION</button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <br>
+    <mat-card class="result">
+      <mat-card-content>
+        <p>ACTIONS TO DO</p>
+        <table class="ui very basic table">
+          <tbody>
+            <tr>
+              <td>
+                <mat-slide-toggle class="example-margin" [color]="color" [checked]="checked" [disabled]="disabled">
+                </mat-slide-toggle>
+              </td>
+              <td>Update an entity's attribute</td>
+              <td>
+                <mat-form-field style="width: 100%">
+                  <input matInput type="text" placeholder="" [(ngModel)]="name" [formControl]="nameFormControl" />
+                  <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-slide-toggle class="example-margin" [color]="color" [checked]="checked" [disabled]="disabled">
+                </mat-slide-toggle>
+              </td>
+              <td>Send a SMS</td>
+              <td>
+                <mat-form-field style="width: 100%">
+                  <input matInput type="text" placeholder="" [(ngModel)]="name" [formControl]="nameFormControl" />
+                  <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-slide-toggle class="example-margin" [color]="color" [checked]="checked" [disabled]="disabled">
+                </mat-slide-toggle>
+              </td>
+              <td>Send an email</td>
+              <td>
+                <mat-form-field style="width: 100%">
+                  <input matInput type="text" placeholder="" [(ngModel)]="name" [formControl]="nameFormControl" />
+                  <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-slide-toggle class="example-margin" [color]="color" [checked]="checked" [disabled]="disabled">
+                </mat-slide-toggle>
+              </td>
+              <td>Make an HTTP POST</td>
+              <td>
+                <mat-form-field style="width: 100%">
+                  <input matInput type="text" placeholder="" [(ngModel)]="name" [formControl]="nameFormControl" />
+                  <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-slide-toggle class="example-margin" [color]="color" [checked]="checked" [disabled]="disabled">
+                </mat-slide-toggle>
+              </td>
+              <td>Send a Twitter</td>
+              <td>
+                <mat-form-field style="width: 100%">
+                  <input matInput type="text" placeholder="" [(ngModel)]="name" [formControl]="nameFormControl" />
+                  <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+
+
+
+
+
+  </div>
+
+  <div class="actions">
+    <div class="ui two column centered grid">
+      <div class="four column centered row">
+        <div class="column centered-btn">
+          <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+        </div>
+        <div class="column centered-btn">
+          <button mat-raised-button color="primary" (click)="sendModel()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

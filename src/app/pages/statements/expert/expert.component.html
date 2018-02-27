@@ -1,0 +1,32 @@
+<div class="ui small modal models" #expertStatementModal>
+  <div class="header"> {{modalTitle}}</div>
+  <div class="scrolling content">
+    <mat-card class="result">
+      <mat-card-content>
+        <div style="margin-top: 20px">
+          <mat-form-field class="example-full-width" style="width:100%">
+            <textarea matInput placeholder="Description" rows="6"></textarea>
+          </mat-form-field>
+          <mat-form-field class="example-full-width" style="width:100%">
+            <textarea matInput placeholder="Statement" rows="6"></textarea>
+          </mat-form-field>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <div class="actions">
+    <div class="ui two column centered grid">
+      <div class="four column centered row">
+        <div class="column centered-btn">
+          <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+        </div>
+        <div class="column centered-btn">
+          <button mat-raised-button color="primary" (click)="sendModel()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

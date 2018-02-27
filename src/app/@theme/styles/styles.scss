@@ -55,3 +55,29 @@
 .ui.button, .ui.button:hover {
   background: none !important;
 }
+.customClass .img-ul-upload {
+  background-color:  #4983FF !important;
+  font-size: 13px !important;
+}
+
+.customClass .img-ul-clear.img-ul-button {
+  background-color:  #FF4081 !important;
+  font-size: 13px !important;
+  margin-left: 5px;
+}
+
+.customClass .img-ul-file-upload.img-ul-hr-inline-group {
+  border: 2px dotted #ccc !important;
+}
+
+
+.centered-btn {
+  text-align: center !important;
+}
+
+.ui.small.modal.models p {
+  font-weight: 600;
+  margin-top: 10px;
+  width: 100%;
+  padding: 5px 0px;
+}

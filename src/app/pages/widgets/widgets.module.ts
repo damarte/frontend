@@ -23,7 +23,6 @@ import {FormsModule} from '@angular/forms';
 import {DataListModule} from '../datalist/data-list.module';
 import {PolarChartComponent} from './polar-chart/polar-chart.component';
 import {PolarChartService} from './polar-chart/service';
-import {APITokenService} from '../api-token/api-token.service';
 import {FacetModule} from '../facet/facet.module';
 import {TypeAheadInputModule} from '../typeahead-input/typeahead-input.module';
 import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectBoxModule, DxSliderModule,DxCheckBoxModule, DxPieChartModule, 
@@ -79,8 +78,8 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
 
     providers: [
         LinearGaugeService,        
-        PolarChartService,
-        APITokenService
+        PolarChartService
+        
     ],
 
     exports: [

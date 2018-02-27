@@ -8,7 +8,8 @@ import { TemplatesComponent } from './templates/templates.component';
 import { AboutComponent } from './about/about.component';
 import { RolesComponent } from './roles/roles.component';
 import { AssetsComponent } from './assets/assets.component';
-
+import { ModelsComponent } from './models/models.component';
+import { StatementsComponent } from './statements/statements.component';
 
 
 const routes: Routes = [  
@@ -39,27 +40,7 @@ const routes: Routes = [
     { 
       path: 'assets', 
       component: AssetsComponent, 
-    },
-    
-    /*{
-      path: 'ui-features',
-      loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
-    }, {
-      path: 'components',
-      loadChildren: './components/components.module#ComponentsModule',
-    }, {
-      path: 'maps',
-      loadChildren: './maps/maps.module#MapsModule',
-    }, {
-      path: 'charts',
-      loadChildren: './charts/charts.module#ChartsModule',
-    }, {
-      path: 'editors',
-      loadChildren: './editors/editors.module#EditorsModule',
-    }, {
-      path: 'forms',
-      loadChildren: './forms/forms.module#FormsModule',
-    },   */
+    }, 
     { 
       path: '',
       redirectTo: 'dashboard',
@@ -68,7 +49,15 @@ const routes: Routes = [
     {
       path: 'about',
       component: AboutComponent,
-    }   
+    },
+    {
+      path: 'models',
+      component: ModelsComponent,
+    },
+    {
+      path: 'statements',
+      component: StatementsComponent,
+    },         
   ]
 }];
 

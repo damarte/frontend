@@ -24,8 +24,9 @@ export class FiwooService {
 
     // urlBaseUser: string = 'https://platform.fiwoo.eu/api/user-management/users';  
     // urlLogin: string = 'https://us1.fiwoo.eu:7000/users'; 
-   urlBaseUser: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-   urlLogin: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+    urlBI: string = "";
+    urlBaseUser: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+    urlLogin: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
    
 
    private configureGET(){
@@ -154,6 +155,23 @@ export class FiwooService {
   // devices service
 
   // templates service
+
+
+
+  // BI: models service
+
+  // GET
+  public getModels():any{
+    this.configureGET()
+    return this.http.get(`${this.urlBI}/models`, {headers: headers}).map(res => res.json());
+  } 
+
+  // DELETE
+  public deleteModel(model_id:any){
+    this.configureOthers();
+    return this.http.delete(`${this.urlBI}/models/${model_id}`, {headers: headers});
+  }
+
 
   
 }

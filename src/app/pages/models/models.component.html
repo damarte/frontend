@@ -1,0 +1,39 @@
+<nb-card>
+  <nb-card-header>
+    
+    <div class="ui grid">
+        <div class="ten wide column">
+            Models
+        </div>         
+        <div class="six wide column custom-btn">
+              <a class="item" (click)="addModelModal.showModal()">
+                  <button mat-raised-button color="primary">Register Model</button>
+              </a>
+              <a class="item" (click)="testModelModal.showModal()">
+                  <button mat-raised-button color="primary">Test Model</button>
+              </a>
+        </div>
+    </div> 
+  </nb-card-header>
+  <nb-card-body> 
+
+
+    <ng2-smart-table 
+              [settings]="settings" 
+              [source]="source" 
+              (deleteConfirm)="onDeleteConfirm($event)" 
+              (createConfirm)="onCreateConfirm($event)"
+              (editConfirm)="onSaveConfirm($event)"
+              (edit)="addModelModal.showModal($event.data)"
+              (delete)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+
+<!-- the modal will emit an event and call the grid component to add the requested cell to the board -->
+<app-add-models #addModelModal (onHidden)="onModalHidden($event)">
+</app-add-models>
+
+<app-test-models #testModelModal (onHidden)="onModalHidden($event)">
+</app-test-models>
+ 
