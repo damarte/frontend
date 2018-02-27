@@ -54,23 +54,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
      
     ]
   },   
-  // {
-  //   title: 'Environment',
-  //   link: '/pages/charts/echarts',
-  //   icon: 'ion-ios-partlysunny-outline',    
-  // },  
-  // {
-  //   title: 'Governance',
-  //   icon:'ion-ios-world-outline',    
-  // },
-  // {
-  //   title: 'Economy',
-  //   icon: 'ion-ios-calculator-outline',   
-  // },
-  // {
-  //   title: 'Living',
-  //   icon: 'ion-ios-home-outline',    
-  // },
   {
     title: 'Users',
     link: '',
