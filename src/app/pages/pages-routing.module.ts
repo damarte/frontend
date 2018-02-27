@@ -10,6 +10,8 @@ import { RolesComponent } from './roles/roles.component';
 import { AssetsComponent } from './assets/assets.component';
 import { ModelsComponent } from './models/models.component';
 import { StatementsComponent } from './statements/statements.component';
+import { OpenDataComponent } from './open-data/open-data.component';
+
 
 
 const routes: Routes = [  
@@ -40,7 +42,7 @@ const routes: Routes = [
     { 
       path: 'assets', 
       component: AssetsComponent, 
-    }, 
+    },    
     { 
       path: '',
       redirectTo: 'dashboard',
@@ -57,7 +59,15 @@ const routes: Routes = [
     {
       path: 'statements',
       component: StatementsComponent,
-    },         
+    }, 
+    {        
+      path: 'open-data',
+      component: OpenDataComponent,
+    },
+    {
+      path: 'maps',
+      loadChildren: './maps/maps.module#MapsModule',
+    }
   ]
 }];
 

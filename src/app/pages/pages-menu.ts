@@ -33,7 +33,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Models',
         link: '/pages/models',
         icon: 'ion-ios-copy-outline'
-      },     
+      }, 
+      {
+        title: 'Density Maps',
+        icon: 'ion-ios-location-outline',
+        link: '/pages/maps/leaflet',    
+      },    
     ]
   }, 
   {
@@ -48,7 +53,24 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },   
      
     ]
-  }, 
+  },   
+  // {
+  //   title: 'Environment',
+  //   link: '/pages/charts/echarts',
+  //   icon: 'ion-ios-partlysunny-outline',    
+  // },  
+  // {
+  //   title: 'Governance',
+  //   icon:'ion-ios-world-outline',    
+  // },
+  // {
+  //   title: 'Economy',
+  //   icon: 'ion-ios-calculator-outline',   
+  // },
+  // {
+  //   title: 'Living',
+  //   icon: 'ion-ios-home-outline',    
+  // },
   {
     title: 'Users',
     link: '',
@@ -70,7 +92,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
         icon: 'ion-ios-home-outline'
       },   
     ]
-  },     
+  },
+  {
+    title: 'Open Data',
+    icon: 'ion-ios-folder-outline', 
+    link: '/pages/open-data',  
+  },    
   {
     title: 'About',
     icon: 'ion-ios-information-outline', 

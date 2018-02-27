@@ -159,7 +159,7 @@ export class AddDevicesComponent implements OnInit {
     return deviceDevice;
   }
 
-  private sendDevices (){
+  public sendDevices (){
     if (this.createdDevices != null && this.createdDevices.length > 0){
       this.createdDevices.forEach(element => {
         var device = element.device;

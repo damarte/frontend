@@ -32,7 +32,9 @@ import { StatementsComponent } from './statements/statements.component';
 import { TypesComponent } from './statements/types/types.component';
 import { ExpertComponent } from './statements/expert/expert.component';
 import { BasicComponent } from './statements/basic/basic.component';
-
+import { OpenDataComponent } from './open-data/open-data.component';
+import { OpendataService } from './services/opendata.service';
+import { DensityMapService } from './services/densitymap.service';
 
 
 const PAGES_COMPONENTS = [
@@ -64,7 +66,9 @@ const PAGES_COMPONENTS = [
   ],
   providers: [
     AboutService,
-    FiwooService
+    FiwooService,
+    OpendataService,
+    DensityMapService
   ],
   declarations: [
     ...PAGES_COMPONENTS, 
@@ -78,7 +82,8 @@ const PAGES_COMPONENTS = [
     AboutComponent,
     RolesComponent,
     AssetsComponent,    
-    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, ModelsComponent, AddModelsComponent, TestModelsComponent, StatementsComponent, TypesComponent, ExpertComponent, BasicComponent
+    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, ModelsComponent, AddModelsComponent, TestModelsComponent, StatementsComponent, TypesComponent, ExpertComponent, BasicComponent, 
+     OpenDataComponent
   ],
   entryComponents: [DialogOverviewExampleDialog],
 })
