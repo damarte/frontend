@@ -26,23 +26,16 @@ export class TestModelsComponent implements OnInit {
 
   @Output() onHidden = new EventEmitter<boolean>();
 
-  modal: any;
-
-  role: any = {};
-
-  name: string;
-  description: string;
-  resourceSelected: any;
-
-  urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-
-  editedRole: any = null;
+  modal: any;  
   modalTitle: string = "";
 
+  model: string;   
+  editedModel: any = null;
+  modelSelected: string;
+  
+
   // validations
-  nameFormControl = new FormControl('', [Validators.required]);
-  descriptionFormControl = new FormControl();
-  resourceFormControl = new FormControl();
+  modelFormControl = new FormControl('');  
 
   visible: boolean = true;
   selectable: boolean = true;
@@ -50,179 +43,129 @@ export class TestModelsComponent implements OnInit {
   addOnBlur: boolean = true;
 
   showValue: boolean = false;
-
   saved: boolean = false;
-
   separatorKeysCodes = [ENTER, COMMA];
 
-  fruits = [
-    { name: 'user' },
-    { name: 'pwd' },
-    { name: 'Parameter3=DefaultValue' },
-  ];
+  // Change this when the ws is up
+  models: any = ['one', 'two'];
+  parameters: any = [{key:'user', value:'user1'}, {key:'pwd', value:'nde19038sdui'}]; 
 
-
-  add(event: MatChipInputEvent): void {
-    let input = event.input;
-    let value = event.value;
-
-    // Add our fruit
-    if ((value || '').trim()) {
-      this.fruits.push({ name: value.trim() });
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  remove(fruit: any): void {
-    let index = this.fruits.indexOf(fruit);
-
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
-    }
-  }
-
-
-constructor(private http: Http,
-  private _fiwooService: FiwooService) {
-  context = this;
-  this.getResources();
-
-
-
-}
-
-
-resources: any[];
-
-    private getResources(){
-  this._fiwooService.getResources().subscribe(
-    data => {
-      let resources: any[] = data;
-      this.resources = resources;
-    },
-    err => {
-      console.log(err);
-    }
-  );
-}
-
-
-compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
-
-compareByValue(f1: any, f2: any) {
-  return f1 && f2 && f1.id === f2.id;
-}
-
-
-ngOnInit() {
   
-}
 
-cleanValues(){
+  constructor(private http: Http,
+    private _fiwooService: FiwooService) {
 
-  this.name = "";
-  this.description = "";
-  this.resourceSelected = [];
-
-}
-
-
-showModal(role) {
-  this.editedRole = role;
-
-  this.configureRoleToEdit();
-
-  this.saved = false;
-  this.modal.modal({
-    closable: true,
-    onHidden: function () {
-      context.cleanValues();
-      context.onHidden.emit(true);
-    }
-  })
-    .modal('show');
-}
-
-configureRoleToEdit(){
-
-  if (this.editedRole != null) {
-
-    this.modalTitle = "Edit Model";
-    this.name = this.editedRole.name;
-    this.description = this.editedRole.description;
-    this.resourceSelected = this.editedRole.resources;
-  } else {
-    this.modalTitle = "Test Model"
+    // context = this;
+    // this.getResources();
   }
-}
-
-hideModal() {
-  this.modal.modal('hide');
-}
-
-// tslint:disable-next-line:use-life-cycle-interface
-ngAfterViewInit() {
-  this.modal = jQuery(this.testModelModalRef.nativeElement);
-}
 
 
-sendRole(){
+  // resources: any[];
 
-  if (!this.nameFormControl.hasError('required') &&
-    !this.descriptionFormControl.hasError('required')) {
+  // private getResources() {
+  //   this._fiwooService.getResources().subscribe(
+  //     data => {
+  //       let resources: any[] = data;
+  //       this.resources = resources;
+  //     },
+  //     err => {
+  //       console.log(err);
+  //     }
+  //   );
+  // } 
 
-    let allResources = [];
 
-    if (this.resourceSelected instanceof Array) {
-      allResources = this.resourceSelected;
+  ngOnInit() {
+
+  }
+
+  cleanValues() {   
+
+  }
+
+  runModel() {
+    console.log('run model not implemented');
+  }
+
+
+  showModal(testModel) {
+
+    this.editedModel = testModel;
+    this.configureModelToEdit();
+
+    this.saved = false;
+    this.modal.modal({
+      closable: true,
+      onHidden: function () {
+        context.cleanValues();
+        context.onHidden.emit(true);
+      }
+    })
+      .modal('show');
+  }
+
+  configureModelToEdit() {
+
+    if (this.editedModel != null) {
+
+      this.modalTitle = "Edit Model";
+      this.modelSelected = this.editedModel.model;
+    
     } else {
-      allResources = [this.resourceSelected];
+      this.modalTitle = "Test Model"
     }
+  }
 
-    this.role = {
-      name: this.name,
-      description: this.description,
-      resources: allResources
-    };
+  hideModal() {
+    this.modal.modal('hide');
+  }
+ 
+  ngAfterViewInit() {
+    this.modal = jQuery(this.testModelModalRef.nativeElement);
+  }
 
-    if (this.editedRole != undefined) {
 
-      // PUT
-      console.log(JSON.stringify(this.role));
+  sendRole() {
 
-      this._fiwooService.updateRol(this.editedRole.id, this.role).subscribe(
-        res => {
-          console.log(res);
-          this.saved = true;
-          this.hideModal();
-        });
+    if (!this.modelFormControl.hasError('required')) {
 
-    } else {
-
-      // POST
-      this.role = {
-        name: this.name,
-        description: this.description,
-        resources: allResources
+     
+      this.models = {
+        model: this.model        
       };
 
-      console.log(JSON.stringify(this.role));
+      if (this.editedModel != undefined) {
 
-      this._fiwooService.postRol(this.role).subscribe(
-        res => {
-          console.log(res);
-        });
+        // PUT
+        console.log(JSON.stringify(this.model));
+
+        // this._fiwooService.updateModel(this.editedModel.id, this.model).subscribe(
+        //   res => {
+        //     console.log(res);
+        //     this.saved = true;
+        //     this.hideModal();
+        //   });
+
+      } else {
+
+        // POST
+        this.models = {
+          model: this.model        
+        };
+
+        console.log(JSON.stringify(this.model));
+
+        // this._fiwooService.postRol(this.model).subscribe(
+        //   res => {
+        //     console.log(res);
+        //   });
+
+      }
+
+      this.hideModal();
+
 
     }
-
-    this.hideModal();
-
-
   }
-} 
 
 }

@@ -12,13 +12,13 @@
           </button>
         </mat-form-field>
 
-        <div class="doubling stackable three column ui grid container" style="margin-top: 20px">
+        <div class="doubling stackable two column ui grid container" style="margin-top: 20px">
 
           <div class="column">
             <mat-form-field>
-              <mat-select placeholder="Model Type">
-                <mat-option *ngFor="let type of types">
-                  {{ type }}
+              <mat-select placeholder="Model Type" [(value)]="modelTypeSelected" [formControl]="modelTypeFormControl">
+                <mat-option *ngFor="let modelType of modelTypes" [value]="modelType">
+                  {{ modelType }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -26,9 +26,9 @@
 
           <div class="column">
             <mat-form-field>
-              <mat-select placeholder="Programing Language">
-                <mat-option *ngFor="let language of languages">
-                  {{ language }}
+              <mat-select placeholder="Programing Language" [(value)]="modelLanguageSelected" [formControl]="modelLanguageFormControl">
+                <mat-option *ngFor="let modelLanguage of modelLanguages" [value]="modelLanguage">
+                  {{ modelLanguage }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -53,63 +53,56 @@
     <mat-card class="result">
       <mat-card-content>
         <p>Output Format</p>
-        <div class="scrolling content">
-          <div class="doubling stackable three column ui grid container" style="margin-top: 20px">
-            <!-- col1-->
-            <div class="column">
-              <div class="field">
-                <mat-form-field>
-                  <input matInput type="text" placeholder="Format" [(ngModel)]="data_format" [formControl]="dataFormatFormControl"
-                  />
-                  <button mat-button *ngIf="data_format" matSuffix mat-icon-button aria-label="Clear" (click)="data_format=''">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <!-- col3-->
-            <div class="column">
-              <div class="field">
-                <mat-form-field>
-                  <input matInput type="text" placeholder="Data Type" [(ngModel)]="data_type" [formControl]="dataTypeFormControl" />
-                  <button mat-button *ngIf="data_type" matSuffix mat-icon-button aria-label="Clear" (click)="data_type=''">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <!-- col4-->
-            <div class="column">
-              <a mat-mini-fab routerLink="." color='primary' (click)="onOutputCreated($event)">
-                <mat-icon>add</mat-icon>
-              </a>
+        <div class="ui grid">
+          <!-- col1-->
+          <div class="six wide column">
+            <div class="field">
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" placeholder="Format" [(ngModel)]="format" [formControl]="formatFormControl" />
+                <button mat-button *ngIf="format" matSuffix mat-icon-button aria-label="Clear" (click)="format=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
             </div>
           </div>
 
+          <!-- col3-->
+          <div class="six wide column">
+            <div class="field">
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" placeholder="Data Type" [(ngModel)]="type" [formControl]="typeFormControl" />
+                <button mat-button *ngIf="type" matSuffix mat-icon-button aria-label="Clear" (click)="type=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
 
-
-          <mat-divider style="margin-top: 20px;"></mat-divider>
+          <!-- col4-->
+          <div class="four wide column">
+            <a mat-mini-fab routerLink="." color='primary' (click)="onOutputCreated($event)">
+              <mat-icon>add</mat-icon>
+            </a>
+          </div>
+         
 
           <mat-list role="list">
             <div *ngFor="let createdOutput of createdOutputs">
               <div class="ui grid">
                 <!-- col1-->
-                <div class="four wide column">
+                <div class="six wide column">
                   <div class="field">
-                    <mat-form-field>
-                      <input matInput type="text" placeholder="value" value="" disabled/>
+                    <mat-form-field style="width: 100%">
+                      <input matInput type="text" placeholder="Format" value="{{createdOutput.format}}" disabled/>
                     </mat-form-field>
                   </div>
                 </div>
 
-
                 <!-- col3-->
-                <div class="four wide column">
+                <div class="six wide column">
                   <div class="field">
-                    <mat-form-field>
-                      <input matInput type="text" placeholder="float" value="" disabled/>
+                    <mat-form-field style="width: 100%">
+                      <input matInput type="text" placeholder="Type" value="{{createdOutput.type}}" disabled/>
                     </mat-form-field>
                   </div>
                 </div>
@@ -136,7 +129,7 @@
         <mat-form-field class="demo-chip-list" style="width:100%">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let parameter of parameters" [selectable]="selectable" [removable]="removable" (remove)="remove(parameter)">
-              {{parameter.name}}
+              {{ parameter.name }}
               <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
             <input placeholder="" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"

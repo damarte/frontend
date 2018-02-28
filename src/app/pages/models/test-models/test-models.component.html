@@ -8,10 +8,9 @@
           <p>Choose model to test</p>
           <div class="column">
             <mat-form-field style="width: 100% !important">
-              <mat-select placeholder="Model Type" [compareWith]="compareFn" [formControl]="resourceFormControl" [(ngModel)]="resourceSelected"
-                multiple>
-                <mat-option *ngFor="let resource of resources" [value]="resource">
-                  {{ resource.name }}
+              <mat-select placeholder="Choose Model" [(value)]="modelSelected" [formControl]="modelFormControl">
+                <mat-option *ngFor="let model of models" [value]="model">
+                  {{ model }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -20,17 +19,18 @@
 
         <div class="ui two column centered grid" style="margin-top: 20px">
           <p>Parameters</p>
-          <div class="four column centered row">
-            <div class="column">
-              <mat-form-field style="width:100%">
-                <input matInput placeholder="" value="user">
-              </mat-form-field>
-            </div>
-            :
-            <div class="column">
-              <mat-form-field style="width:100%">
-                <input matInput placeholder="" value="user1">
-              </mat-form-field>
+          <div class="two column centered row">
+            <div *ngFor="let parameter of parameters">              
+              <div class="column" style="width: 50%; float:left;">
+                <mat-form-field>
+                  <input matInput type="text" placeholder="key" value="{{parameter.key}}" disabled/>
+                </mat-form-field>
+              </div>           
+              <div class="column" style="width: 50%; float:left;">
+                <mat-form-field >
+                  <input matInput type="text" placeholder="value" value="{{parameter.value}}" disabled/>
+                </mat-form-field>
+              </div>
             </div>
           </div>
         </div>

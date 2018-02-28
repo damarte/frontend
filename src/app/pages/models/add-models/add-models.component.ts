@@ -27,17 +27,34 @@ export class AddModelsComponent implements OnInit {
   @Output() onHidden = new EventEmitter<boolean>();
 
   modal: any;
+
   name: string;
-  description: string;
+  modelType: string;
+  modelLanguage: string;
+  // image: ?
+  format: string;
+  type: string;
+
   editedModel: any;
+  modelTypeSelected :string;
+  modelLanguageSelected :string;
   modalTitle: any;
   model: any = [];
 
+  outputs: any = {};
+  output : string;
+  createdOutputs: Array<any> = [];
+
 
   // validations
-  nameFormControl = new FormControl('', [Validators.required]);
-  descriptionFormControl = new FormControl();
-  resourceFormControl = new FormControl();
+  nameFormControl = new FormControl('');
+  modelTypeFormControl = new FormControl();
+  modelLanguageFormControl = new FormControl();
+  // imageFormControl = new FormControl();
+  formatFormControl = new FormControl();
+  typeFormControl = new FormControl();
+  // parameterFormControl = new FormControl();
+
 
   visible: boolean = true;
   selectable: boolean = true;
@@ -50,9 +67,10 @@ export class AddModelsComponent implements OnInit {
   separatorKeysCodes = [ENTER, COMMA];
 
   // remove when the ws is up
-  types = ['Glucose', 'Traffic'];
-  languages = ['Python', 'Java'];
-  parameters = [
+  modelTypes: any = ['Glucose', 'Traffic'];
+  modelLanguages: any = ['Python', 'Java'];
+
+  parameters: any = [
     { name: 'user' },
     { name: 'pwd' },
     { name: 'Parameter3=DefaultValue' },
@@ -63,7 +81,7 @@ export class AddModelsComponent implements OnInit {
     let input = event.input;
     let value = event.value;
 
-    // Add our fruit
+    // Add our parameters
     if ((value || '').trim()) {
       this.parameters.push({ name: value.trim() });
     }
@@ -72,6 +90,8 @@ export class AddModelsComponent implements OnInit {
     if (input) {
       input.value = '';
     }
+
+    console.log(value);
   }
 
   remove(parameter: any): void {
@@ -88,7 +108,7 @@ export class AddModelsComponent implements OnInit {
     // this.getResources();
   }
 
-  
+
 
 
   // resources: any[];
@@ -117,18 +137,65 @@ export class AddModelsComponent implements OnInit {
 
   }
 
+
+  onOutputCreated(event): void {
+
+    this.createOutput();
+   
+  }
+
+  private createOutput(){
+    
+    this.outputs = {
+      format: this.format,     
+      type: this.type
+    }
+    
+    this.createdOutputs.push(this.outputs);
+
+    return this.createdOutputs;
+
+    
+  }
+
+
+  
+  private generateOutput(): any {
+    // var deviceDevice: Devices = {};
+    // deviceDevice.templateId = this.currentTemplate._id;
+    // var device: DevicesDevice = {};
+    // device.deviceId = this.entity_type;
+    // device.name = this.device_name;
+    // deviceDevice.device = new Array<DevicesDevice>();
+    // deviceDevice.device.push(device);
+
+    // return deviceDevice;
+  }
+
+  removeCreatedOutput(createdOutput): void {
+    console.log(createdOutput);
+    var index = this.createdOutputs.indexOf(createdOutput);
+    if (index > -1) {
+      this.createdOutputs.splice(index, 1);
+    }
+  }
+
+
   cleanValues() {
 
-    this.name = "";
-    this.description = "";
-    // this.resourceSelected = [];
+    this.name = null;
+    this.modelType = null;
+    this.modelLanguage = null;
+    // image: ?
+    this.format = null;
+    this.type = null;
 
   }
 
 
   showModal(model) {
-    this.editedModel = model;
 
+    this.editedModel = model;
     this.configureModelToEdit();
 
     this.saved = false;
@@ -147,8 +214,13 @@ export class AddModelsComponent implements OnInit {
     if (this.editedModel != null) {
 
       this.modalTitle = "Edit Model";
+
       this.name = this.editedModel.name;
-      this.description = this.editedModel.description;
+      this.modelTypeSelected = this.editedModel.modelType;
+      this.modelLanguageSelected = this.editedModel.modelLanguage;
+      // image: ?
+      this.format = this.editedModel.format;
+      this.type = this.editedModel.type;
 
     } else {
       this.modalTitle = "Register Model"
@@ -167,19 +239,17 @@ export class AddModelsComponent implements OnInit {
 
   sendModel() {
 
-    if (!this.nameFormControl.hasError('required') &&
-      !this.descriptionFormControl.hasError('required')) {
-
-      // let allResources = [];
-
-      // if (this.resourceSelected instanceof Array) {
-      //   allResources = this.resourceSelected;
-      // } else {
-      //   allResources = [this.resourceSelected];
-      // }
-
+    if (!this.nameFormControl.hasError('required')) {      
 
       if (this.editedModel != undefined) {
+
+        this.model = {
+          name: this.name,
+          modelType: this.modelTypeSelected,
+          modelLanguage: this.modelLanguageSelected,
+          format: this.format,
+          type: this.type
+        };
 
         // PUT
         console.log(JSON.stringify(this.model));
@@ -196,7 +266,10 @@ export class AddModelsComponent implements OnInit {
         // POST
         this.model = {
           name: this.name,
-          description: this.description
+          modelType: this.modelTypeSelected,
+          modelLanguage: this.modelLanguageSelected,
+          format: this.format,
+          type: this.type
         };
 
         console.log(JSON.stringify(this.model));

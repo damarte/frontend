@@ -26,202 +26,214 @@ export class BasicComponent implements OnInit {
   @Output() onHidden = new EventEmitter<boolean>();
 
   modal: any;
-
-  role: any = {};
-
   name: string;
   description: string;
-  resourceSelected: any;
-
-  urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-
-  editedRole: any = null;
   modalTitle: string = "";
 
   // validations
-  nameFormControl = new FormControl('', [Validators.required]);
-  descriptionFormControl = new FormControl();
-  resourceFormControl = new FormControl();
+  nameFormControl = new FormControl('');
+  descriptionFormControl = new FormControl('');
+  deviceFormControl = new FormControl('');
+  conditionFormControl = new FormControl('');
+  firstFormControl = new FormControl('');
+  filterFormControl = new FormControl('');
+  secondFormControl = new FormControl('');
+  attributeFormControl = new FormControl('');
+  smsFormControl = new FormControl('');
+  emailFormControl = new FormControl('');
+  makepostFormControl = new FormControl('');
+  twitterFormControl = new FormControl('');
 
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
   addOnBlur: boolean = true;
-
   showValue: boolean = false;
-
   saved: boolean = false;
-
   separatorKeysCodes = [ENTER, COMMA];
-
-  fruits = [
-    { name: 'user' },
-    { name: 'pwd' },
-    { name: 'Parameter3=DefaultValue' },
-  ];
-
-
-  add(event: MatChipInputEvent): void {
-    let input = event.input;
-    let value = event.value;
-
-    // Add our fruit
-    if ((value || '').trim()) {
-      this.fruits.push({ name: value.trim() });
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  remove(fruit: any): void {
-    let index = this.fruits.indexOf(fruit);
-
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
-    }
-  }
-
-
-constructor(private http: Http,
-  private _fiwooService: FiwooService) {
-  context = this;
-  this.getResources();
-
-
-
-}
-
-
-resources: any[];
-
-    private getResources(){
-  this._fiwooService.getResources().subscribe(
-    data => {
-      let resources: any[] = data;
-      this.resources = resources;
-    },
-    err => {
-      console.log(err);
-    }
-  );
-}
-
-
-compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
-
-compareByValue(f1: any, f2: any) {
-  return f1 && f2 && f1.id === f2.id;
-}
-
-
-ngOnInit() {
+  editedStatement: any;
+  statement: any;
+  deviceSelected: string;
+  firstSelected: string;
+  filterSelected: string;
+  conditions: any = {};
+  condition : string;
+  first :string = this.firstSelected;
+  filter :string = this.filterSelected;
+  second :string;
+  createdConditions: Array<any> = [];
+  attribute:string;
+  sms:string;
+  email:string;
+  makepost:string;
+  twitter:string;
+ 
   
-}
 
-cleanValues(){
-
-  this.name = "";
-  this.description = "";
-  this.resourceSelected = [];
-
-}
+  // Change this when the ws is up
+  devices: any = ['one', 'two'];
+  firsts: any = ['ESTIMATE AIC', 'two'];
+  filters: any = ['> More than', '> Less than'];
 
 
-showModal(role) {
-  this.editedRole = role;
 
-  this.configureRoleToEdit();
-
-  this.saved = false;
-  this.modal.modal({
-    closable: true,
-    onHidden: function () {
-      context.cleanValues();
-      context.onHidden.emit(true);
-    }
-  })
-    .modal('show');
-}
-
-configureRoleToEdit(){
-
-  if (this.editedRole != null) {
-
-    this.modalTitle = "Edit statement (Basic Mode)";
-    this.name = this.editedRole.name;
-    this.description = this.editedRole.description;
-    this.resourceSelected = this.editedRole.resources;
-  } else {
-    this.modalTitle = "Add statement (Basic Mode)"
+  constructor(private http: Http,
+    private _fiwooService: FiwooService) {
+    context = this;
+    // this.getResources();
   }
-}
 
-hideModal() {
-  this.modal.modal('hide');
-}
+  onConditionCreated(event): void {
 
-// tslint:disable-next-line:use-life-cycle-interface
-ngAfterViewInit() {
-  this.modal = jQuery(this.basicStatementModalRef.nativeElement);
-}
+    this.createCondition();
+   
+  }
 
-
-sendRole(){
-
-  if (!this.nameFormControl.hasError('required') &&
-    !this.descriptionFormControl.hasError('required')) {
-
-    let allResources = [];
-
-    if (this.resourceSelected instanceof Array) {
-      allResources = this.resourceSelected;
-    } else {
-      allResources = [this.resourceSelected];
+  private createCondition(){
+    
+    this.conditions = {
+      condition: this.condition,
+      first: this.firstSelected,
+      filter: this.filterSelected,
+      second: this.second
     }
+    
+    this.createdConditions.push(this.conditions);
 
-    this.role = {
-      name: this.name,
-      description: this.description,
-      resources: allResources
-    };
+    return this.createdConditions;
 
-    if (this.editedRole != undefined) {
+    
+  }
 
-      // PUT
-      console.log(JSON.stringify(this.role));
 
-      this._fiwooService.updateRol(this.editedRole.id, this.role).subscribe(
-        res => {
-          console.log(res);
-          this.saved = true;
-          this.hideModal();
-        });
+  
+  private generateCondition(): any {
+    // var deviceDevice: Devices = {};
+    // deviceDevice.templateId = this.currentTemplate._id;
+    // var device: DevicesDevice = {};
+    // device.deviceId = this.entity_type;
+    // device.name = this.device_name;
+    // deviceDevice.device = new Array<DevicesDevice>();
+    // deviceDevice.device.push(device);
 
+    // return deviceDevice;
+  }
+
+  removeCreatedCondition(createdCondition): void {
+    console.log(createdCondition);
+    var index = this.createdConditions.indexOf(createdCondition);
+    if (index > -1) {
+      this.createdConditions.splice(index, 1);
+    }
+  }
+
+
+
+  ngOnInit() { }
+
+  cleanValues() {
+    this.name = null;
+    this.description = null;
+    this.deviceSelected = null;
+    this.condition = null;
+    this.firstSelected = null;
+    this.filterSelected = null;
+    this.second = null;
+    this.createdConditions = [];
+    this.attribute = null;
+    this.sms = null;
+    this.email = null;
+    this.makepost = null;
+    this.twitter = null;
+  }
+
+
+  showModal(statement) {
+    this.editedStatement = statement;
+    this.configureStatementToEdit();
+
+    this.saved = false;
+    this.modal.modal({
+      closable: true,
+      onHidden: function () {
+        context.cleanValues();
+        context.onHidden.emit(true);
+      }
+    })
+      .modal('show');
+  }
+
+  configureStatementToEdit() {
+
+    if (this.editedStatement != null) {
+
+      this.modalTitle = "Edit statement (Basic Mode)";
+      this.name = this.editedStatement.name;
+      this.description = this.editedStatement.description;
+      this.deviceSelected = this.editedStatement.devices;
+      // complete all fields
     } else {
+      this.modalTitle = "Add statement (Basic Mode)"
+    }
+  }
 
-      // POST
-      this.role = {
+  hideModal() {    
+    this.modal.modal('hide');
+    this.cleanValues();
+  }
+
+
+  ngAfterViewInit() {
+    this.modal = jQuery(this.basicStatementModalRef.nativeElement);
+  }
+
+
+  sendStatement() {
+
+    if (!this.nameFormControl.hasError('required') &&
+      !this.descriptionFormControl.hasError('required')) {
+
+
+      this.statement = {
         name: this.name,
         description: this.description,
-        resources: allResources
+        devices: this.deviceSelected
       };
 
-      console.log(JSON.stringify(this.role));
+      if (this.editedStatement != undefined) {
 
-      this._fiwooService.postRol(this.role).subscribe(
-        res => {
-          console.log(res);
-        });
+        // PUT
+        console.log(JSON.stringify(this.statement));
+
+        // this._fiwooService.updateStatement(this.editedStatement.id, this.statement).subscribe(
+        //   res => {
+        //     console.log(res);
+        //     this.saved = true;
+        //     this.hideModal();
+        //   });
+
+      } else {
+
+        // POST
+        this.statement = {
+          name: this.name,
+          description: this.description,
+          devices: this.deviceSelected
+        };
+
+        console.log(JSON.stringify(this.statement));
+
+        // this._fiwooService.postStatement(this.statement).subscribe(
+        //   res => {
+        //     console.log(res);
+        //   });
+
+      }
+
+      this.hideModal();
+
 
     }
-
-    this.hideModal();
-
-
   }
-} 
 
 }

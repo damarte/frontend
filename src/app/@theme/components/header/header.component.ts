@@ -82,8 +82,8 @@ export class HeaderComponent implements OnInit {
 
 
   goToNotifications(){
-    //console.log('ok');
-    this.router.navigate(['./pages/components/notifications']);
+    
+    this.router.navigate(['../pages/notifications']);
   }
   
 
