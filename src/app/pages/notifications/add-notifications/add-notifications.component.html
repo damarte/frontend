@@ -1,0 +1,96 @@
+<div class="ui modal" #addNotificationModal>
+  <div class="header">{{modalTitle}}</div>
+  <div class="scrolling content">
+    <div class="ui grid">
+
+      <!-- col1-->
+      <div class="eight wide column">
+        <mat-card class="result">
+          <mat-card-content>
+            <div class="field">
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" placeholder="Subject" [(ngModel)]="subject" [formControl]="subjectFormControl" />
+                <button mat-button *ngIf="subject" matSuffix mat-icon-button aria-label="Clear" (click)="subject=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width" style="width:100%">
+                <textarea matInput placeholder="Message" rows="4" [(ngModel)]="message" [formControl]="messageFormControl"></textarea>
+              </mat-form-field>
+
+              <section style="margin-top: 20px">
+                <div class="field">
+                  <mat-radio-group style="display: inline-flex; flex-direction: column;">
+                    <h4>
+                      <b>When to send notification</b>
+                    </h4>
+                    <mat-radio-button value="0">Send now</mat-radio-button>
+                    <mat-radio-button value="selectedMoment2"> Schedule
+                      <div class="input-wrapper">
+                        <input [formControl]="selectedMoment2" [owlDateTimeTrigger]="dtPicker2" [owlDateTime]="dtPicker2">
+                        <owl-date-time #dtPicker2></owl-date-time>
+                      </div>
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </section>
+
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="eight wide column">
+        <mat-card class="result">
+          <mat-card-content>
+            <mat-form-field style="width: 100%">
+
+              <mat-select placeholder="Select roles" [compareWith]="compareFn" [formControl]="rolesFormControl" [(ngModel)]="rolesSelected"
+                multiple>
+                <mat-option *ngFor="let rol of roles" [value]="rol">
+                  {{ rol }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field style="width: 100%">
+              <mat-select placeholder="Select contacts" [compareWith]="compareFn" [formControl]="contactsFormControl" [(ngModel)]="contactsSelected"
+                multiple>
+                <mat-option *ngFor="let contact of contacts" [value]="contact">
+                  {{ contact }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <section style="margin-top: 30px">
+              <h4>
+                <b>Send via</b>
+              </h4>
+              <div class="field">
+                <mat-radio-group [(ngModel)]="viaSelected" style="display: inline-flex; flex-direction: column;" [formControl]="viaFormControl">
+                  <mat-radio-button *ngFor="let via of vias" [value]="via" style="margin: 5px;">
+                    {{ via }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </section>
+
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui two column centered grid">
+      <div class="four column centered row">
+        <div class="column">
+          <button mat-raised-button color="primary" (click)="sendNotification()">Save</button>
+        </div>
+        <div class="column">
+          <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

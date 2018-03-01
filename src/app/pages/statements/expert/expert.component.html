@@ -5,10 +5,10 @@
       <mat-card-content>
         <div style="margin-top: 20px">
           <mat-form-field class="example-full-width" style="width:100%">
-            <textarea matInput placeholder="Description" rows="6"></textarea>
+            <textarea matInput placeholder="Description" rows="6" [(ngModel)]="description" [formControl]="descriptionFormControl"></textarea>
           </mat-form-field>
           <mat-form-field class="example-full-width" style="width:100%">
-            <textarea matInput placeholder="Statement" rows="6"></textarea>
+            <textarea matInput placeholder="Statement" rows="6" [(ngModel)]="statement" [formControl]="statementFormControl"></textarea>
           </mat-form-field>
         </div>
 
@@ -24,7 +24,7 @@
           <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
         </div>
         <div class="column centered-btn">
-          <button mat-raised-button color="primary" (click)="sendModel()">Save</button>
+          <button mat-raised-button color="primary" (click)="sendStatement()">Save</button>
         </div>
       </div>
     </div>

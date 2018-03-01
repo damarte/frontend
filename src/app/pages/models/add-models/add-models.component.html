@@ -10,34 +10,30 @@
           <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
             <mat-icon>close</mat-icon>
           </button>
-          <mat-error *ngIf="nameFormControl.hasError('required')">
-            Name
-            <strong>required</strong>
-          </mat-error>
         </mat-form-field>
 
+        <div class="doubling stackable two column ui grid container" style="margin-top: 20px">
 
-        <div class="doubling stackable three column ui grid container" style="margin-top: 20px">
           <div class="column">
             <mat-form-field>
-              <mat-select placeholder="Model Type" [compareWith]="compareFn" [formControl]="resourceFormControl" [(ngModel)]="resourceSelected"
-                multiple>
-                <mat-option *ngFor="let resource of resources" [value]="resource">
-                  {{ resource.name }}
+              <mat-select placeholder="Model Type" [(value)]="modelTypeSelected" [formControl]="modelTypeFormControl">
+                <mat-option *ngFor="let modelType of modelTypes" [value]="modelType">
+                  {{ modelType }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
+
           <div class="column">
             <mat-form-field>
-              <mat-select placeholder="Programing Language" [compareWith]="compareFn" [formControl]="resourceFormControl" [(ngModel)]="resourceSelected"
-                multiple>
-                <mat-option *ngFor="let resource of resources" [value]="resource">
-                  {{ resource.name }}
+              <mat-select placeholder="Programing Language" [(value)]="modelLanguageSelected" [formControl]="modelLanguageFormControl">
+                <mat-option *ngFor="let modelLanguage of modelLanguages" [value]="modelLanguage">
+                  {{ modelLanguage }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
+
         </div>
       </mat-card-content>
     </mat-card>
@@ -47,8 +43,7 @@
     <mat-card class="result">
       <mat-card-content>
         <p>Upload the script</p>
-        <image-upload dropBoxMessage="Drag files here" clearButtonCaption="Restore" [extensions]="['jpeg','png']"
-          [class]="'customClass'">
+        <image-upload dropBoxMessage="Drag files here" clearButtonCaption="Restore" [extensions]="['jpeg','png']" [class]="'customClass'">
         </image-upload>
       </mat-card-content>
     </mat-card>
@@ -58,70 +53,63 @@
     <mat-card class="result">
       <mat-card-content>
         <p>Output Format</p>
-        <div class="scrolling content">
-          <div class="doubling stackable three column ui grid container" style="margin-top: 20px">
-            <!-- col1-->
-            <div class="column">
-              <div class="field">
-                <mat-form-field>
-                  <input matInput type="text" placeholder="Name of the device" [(ngModel)]="device_name" [formControl]="deviceNameFormControl"
-                  />
-                  <button mat-button *ngIf="device_name" matSuffix mat-icon-button aria-label="Clear" (click)="device_name=''">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <!-- col3-->
-            <div class="column">
-              <div class="field">
-                <mat-form-field>
-                  <input matInput type="text" placeholder="Entity name" [(ngModel)]="entity_type" [formControl]="entityNameFormControl" />
-                  <button mat-button *ngIf="entity_type" matSuffix mat-icon-button aria-label="Clear" (click)="entity_type=''">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <!-- col4-->
-            <div class="column">
-              <a mat-mini-fab routerLink="." color='primary' (click)="onDeviceCreated($event)">
-                <mat-icon>add</mat-icon>
-              </a>
+        <div class="ui grid">
+          <!-- col1-->
+          <div class="six wide column">
+            <div class="field">
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" placeholder="Format" [(ngModel)]="format" [formControl]="formatFormControl" />
+                <button mat-button *ngIf="format" matSuffix mat-icon-button aria-label="Clear" (click)="format=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
             </div>
           </div>
 
+          <!-- col3-->
+          <div class="six wide column">
+            <div class="field">
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" placeholder="Data Type" [(ngModel)]="type" [formControl]="typeFormControl" />
+                <button mat-button *ngIf="type" matSuffix mat-icon-button aria-label="Clear" (click)="type=''">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
 
-
-          <mat-divider style="margin-top: 20px;"></mat-divider>
+          <!-- col4-->
+          <div class="four wide column">
+            <a mat-mini-fab routerLink="." color='primary' (click)="onOutputCreated($event)">
+              <mat-icon>add</mat-icon>
+            </a>
+          </div>
+         
 
           <mat-list role="list">
-            <div *ngFor="let createdDevice of createdDevices">
+            <div *ngFor="let createdOutput of createdOutputs">
               <div class="ui grid">
                 <!-- col1-->
-                <div class="four wide column">
+                <div class="six wide column">
                   <div class="field">
-                    <mat-form-field>
-                      <input matInput type="text" placeholder="value" value="{{createdDevice.device.device[0].name}}" disabled/>
+                    <mat-form-field style="width: 100%">
+                      <input matInput type="text" placeholder="Format" value="{{createdOutput.format}}" disabled/>
                     </mat-form-field>
                   </div>
                 </div>
 
-
                 <!-- col3-->
-                <div class="four wide column">
+                <div class="six wide column">
                   <div class="field">
-                    <mat-form-field>
-                      <input matInput type="text" placeholder="float" value="{{createdDevice.device.device[0].deviceId}}" disabled/>
+                    <mat-form-field style="width: 100%">
+                      <input matInput type="text" placeholder="Type" value="{{createdOutput.type}}" disabled/>
                     </mat-form-field>
                   </div>
                 </div>
 
                 <!-- col4-->
                 <div class="four wide column">
-                  <button mat-icon-button (click)="removeCreatedDevice(createdDevice)">
+                  <button mat-icon-button (click)="removeCreatedOutput(createdOutput)">
                     <mat-icon aria-label="Remove">close</mat-icon>
                   </button>
                 </div>
@@ -140,8 +128,8 @@
         <p>Parameters to use the model</p>
         <mat-form-field class="demo-chip-list" style="width:100%">
           <mat-chip-list #chipList>
-            <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable" [removable]="removable" (remove)="remove(fruit)">
-              {{fruit.name}}
+            <mat-chip *ngFor="let parameter of parameters" [selectable]="selectable" [removable]="removable" (remove)="remove(parameter)">
+              {{ parameter.name }}
               <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
             <input placeholder="" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"

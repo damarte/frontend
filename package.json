@@ -70,6 +70,7 @@
     "leaflet": "1.2.0",
     "leaflet-toolbar": "^0.4.0-alpha.1",
     "nebular-icons": "1.0.6",
+    "ng-pick-datetime": "^5.1.7",
     "ng2-ckeditor": "1.1.13",
     "ng2-dnd": "^5.0.2",
     "ng2-gauge": "^1.0.5",

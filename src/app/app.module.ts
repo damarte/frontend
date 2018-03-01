@@ -20,7 +20,7 @@ import { ApiModule as IotModule, Configuration, ConfigurationParameters } from '
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material'; 
 import { NbAuthModule } from './auth/auth.module'; 
 import { FiwooService } from './pages/services/fiwoo.service';
-import { AuthGuard } from './app-guard.service';
+// import { AuthGuard } from './app-guard.service';
  
 
 @NgModule({
@@ -50,7 +50,7 @@ import { AuthGuard } from './app-guard.service';
     { provide: APP_BASE_HREF, useValue: '/' },
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     FiwooService,
-    AuthGuard
+    // AuthGuard
   ],
 })
 export class AppModule {

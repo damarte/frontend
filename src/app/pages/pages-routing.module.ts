@@ -12,6 +12,7 @@ import { ModelsComponent } from './models/models.component';
 import { StatementsComponent } from './statements/statements.component';
 import { OpenDataComponent } from './open-data/open-data.component';
 import { RoutesComponent } from './routes/routes.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 
@@ -68,6 +69,10 @@ const routes: Routes = [
     {
       path: 'routes',
       component: RoutesComponent,
+    },
+    {
+      path: 'notifications',
+      component: NotificationsComponent,
     }
   ]
 }];

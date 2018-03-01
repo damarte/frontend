@@ -27,201 +27,123 @@ export class ExpertComponent implements OnInit {
 
   modal: any;
 
-  role: any = {};
-
-  name: string;
   description: string;
-  resourceSelected: any;
+  statement: string;
+  editedStatement:any = [];
+  statements: any = {};
 
-  urlBase: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-
-  editedRole: any = null;
   modalTitle: string = "";
 
-  // validations
-  nameFormControl = new FormControl('', [Validators.required]);
+  // validations  
   descriptionFormControl = new FormControl();
-  resourceFormControl = new FormControl();
+  statementFormControl = new FormControl();
 
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
   addOnBlur: boolean = true;
-
   showValue: boolean = false;
-
   saved: boolean = false;
-
   separatorKeysCodes = [ENTER, COMMA];
 
-  fruits = [
-    { name: 'user' },
-    { name: 'pwd' },
-    { name: 'Parameter3=DefaultValue' },
-  ];
 
-
-  add(event: MatChipInputEvent): void {
-    let input = event.input;
-    let value = event.value;
-
-    // Add our fruit
-    if ((value || '').trim()) {
-      this.fruits.push({ name: value.trim() });
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
+  constructor(private http: Http,
+    private _fiwooService: FiwooService) {   
+    
   }
+ 
+  ngOnInit() { }
 
-  remove(fruit: any): void {
-    let index = this.fruits.indexOf(fruit);
-
-    if (index >= 0) {
-      this.fruits.splice(index, 1);
-    }
-  }
-
-
-constructor(private http: Http,
-  private _fiwooService: FiwooService) {
-  context = this;
-  this.getResources();
-
-
-
-}
-
-
-resources: any[];
-
-    private getResources(){
-  this._fiwooService.getResources().subscribe(
-    data => {
-      let resources: any[] = data;
-      this.resources = resources;
-    },
-    err => {
-      console.log(err);
-    }
-  );
-}
-
-
-compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
-
-compareByValue(f1: any, f2: any) {
-  return f1 && f2 && f1.id === f2.id;
-}
-
-
-ngOnInit() {
   
-}
-
-cleanValues(){
-
-  this.name = "";
-  this.description = "";
-  this.resourceSelected = [];
-
-}
 
 
-showModal(role) {
-  this.editedRole = role;
+  showModal(statement) {
 
-  this.configureRoleToEdit();
+    this.editedStatement = statement;
+    this.configureStatementToEdit();
 
-  this.saved = false;
-  this.modal.modal({
-    closable: true,
-    onHidden: function () {
-      context.cleanValues();
-      context.onHidden.emit(true);
-    }
-  })
-    .modal('show');
-}
-
-configureRoleToEdit(){
-
-  if (this.editedRole != null) {
-
-    this.modalTitle = "Edit statement (Expert Mode)";
-    this.name = this.editedRole.name;
-    this.description = this.editedRole.description;
-    this.resourceSelected = this.editedRole.resources;
-  } else {
-    this.modalTitle = "Add statement (Expert Mode)"
+    this.saved = false;
+    this.modal.modal({
+      closable: true,
+      onHidden: function () {
+        context.cleanValues();
+        context.onHidden.emit(true);
+      }
+    })
+      .modal('show');
   }
-}
 
-hideModal() {
-  this.modal.modal('hide');
-}
+  cleanValues() {
 
-// tslint:disable-next-line:use-life-cycle-interface
-ngAfterViewInit() {
-  this.modal = jQuery(this.expertStatementModalRef.nativeElement);
-}
-
-
-sendRole(){
-
-  if (!this.nameFormControl.hasError('required') &&
-    !this.descriptionFormControl.hasError('required')) {
-
-    let allResources = [];
-
-    if (this.resourceSelected instanceof Array) {
-      allResources = this.resourceSelected;
-    } else {
-      allResources = [this.resourceSelected];
-    }
-
-    this.role = {
-      name: this.name,
-      description: this.description,
-      resources: allResources
-    };
-
-    if (this.editedRole != undefined) {
-
-      // PUT
-      console.log(JSON.stringify(this.role));
-
-      this._fiwooService.updateRol(this.editedRole.id, this.role).subscribe(
-        res => {
-          console.log(res);
-          this.saved = true;
-          this.hideModal();
-        });
-
-    } else {
-
-      // POST
-      this.role = {
-        name: this.name,
-        description: this.description,
-        resources: allResources
-      };
-
-      console.log(JSON.stringify(this.role));
-
-      this._fiwooService.postRol(this.role).subscribe(
-        res => {
-          console.log(res);
-        });
-
-    }
-
-    this.hideModal();
-
-
+    this.description = null;
+    this.statement = null;
   }
-} 
+
+  configureStatementToEdit() {
+
+    if (this.editedStatement != null) {
+
+      this.modalTitle = "Edit statement (Expert Mode)";      
+      this.description = this.editedStatement.description;
+      this.statement = this.editedStatement.statement;
+    } else {
+      this.modalTitle = "Add statement (Expert Mode)"
+    }
+  }
+
+  hideModal() {
+    this.modal.modal('hide');
+  }
+
+  
+  ngAfterViewInit() {
+    this.modal = jQuery(this.expertStatementModalRef.nativeElement);
+  }
+
+
+  sendStatement() {
+
+    if (!this.statementFormControl.hasError('required') &&
+      !this.descriptionFormControl.hasError('required')) {      
+
+      if (this.editedStatement != undefined) {
+
+        this.statements = {
+          statement: this.statement,
+          description: this.description,         
+        };
+
+        // PUT
+        console.log(this.statement);
+
+        // this._fiwooService.updateStatement(this.editedStatement.id, this.statements).subscribe(
+        //   res => {
+        //     console.log(res);
+        //     this.saved = true;
+        //     this.hideModal();
+        //   });
+
+      } else {
+
+        // POST
+        this.statements = {
+          statement: this.statement,
+          description: this.description,         
+        };
+
+        console.log(this.statements);
+
+        // this._fiwooService.postStatement(this.statements).subscribe(
+        //   res => {
+        //     console.log(res);
+        //   });
+
+      }
+
+      this.hideModal();
+
+
+    }
+  }
 
 }

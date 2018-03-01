@@ -1,0 +1,32 @@
+<nb-card>
+    <nb-card-header>
+      
+      <div class="ui grid">
+          <div class="thirteen wide column">
+              Notifications        
+          </div>    
+          
+          <div class="three wide column">
+              <a class="item" (click)="addNotificationModal.showModal()">
+                  <button mat-raised-button color="primary">Add Notification</button>
+              </a>
+          </div>     
+      </div> 
+    </nb-card-header>
+    <nb-card-body> 
+
+  
+      <ng2-smart-table 
+                [settings]="settings" 
+                [source]="source" 
+                (deleteConfirm)="onDeleteConfirm($event)" 
+                (edit)="addNotificationModal.showModal($event.data)"
+                (delete)="onDeleteConfirm($event)">
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+  
+  
+  <app-add-notifications #addNotificationModal (onHidden)="onModalHidden($event)">
+  </app-add-notifications>
+   

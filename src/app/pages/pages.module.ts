@@ -36,6 +36,9 @@ import { OpendataService } from './services/opendata.service';
 import { DensityMapService } from './services/densitymap.service';
 import { RoutesComponent } from './routes/routes.component';
 import { GisService } from './services/gis.service';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { AddNotificationsComponent } from './notifications/add-notifications/add-notifications.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 
 const PAGES_COMPONENTS = [
@@ -63,7 +66,9 @@ const PAGES_COMPONENTS = [
     MatDatepickerModule,
     MatGridListModule,    
     HttpClientModule,
-    ImageUploadModule.forRoot()
+    ImageUploadModule.forRoot(),
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
   ],
   providers: [
     AboutService,
@@ -84,7 +89,7 @@ const PAGES_COMPONENTS = [
     RolesComponent,
     AssetsComponent,    
     EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, ModelsComponent, AddModelsComponent, TestModelsComponent, StatementsComponent, TypesComponent, ExpertComponent, BasicComponent, 
-     OpenDataComponent, RoutesComponent
+     OpenDataComponent, NotificationsComponent, AddNotificationsComponent, RoutesComponent
   ],
   entryComponents: [],
 })
