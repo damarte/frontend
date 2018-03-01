@@ -3,17 +3,16 @@ import { BaseService } from './base.service';
 import { Http } from '@angular/http';
 
 @Injectable()
-export class DensityMapService extends BaseService {
+export class GisService extends BaseService {
 
   constructor(public http: Http) { 
     super(http);
    }
 
 
-  // GET Density Map
-  public getDensityMap():any {
+  // GET GIS DATA
+  public getGISData():any {
     this.configureGET();
-    return this.http.get(`${this.urlBaseDensityMaps}${this.endPointDensisty}`, {headers: this.headers}).map(res => res.json());
+    return this.http.get(`${this.urlBaseGIS}${this.endPointGIS}`, {headers: this.headers}).map(res => res.json());
   }
-
 }

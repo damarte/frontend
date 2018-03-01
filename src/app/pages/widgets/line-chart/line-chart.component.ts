@@ -71,7 +71,7 @@ export class LineChartComponent extends WidgetsBase {
                 this.coordinates = new  Array<Coordinate>();
                 var i = 0;
                 res.forEach(element => {
-                    this.coordinates.push({ arg: this.formatDate(element.recvTime), val: parseInt(element.attrValue, 10)});
+                    this.coordinates.push({ arg: this.formatDate(element.createdAt), val: parseInt(element.value, 10)});
                     i++;
                 });
             }
@@ -182,26 +182,4 @@ export class LineChartComponent extends WidgetsBase {
         this.title = updatedPropsObject.title;
         this.showOperationControls = true;       
     }
-
-    private changeDate (date: Date){
-        var days:string;
-        var months:string;
-        var dd = date.getDate();
-
-        var mm = date.getMonth()+1; 
-        var yyyy = date.getFullYear();
-        
-        days = dd + '';
-        months = mm + '';
-
-        if(dd<10){
-            days ='0'+ dd;
-        }
-
-        if(mm<10){
-            months = '0'+ mm;
-        }
-        return days + '-' + months + '-' + yyyy + 'T00:00:00';
-    }
-    
 }

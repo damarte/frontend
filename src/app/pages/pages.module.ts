@@ -10,7 +10,6 @@ import { TemplatesComponent } from './templates/templates.component';
 import { AddDevicesComponent } from './devices/add-devices/add-devices.component';
 import { MatButtonModule, MatSelectModule, MatSlideToggleModule, MatCardModule,
 MatIconModule, MatInputModule, MatListModule, MatGridListModule, MatRadioModule, MatChipsModule, MatDialogModule, MatExpansionModule, MatDatepickerModule } from '@angular/material';
-import { DialogOverviewExampleDialog } from './templates/add-template/add-template.component';
 import { AddTemplateComponent } from './templates/add-template/add-template.component';
 import { DevicesFilterComponent } from './devices/devices-filter/devices-filter.component';
 import { AboutComponent } from './about/about.component';
@@ -35,6 +34,8 @@ import { BasicComponent } from './statements/basic/basic.component';
 import { OpenDataComponent } from './open-data/open-data.component';
 import { OpendataService } from './services/opendata.service';
 import { DensityMapService } from './services/densitymap.service';
+import { RoutesComponent } from './routes/routes.component';
+import { GisService } from './services/gis.service';
 
 
 const PAGES_COMPONENTS = [
@@ -68,7 +69,8 @@ const PAGES_COMPONENTS = [
     AboutService,
     FiwooService,
     OpendataService,
-    DensityMapService
+    DensityMapService,
+    GisService
   ],
   declarations: [
     ...PAGES_COMPONENTS, 
@@ -77,15 +79,14 @@ const PAGES_COMPONENTS = [
     TemplatesComponent,
     AddDevicesComponent,
     AddTemplateComponent,
-    DialogOverviewExampleDialog,
     DevicesFilterComponent,
     AboutComponent,
     RolesComponent,
     AssetsComponent,    
     EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, ModelsComponent, AddModelsComponent, TestModelsComponent, StatementsComponent, TypesComponent, ExpertComponent, BasicComponent, 
-     OpenDataComponent
+     OpenDataComponent, RoutesComponent
   ],
-  entryComponents: [DialogOverviewExampleDialog],
+  entryComponents: [],
 })
 export class PagesModule {
 }

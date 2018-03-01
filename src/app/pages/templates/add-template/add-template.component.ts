@@ -59,12 +59,7 @@ export class AddTemplateComponent implements OnInit {
   modalTitle: string = "";
 
   properties: any[];
-  propertiesSelect = [
-    {type: "command"},
-    {type: "attribute"},
-    {type: "lazy"},
-    {type: "static attribute"},
-  ];
+  propertiesSelect = [];
 
   templateNameFormControl = new FormControl('', [
     Validators.required
@@ -87,6 +82,9 @@ export class AddTemplateComponent implements OnInit {
   propertyValueFormControl = new FormControl('', [
     Validators.required
   ]);
+  propertyObjectIdFormControl = new FormControl('', [
+    Validators.required
+  ]);
   propertyTypeFormControl = new FormControl('', [
     Validators.required
   ]);
@@ -98,13 +96,14 @@ export class AddTemplateComponent implements OnInit {
 
   selectedProperty: string = "command";
   showValue: boolean = false;
+  showObjectId: boolean = false;
 
   saved: boolean = false;
 
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
 
-  data:any = { selectedProperty: this.selectedProperty, showValue: this.showValue, name: "", formType: "", value: "" }
+  data:any = { selectedProperty: this.selectedProperty, showValue: this.showValue, showObjectId: this.showObjectId, name: "", objectId: "", formType: "", value: "" }
 
   constructor(private devicesService: DevicesService, public dialog: MatDialog) {
 
@@ -128,54 +127,47 @@ export class AddTemplateComponent implements OnInit {
   }
 
   restart(): void {
-    this.configureForm(null, false);
+    this.configureForm(null, false, false);
     this.currentAttributeToCreate = null;
   }
 
   addObject(object): void {
-    // this.configureDialog(object.type, object.showValue);
     this.insertProperty(object);
   }
 
-  configureForm(prop: string, show: boolean): void {
+  configureForm(prop: string, showValue: boolean, showObjectId: boolean): void {
     this.selectedProperty = prop;
-    this.showValue = show;
-    this.data = { selectedProperty: this.selectedProperty, showValue: this.showValue, name: "", formType: "", value: "" }
+    this.showValue = showValue;
+    this.showObjectId = showObjectId;
+    this.data = { selectedProperty: this.selectedProperty, showValue: this.showValue,  showObjectId: this.showObjectId, name: "", objectId: "", formType: "", value: "" }
   }
-
-  configureDialog(prop: string, show: boolean): void {
-    this.selectedProperty = prop;
-    this.showValue = show;
-
-    this.openDialog();
-  }
-
   onAttributeChanged (): void{
-    this.configureForm(this.currentAttributeToCreate.type, this.currentAttributeToCreate.showValue);
+    this.configureForm(this.currentAttributeToCreate.type, this.currentAttributeToCreate.showValue, this.currentAttributeToCreate.showObjectId);
   }
 
   insertProperty (result): void {
     if (result != undefined){
 
       if (!this.propertyNameFormControl.hasError('required') &&
-       (!this.propertyNameFormControl.hasError('required') || !result.showValue) &&
-        !this.propertyTypeFormControl.hasError('required')){
+         (!this.propertyValueFormControl.hasError('required') || !result.showValue) &&
+         (!this.propertyObjectIdFormControl.hasError('required') || !result.showObjectId) &&
+         !this.propertyTypeFormControl.hasError('required')){
 
         switch (result.selectedProperty){
           case "command":
-            this.commands.push({name : result.name, formType: result.formType});
+            this.commands.push({name : result.name, object_id : result.objectId, formType: result.formType});
           break;
           case "internal attribute":
-            this.internalAttrs.push({name : result.name, formType: result.formType});
+            this.internalAttrs.push({name : result.name, object_id : result.objectId, formType: result.formType});
           break;
           case "attribute":
-            this.attributes.push({name : result.name, formType: result.formType});
+            this.attributes.push({name : result.name, object_id : result.objectId, formType: result.formType});
           break;
           case "lazy":
-            this.lazy.push({name : result.name, formType: result.formType});
+            this.lazy.push({name : result.name, object_id : result.objectId, formType: result.formType});
           break;
           case "static attribute":
-            this.statics.push({name : result.name, formType: result.formType, value: result.value});
+            this.statics.push({name : result.name, object_id : result.objectId, formType: result.formType, value: result.value});
           break;
         }
 
@@ -183,19 +175,6 @@ export class AddTemplateComponent implements OnInit {
       }
      
     } 
-  }
-
-
-  openDialog(): void {
-    let dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '250px',
-      data: { selectedProperty: this.selectedProperty, showValue: this.showValue, name: "", formType: "", value: "" }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.insertProperty(result);    
-    });
   }
 
   remove(object: any, objects: any[]): void {
@@ -228,12 +207,15 @@ export class AddTemplateComponent implements OnInit {
 
   private restartProperties(){
     this.properties = [
-      {type: "command", showValue: false, prop: this.commands},
-      {type: "internal attribute", showValue: false, prop: this.internalAttrs},
-      {type: "attribute", showValue: false, prop: this.attributes},
-      {type: "lazy", showValue: false, prop: this.lazy},
-      {type: "static attribute", showValue: true, prop: this.statics},
+      {type: "command", showValue: false, showObjectId: true, prop: this.commands},
+      {type: "internal attribute", showValue: false, showObjectId: true, prop: this.internalAttrs},
+      {type: "attribute", showValue: false, showObjectId: true, prop: this.attributes},
+      {type: "lazy", showValue: false, showObjectId: true, prop: this.lazy},
+      {type: "static attribute", showValue: true, showObjectId: false, prop: this.statics},
     ];
+
+    //TODO STATIC ATTRIBUTE CAN NOT BE SELECTED
+    this.propertiesSelect = this.properties.slice(0, this.properties.length - 1);
   }
 
 
@@ -269,13 +251,7 @@ export class AddTemplateComponent implements OnInit {
       this.statics = this.editedTemplate.static_attributes;
       this.commands = this.editedTemplate.commands;
       this.internalAttrs = this.editedTemplate.internal_attributes;
-      this.properties = [
-        {type: "command", showValue: false, prop: this.commands},
-        {type: "internal attribute", showValue: false, prop: this.internalAttrs},
-        {type: "attribute", showValue: false, prop: this.attributes},
-        {type: "lazy", showValue: false, prop: this.lazy},
-        {type: "static attribute", showValue: true, prop: this.statics},
-      ];
+      this.restartProperties();
     }else{
       this.modalTitle = "Add template"
     }
@@ -375,21 +351,5 @@ class TransportProtocol {
     this.key = key;
     this.value = value;
   }
-}
-
-@Component({
-  selector: 'dialog_extra_data',
-  templateUrl: 'dialog_extra_data.html',
-})
-export class DialogOverviewExampleDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
 }
 

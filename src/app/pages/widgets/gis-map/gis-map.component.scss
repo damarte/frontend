@@ -2,12 +2,22 @@
 
 @include nb-install-component() {
 
-  nb-card-body {
-    padding: 0;
-  }
+  // nb-card-body {
+  //   padding: 0;
+  // }
 
   /deep/ .leaflet-container {
     width: 100%;
     height: nb-theme(card-height-large);
   }
+
+  /deep/ ul.leaflet-control-toolbar.leaflet-toolbar-0.toolbar {
+    padding-left: 0em !important;
+   }
+
+   /deep/ .leaflet-popup-content {
+    margin: 13px 19px !important;
+    line-height: 1.4;
+    text-align: center;
+   }
 }

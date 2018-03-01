@@ -11,6 +11,7 @@ import { AssetsComponent } from './assets/assets.component';
 import { ModelsComponent } from './models/models.component';
 import { StatementsComponent } from './statements/statements.component';
 import { OpenDataComponent } from './open-data/open-data.component';
+import { RoutesComponent } from './routes/routes.component';
 
 
 
@@ -65,8 +66,8 @@ const routes: Routes = [
       component: OpenDataComponent,
     },
     {
-      path: 'maps',
-      loadChildren: './maps/maps.module#MapsModule',
+      path: 'routes',
+      component: RoutesComponent,
     }
   ]
 }];

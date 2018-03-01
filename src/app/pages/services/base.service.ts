@@ -17,22 +17,27 @@ export class BaseService {
   endPointResources = '/resources';
   endPointModels = '/models';
   endPointDashboards = '/dashboards';
+  endPointDensisty = '/density';
+  endPointGIS = '/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices1&outputFormat=JSON' //PROVISIONAL
 
   //TEST
-  urlBaseUsers: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-  urlBaseOpenData: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-  urlBaseLogin: string = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-  urlBI: string = "";
-  urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi/density';
-  urlBaseDataVisualization:  string = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization';
+  urlBaseUsers = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+  urlBaseOpenData = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+  urlBaseLogin = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+  urlBI = "";
+  // urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi/density';
+  urlBaseDensityMaps = 'http://192.168.14.38:5000/api/bi';
+  urlBaseDataVisualization = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization';
+  urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
 
   //PROD
-  // urlBaseUsers: string = 'https://platform.fiwoo.eu/api/user-management/users';
-  // urlBaseOpenData: string = '';
-  // urlBaseLogin: string = 'https://us1.fiwoo.eu:7000/users';
-  // urlBI: string = '';
-  // urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi/density'; 
-  // urlBaseDataVisualization:  string = 'https://platform.fiwoo.eu/api/data-visualization';
+  // urlBaseUsers = 'https://platform.fiwoo.eu/api/user-management/users';
+  // urlBaseOpenData = '';
+  // urlBaseLogin = 'https://us1.fiwoo.eu:7000/users';
+  // urlBI = '';
+  // urlBaseDensityMaps = 'http://us2.fiwoo.eu:5000/api/bi/density'; 
+  // urlBaseDataVisualization = 'https://platform.fiwoo.eu/api/data-visualization';
+  // urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
 
   constructor(public http: Http) {
     token = localStorage.getItem('access_token');

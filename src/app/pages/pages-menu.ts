@@ -37,7 +37,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'Density Maps',
         icon: 'ion-ios-location-outline',
-        link: '/pages/maps/leaflet',    
+        link: '/pages/routes',    
       },    
     ]
   }, 

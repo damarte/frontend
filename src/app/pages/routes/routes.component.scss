@@ -1,4 +1,4 @@
-@import '../../../@theme/styles/themes';
+@import '../../@theme/styles/themes';
 
 @include nb-install-component() {
 
@@ -10,4 +10,9 @@
     width: 100%;
     height: nb-theme(card-height-large);
   }
+
+  /deep/ ul.leaflet-control-toolbar.leaflet-toolbar-0.toolbar {
+   padding-left: 0em !important;
+  }
+
 }
