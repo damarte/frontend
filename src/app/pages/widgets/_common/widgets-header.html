@@ -8,10 +8,10 @@
             *ngIf="showControls  && showConfigurationControl" (click)="toggleConfigMode()">
         <i class="setting  icon" style="margin-right:0 !important"></i>
     </button>
-    <!--<button class="compact ui button right floated"
-            *ngIf="showControls" (click)="help()">
-        <i class="info icon" style="margin-right:0 !important" ></i>
-    </button>-->
+    <button class="compact ui button right floated"
+            *ngIf="showControls && showRefreshControls" (click)="refresh()">
+        <i class="refresh icon" style="margin-right:0 !important" ></i>
+    </button>
 
     <app-gadget-operation-control *ngIf="showControls"
                               [inRun]="inRun"

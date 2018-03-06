@@ -13,8 +13,6 @@ import { Router, NavigationStart } from '@angular/router';
 
 declare var d3: any;
 
-var interval;
-
 @Component({
     selector: 'app-dynamic-component',
     moduleId: module.id,
@@ -33,7 +31,14 @@ export class CircularGaugeComponent extends WidgetsBase {
     minValue: number;
     maxValue: number;
 
+    interval: any;
+
+    device_id:any;
+    attribute:any;
+
     showOperationControls = true;
+
+    showRefreshControls = true;
 
     constructor(protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
@@ -61,22 +66,24 @@ export class CircularGaugeComponent extends WidgetsBase {
                 if (this.widget.sources.length > 0){
                     source = this.widget.sources[0];
                 }
-                var device_id, attribute;
+    
                 source.parameters.forEach(param => {
                     if (param.name === "device_name"){
                         this.titleNew = param.value;
                     }else if (param.name === "device_id"){
-                        device_id = param.value;
+                        this.device_id = param.value;
                     }else if (param.name === "attribute"){
-                        attribute = param.value;
+                        this.attribute = param.value;
                     }
                 });
 
                
-                this.loadDataGeneral(device_id, attribute);
+                this.loadDataGeneral();
 
                 this.minValue = this.getPropFromPropertyPages("min");
                 this.maxValue = this.getPropFromPropertyPages("max");
+
+                this.refreshTime = this.getPropFromPropertyPages("refresh");
     
             }
         }
@@ -103,15 +110,20 @@ export class CircularGaugeComponent extends WidgetsBase {
     currentValue: number = 0;
 
 
-    private loadDataGeneral (deviceId, attribute){
+    refresh(){
+        this.loadDataGeneral();
+    }
+
+    private loadDataGeneral (){
         var context = this;
-        this.loadData(deviceId, attribute);
+        clearInterval(this.interval);
+        this.loadRepeatData(this, this.device_id, this.attribute);
         
         //Avoiding repeating widgets context problem.
-        interval = setInterval(
+        this.interval = setInterval(
             (function(self) {         
                 return function() {
-                    self.loadData(deviceId, attribute);
+                    self.loadRepeatData(self, self.device_id, self.attribute)
                 }
             })(this),
             this.refreshTime
@@ -119,10 +131,12 @@ export class CircularGaugeComponent extends WidgetsBase {
          
     }
 
-    loadData (deviceId, attribute){
-       this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
+
+    loadRepeatData(self, deviceId, attribute) {
+        self.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
             if (res.value != undefined){
-                this.currentValue = res.value;
+                self.currentValue = res.value;
+                console.log(self.currentValue);
             }
         });
     }
@@ -162,6 +176,13 @@ export class CircularGaugeComponent extends WidgetsBase {
         this.maxValue = updatedPropsObject.max;       
 
         this.showOperationControls = true;
+
+        var refreshTime = updatedPropsObject.refresh;
+        if (refreshTime !== this.refreshTime) {
+            this.refreshTime = refreshTime;
+           this.loadDataGeneral();
+        }
+
 
     }
 

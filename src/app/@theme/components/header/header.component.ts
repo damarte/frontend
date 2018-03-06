@@ -55,9 +55,8 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getUsers()
-      .subscribe((users: any) => {
-        this.user = users.first; 
+    this.fiwooService.getMe().subscribe((user: any) => {
+        this.user = user; 
       });
      
   }

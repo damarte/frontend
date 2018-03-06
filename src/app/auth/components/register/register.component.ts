@@ -12,6 +12,7 @@ import { Http } from '@angular/http';
 import { NgForm, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from "../User";
 import sweetAlert from 'sweetalert2';
+import { FiwooService } from '../../../pages/services/fiwoo.service';
 
 
 
@@ -37,14 +38,13 @@ export class NbRegisterComponent implements OnInit {
     @Inject(NB_AUTH_OPTIONS_TOKEN) protected config = {},
     protected router: Router,
     private http: Http,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private userService: FiwooService) {
 
     this.redirectDelay = this.getConfigValue('forms.register.redirectDelay');
     this.showMessages = this.getConfigValue('forms.register.showMessages');
     this.provider = this.getConfigValue('forms.register.provider');
   }
-
-  urlBase: string = 'https://platform.fiwoo.eu/api/user-management/users';
 
   //Property for the user
   private user: User;
@@ -81,8 +81,9 @@ export class NbRegisterComponent implements OnInit {
   public onFormSubmit() {
     if (this.signupForm.valid) {
       this.user = this.signupForm.value;
-      console.log('User: ', this.user);     
-      this.http.post(`${this.urlBase}/users`, this.user).subscribe( 
+      console.log('User: ', this.user);
+
+      this.userService.doRegister(this.user).subscribe( 
         res => {
            console.log('Register post: ', res); 
            sweetAlert({
@@ -99,8 +100,7 @@ export class NbRegisterComponent implements OnInit {
            console.error(err);   
            sweetAlert("Oops!", "Something went wrong!", "error");           
         }
-      );  
-
+      );
     }
   }
 

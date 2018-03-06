@@ -15,7 +15,7 @@ declare var tinymce: any;
 declare var echarts: any;
 
 
-import * as L from "leaflet";
+// import * as L from "leaflet";
 declare module "leaflet" {
     export namespace Toolbar2 {
       namespace Action {

@@ -9,14 +9,12 @@ import { Product, Service, DeviceData } from './service';
 import { DevicesService, Device } from 'iot_devices_fiwoo';
 import { Router, NavigationStart } from '@angular/router';
 
-var interval;
-
 var context;
 
 @Component({
     selector: 'app-dynamic-component',
     moduleId: module.id,
-    templateUrl: './view.html', 
+    templateUrl: './view.html',
     styleUrls: ['../_common/styles-widgets.css'],
     providers: [Service]
 })
@@ -44,19 +42,23 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
 
     textNew: string = "";
 
+    interval:any;
+
+    showRefreshControls = true;
+
     constructor(protected _runtimeService: RuntimeService,
-                protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,                
-                private _changeDetectionRef: ChangeDetectorRef,
-                private _webSocketService: ObservableWebSocketService,
-                private service: Service, public deviceService: DevicesService,
-                router:Router) {
+        protected _widgetsInstanceService: WidgetsInstanceService,
+        protected _propertyService: WidgetsPropertyService,
+        private _changeDetectionRef: ChangeDetectorRef,
+        private _webSocketService: ObservableWebSocketService,
+        private service: Service, public deviceService: DevicesService,
+        router: Router) {
         super(_runtimeService,
             _widgetsInstanceService,
-            _propertyService,            
+            _propertyService,
             _changeDetectionRef);
 
-           context = this
+        context = this
     }
 
     devicesToValues() {
@@ -71,52 +73,64 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
         this.valuesDevices = values;
     }
 
-    private loadDataGeneral (){
+    private loadDataGeneral() {
         var context = this;
         this.loadData();
-        
-        //Avoiding repeating widgets context problem.
-        interval = setInterval(
-            (function(self) {         
-                return function() {
+        this.loadIntervalData();
+
+    }
+
+    refresh(){
+        this.loadIntervalData();
+    }
+
+    loadIntervalData() {
+        clearInterval(this.interval);
+        this.loadRepeatData(this);
+        this.interval = setInterval(
+            (function (self) {
+                return function () {
                     self.loadRepeatData(self);
                 }
             })(this),
             this.refreshTime
-        ); 
-    
-    }    
+        );
+    }
 
-    loadData (){
+    loadData() {
         this.deviceData = [];
         this.devices.forEach(device => {
             this.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
-                if (res.value != undefined){
+                if (res.value != undefined) {
                     this.deviceData.push(
-                        {name: device.device_name,
-                        value: res.value,
-                        active: true});
+                        {
+                            name: device.device_name,
+                            value: res.value,
+                            active: true
+                        });
                 }
                 this.devicesToValues();
-            });            
-        }); 
+            });
+        });
     }
-    loadRepeatData (self){
+    loadRepeatData(self) {
         self.devices.forEach(device => {
             self.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
-                if (res.value != undefined){
+                if (res.value != undefined) {
                     var data: any = self.getValueData(device.device_name);
-                    data.value = res.value;
+                    if (data != null){
+                        data.value = res.value;
+                    }
                 }
                 self.devicesToValues();
-            });            
-        }); 
+            });
+        });
     }
 
-    getValueData (name){
+    getValueData(name) {
         var result: any = null;
         this.deviceData.forEach(deviceData => {
-            if (deviceData.name == name){
+            if (deviceData.name == name) {
                 result = deviceData;
             }
         });
@@ -127,43 +141,46 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
         // var device = context.deviceData[arg.index];
         return {
             text: arg.valueText
-        };       
+        };
     }
     public preRun(): void {
     }
 
-    public configDone(){
-        if (this.widget != undefined && this.widget.sources != undefined){
+    public configDone() {
+        if (this.widget != undefined && this.widget.sources != undefined) {
             var source: any;
             this.devices = [];
-            if (this.widget.sources.length > 0){
-                
+            if (this.widget.sources.length > 0) {
+
                 this.widget.sources.forEach(source => {
                     var device: any = {};
                     source.parameters.forEach(param => {
-                        device[param.name] =  param.value;
+                        device[param.name] = param.value;
                     });
                     this.devices.push(device);
                 });
-               
-                if (this.devices && this.devices.length){
+
+                if (this.devices && this.devices.length) {
                     var context = this;
-                    this.devices.forEach(function (currentValue, index, array){
-                        context.textNew = context.textNew.concat(currentValue.device_name.concat((index < (array.length - 1)) ? "-": ""));                       
+                    this.devices.forEach(function (currentValue, index, array) {
+                        context.textNew = context.textNew.concat(currentValue.device_name.concat((index < (array.length - 1)) ? "-" : ""));
                     });
                 }
-               
+
 
                 this.deviceData = new Array<DeviceData>();
-                this.loadDataGeneral();
 
                 this.startValue = this.getPropFromPropertyPages("min");
                 this.endValue = this.getPropFromPropertyPages("max");
-            }        
+
+                this.refreshTime = this.getPropFromPropertyPages("refresh");
+
+                this.loadDataGeneral();
+            }
         }
     }
 
-    public run() {     
+    public run() {
     }
 
     public stop() {
@@ -217,11 +234,18 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
             }
         });
 
-        this.title = updatedPropsObject.title;       
+        this.title = updatedPropsObject.title;
+
+        var refreshTime = updatedPropsObject.refresh;
+        if (refreshTime !== this.refreshTime) {
+            this.refreshTime = refreshTime;
+           this.loadIntervalData();
+        }
+
         this.showOperationControls = true;
 
-        this.startValue = updatedPropsObject.min;      
-        this.endValue = updatedPropsObject.max; 
+        this.startValue = updatedPropsObject.min;
+        this.endValue = updatedPropsObject.max;
     }
 
     public ngOnDestroy() {
@@ -229,5 +253,4 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
         this.stop();
 
     }
-
 }

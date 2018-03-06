@@ -7,6 +7,7 @@ import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
 import { FiwooService } from '../services/fiwoo.service';
 import swal from "sweetalert2";
+import { StatementsService } from '../services/statements.service';
 
 @Component({
   selector: 'app-statements',
@@ -21,7 +22,8 @@ export class StatementsComponent  {
   settings = {
     mode: 'external',
     actions: {
-      add: false
+      add: false,
+      edit: true
     },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -40,39 +42,29 @@ export class StatementsComponent  {
       confirmDelete: true,
     },
     columns: {     
-      id: { 
-        title: 'Model Id',
-        type: 'string',
+      rule_id: { 
+        title: 'Rule Id',
+        type: 'text',
       },
-      name: {
-        title: 'Name',
-        type: 'string',
+      user_id: {
+        title: 'User Name',
+        type: 'text',
       },
-      description: {
-        title: 'Description',
-        type: 'string',
+      rule_name: {
+        title: 'Rule Name',
+        type: 'text',
       },
-      created_by: {
-        title: 'Created By',
-        type: 'boolean',
+      rule_description: {
+        title: 'Rule Description',
+        type: 'text',
       },
-      created: {
-        title: 'Created',
-        type: 'number',
-        valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
-          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted; 
-        }
+      rule: {
+        title: 'Rule',
+        type: 'text',
       }, 
-      updated: {
-        title: 'Updated',
-        type: 'number',
-        valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
-          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted; 
-        }
+      orion_id: {
+        title: 'Orion Id',
+        type: 'text',
       }   
     },   
   };
@@ -82,27 +74,26 @@ export class StatementsComponent  {
 
   constructor(private http: Http,
               private datePipe: DatePipe,
-              private _fiwooService: FiwooService ) {
-    // this.loadRoles();
+              private statementsService: StatementsService,
+              private fiwooService: FiwooService) {
+     this.loadStatements();
   }
  
 
   onModalHidden(reload){   
     if (reload){
-    //  this.loadRoles();
+     this.loadStatements();
     }
   }
 
-  // private loadRoles() {   
-  //   this._fiwooService.getRoles().subscribe( 
-  //     data => {           
-  //       this.source.load(data);
-  //     },
-  //     err => {
-  //       console.log(err);      
-  //     }
-  //   );  
-  // } 
+  loadStatements (){
+    var context = this;
+    this.fiwooService.getMe().subscribe(user => {
+      this.statementsService.getUserStatements("select4cities").subscribe(data => {
+        this.source.load(data);
+      });
+    });
+  }
 
   onDeleteConfirm(event): void {
     swal({
@@ -115,15 +106,18 @@ export class StatementsComponent  {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.value) {
-        // this._fiwooService.deleteRol(event.data.id).subscribe(res => {
-        //   console.log(res);
-        //   this.loadRoles();
-        // });
-        swal(
-          'Deleted!',
-          'Your statement has been deleted.',
-          'success'
-        )
+        console.log(event);
+        this.statementsService.deleteUserStatements(event.data.rule_name).subscribe(data => {
+          if (data.perseo.length){
+            if (data.perseo.error.length && data.perseo.error == null){
+              swal(
+                'Deleted!',
+                'Your statement has been deleted.',
+                'success'
+              )
+            }
+          }
+        });       
       }
     });
   }

@@ -15,12 +15,14 @@ export class WidgetsHeaderComponent {
     @Input() actionInitiated: boolean;
     @Input() showOperationControls: boolean;
     @Input() showConfigurationControl: boolean;
+    @Input() showRefreshControls: boolean;
     @Input() gadgetHasOperationControls: boolean;
     @Output() removeEvent: EventEmitter<any> = new EventEmitter();
     @Output() toggleConfigModeEvent: EventEmitter<any> = new EventEmitter();
     @Output() runEvent: EventEmitter<any> = new EventEmitter();
     @Output() stopEvent: EventEmitter<any> = new EventEmitter();
     @Output() helpEvent: EventEmitter<any> = new EventEmitter();
+    @Output() refreshEvent: EventEmitter<any> = new EventEmitter();
 
 
     remove() {       
@@ -52,6 +54,11 @@ export class WidgetsHeaderComponent {
 
         this.runEvent.emit();
 
+    }
+
+    refresh() {
+
+        this.refreshEvent.emit();
     }
 
     stop() {

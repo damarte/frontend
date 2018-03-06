@@ -11,7 +11,6 @@ import { Router, NavigationStart } from '@angular/router';
 
 declare var jQuery: any;
 
-var interval;
 var context;
 
 @Component({
@@ -76,6 +75,13 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
         domain: ['#0d5481', '#0AFF16', '#da871e', '#D449E1']
     };
 
+    interval:any;
+
+    showRefreshControls = true;
+
+    device_id:any;
+    attribute:any;
+
     remoteService: any;
     detailMenuOpen: string;  
     selectedUri: string;
@@ -109,22 +115,24 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
                     
                     source = this.widget.sources[0];
     
-                    var device_name, device_id, attribute, from, to;
+                    var device_name, from, to;
                     source.parameters.forEach(param => {
                         if (param.name === "device_name"){
                             device_name = param.value;
                         }else if (param.name === "device_id"){
-                            device_id = param.value;
+                            this.device_id = param.value;
                         }else if (param.name === "attribute"){
-                            attribute = param.value;
+                            this.attribute = param.value;
                         }
                     });
     
                     this.titleNew = device_name;
-                    this.loadDataGeneral(device_id, attribute);
+                    this.loadDataGeneral();
 
                     this.minValue = this.getPropFromPropertyPages("min");
                     this.maxValue = this.getPropFromPropertyPages("max");
+
+                    this.refreshTime = this.getPropFromPropertyPages("refresh");
                 }
             }
         }
@@ -133,25 +141,34 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     currentValue: number = 0;
 
-    private loadDataGeneral (deviceId, attribute){
-        this.loadData(deviceId, attribute);
-       
-         //Avoiding repeating widgets context problem.
-         interval = setInterval(
+
+    refresh(){
+        this.loadDataGeneral();
+    }
+
+    private loadDataGeneral (){
+        var context = this;
+        clearInterval(this.interval);
+        this.loadRepeatData(this, this.device_id, this.attribute);
+        
+        //Avoiding repeating widgets context problem.
+        this.interval = setInterval(
             (function(self) {         
                 return function() {
-                    self.loadData(deviceId, attribute);
+                    self.loadRepeatData(self, self.device_id, self.attribute)
                 }
             })(this),
             this.refreshTime
-        );          
+        ); 
+         
     }
 
-    loadData (deviceId, attribute){
-        this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
-          
+
+    loadRepeatData(self, deviceId, attribute) {
+        self.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
             if (res.value != undefined){
-                this.currentValue = res.value;
+                self.currentValue = res.value;
+                console.log(self.currentValue);
             }
         });
     }
@@ -240,7 +257,13 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
         this.title = updatedPropsObject.title;      
         this.minValue = updatedPropsObject.min;      
-        this.maxValue = updatedPropsObject.max;         
+        this.maxValue = updatedPropsObject.max;     
+        
+        var refreshTime = updatedPropsObject.refresh;
+        if (refreshTime !== this.refreshTime) {
+            this.refreshTime = refreshTime;
+           this.loadDataGeneral();
+        }
 
         this.showOperationControls = true;
 

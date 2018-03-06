@@ -20,4 +20,14 @@
     line-height: 1.4;
     text-align: center;
    }
+
+   /deep/ .leaflet-popup-tip-container {
+    margin-left: -20px !important;
+   }
+
+   /deep/ .leaflet-control {
+    margin-left: 10px !important;
+   }
+
+   
 }

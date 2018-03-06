@@ -20,7 +20,7 @@ import * as L from 'leaflet';
 import '../../../../../node_modules/leaflet-toolbar/dist/leaflet.toolbar.js';
 
 import { MouseEvent as AGMMouseEvent } from '@agm/core';
-import { DensityMapService } from '../../services/densitymap.service';
+import { BIService } from '../../services/bi.service';
 import { GisService } from '../../services/gis.service';
 @Component({
     selector: 'app-dynamic-component',
@@ -53,7 +53,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
                 protected _propertyService: WidgetsPropertyService,                
                 private _changeDetectionRef: ChangeDetectorRef,
                 private _webSocketService: ObservableWebSocketService,
-                private densityService: DensityMapService,
+                private densityService: BIService,
                 private gisService: GisService,
                 public http: Http) {
 
@@ -144,7 +144,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
 
                         //TODO Only 50 last values
                         var values = 50;
-                        data = data.slice(Math.max(data.length - 50, 1))
+                        data = data.slice(Math.max(data.length - values, 1))
 
                         data.forEach(element => {
                             this.coordinates.push({ arg: this.formatDate(element.createdAt), val: parseInt(element.value, 10)});

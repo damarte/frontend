@@ -1,10 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 //import { SmartTableService } from '../../../@core/data/smart-table.service';
 import { DevicesService } from 'iot_devices_fiwoo';
 //import { isDevMode } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import swal from "sweetalert2";
+import { ViewCell } from 'ng2-smart-table/components/cell/cell-view-mode/view-cell';
+import { SendCommandComponent } from './send-command/send-command.component';
+
+
+
+@Component({
+  selector: 'button-view',
+  template: `
+    <button *ngIf="value" mat-raised-button color="primary" (click)="onClick()">{{ renderValue }}</button>
+  `,
+})
+export class ButtonViewComponent implements ViewCell, OnInit {
+  renderValue: string;
+
+  @Input() value: string | number;
+  @Input() rowData: any;
+
+  @Output() sendCommand: EventEmitter<any> = new EventEmitter();
+
+  ngOnInit() {
+    this.renderValue = this.value.toString().toUpperCase();
+  }
+
+  onClick() {
+    this.sendCommand.emit(this.rowData);
+  }
+}
+
+declare var jQuery: any;
+
+var context: any;
+
 
 @Component({
   selector: 'ngx-smart-table',
@@ -12,7 +44,13 @@ import swal from "sweetalert2";
   styleUrls: ['./devices.component.scss'],
   providers: [DatePipe]
 })
+
+
 export class DevicesComponent {
+
+  @ViewChild('sendCommandModal') sendCommandModalRef: SendCommandComponent;
+
+  modal: any;
 
   settings = {
     actions: {
@@ -75,7 +113,18 @@ export class DevicesComponent {
           var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
           return formatted; 
         }
-      }   
+      },
+      command: {
+        title: null,
+        type: 'custom',
+        filter: false,
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction(instance) {
+          instance.sendCommand.subscribe(row => {
+            context.showModal(row);
+          });
+        }
+      },   
     },
   };
 
@@ -85,6 +134,8 @@ export class DevicesComponent {
               private datePipe: DatePipe
              ) {
     this.loadDevices(null);
+
+    context = this;
   }
 
   private loadDevices(filterData): void{
@@ -92,14 +143,25 @@ export class DevicesComponent {
       const data = this.devicesService.listDevices(filterData.name, filterData.entity_name, filterData.protocol,
                                                    filterData.entity_type, filterData.transportProtocol,
                                                    filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {     
-        this.source.load(res);
+        this.source.load(this.addCommand(res));
       });
     }else{
       const data = this.devicesService.listDevices().subscribe(res => {     
-        this.source.load(res);
+        this.source.load(this.addCommand(res));
       });
     }
 
+  }
+
+  private addCommand(data){
+    data.forEach(device => {
+      if (device.commands.length){
+        device.command = "Send Command";
+      }
+      
+    });
+
+    return data;
   }
 
   filterData: any = {};
@@ -125,7 +187,14 @@ export class DevicesComponent {
     if (reload){
       this.loadDevices(this.filterData);
     }
-  }  
+  }
+
+  showModal(device) {
+    if (device.commands.length){
+      this.sendCommandModalRef.showModal(device);
+    }
+    
+  }
 
   onDeleteConfirm(event): void {
     swal({

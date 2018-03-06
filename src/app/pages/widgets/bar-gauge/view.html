@@ -8,11 +8,13 @@
             [inConfig]="inConfig"
             [actionInitiated]="actionInitiated"
             [showOperationControls]="showOperationControls"
+            [showRefreshControls]="showRefreshControls"
             [gadgetHasOperationControls]="false"
             [showConfigurationControl]="showConfigurationControl"
             [showControls]="showControls"
             (toggleConfigModeEvent)="toggleConfigMode()"
-            (removeEvent)="remove()">
+            (removeEvent)="remove()"
+            (refreshEvent)="refresh()">
     </app-gadget-header>
 
    

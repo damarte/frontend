@@ -13,6 +13,7 @@ import { StatementsComponent } from './statements/statements.component';
 import { OpenDataComponent } from './open-data/open-data.component';
 import { RoutesComponent } from './routes/routes.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { BiPredictionComponent } from './bi-prediction/bi-prediction.component';
 
 
 
@@ -73,6 +74,10 @@ const routes: Routes = [
     {
       path: 'notifications',
       component: NotificationsComponent,
+    },
+    {
+      path: 'bi-prediction',
+      component: BiPredictionComponent,
     }
   ]
 }];

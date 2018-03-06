@@ -34,7 +34,7 @@
                 "label": "Min value",
                 "value": 0,
                 "required": true,
-                "order": -1
+                "order": 2
               },
               {
                 "controlType": "textbox",
@@ -42,7 +42,15 @@
                 "label": "Max value",
                 "value": 100,
                 "required": true,
-                "order": -1
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "refresh",
+                "label": "Refresh time in ms",
+                "value": 5000,
+                "required": false,
+                "order": 4
               }
             ]
           }        
@@ -120,7 +128,7 @@
                 "label": "Min value",
                 "value": 0,
                 "required": true,
-                "order": -1
+                "order": 2
               },
               {
                 "controlType": "textbox",
@@ -128,7 +136,15 @@
                 "label": "Max value",
                 "value": 100,
                 "required": true,
-                "order": -1
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "refresh",
+                "label": "Refresh time in ms",
+                "value": 5000,
+                "required": false,
+                "order": 4
               }
             ]
           }
@@ -173,7 +189,7 @@
                 "label": "Min value",
                 "value": 0,
                 "required": true,
-                "order": -1
+                "order": 2
               },
               {
                 "controlType": "textbox",
@@ -181,7 +197,15 @@
                 "label": "Max value",
                 "value": 100,
                 "required": true,
-                "order": -1
+                "order": 3
+              },
+              {
+                "controlType": "textbox",
+                "key": "refresh",
+                "label": "Refresh time in ms",
+                "value": 5000,
+                "required": false,
+                "order": 4
               }
             ]
           }

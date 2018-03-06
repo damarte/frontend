@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 import 'leaflet-toolbar'
 import 'style-loader!leaflet/dist/leaflet.css';
 
-import { DensityMapService } from '../services/densitymap.service';
+import { BIService } from '../services/bi.service';
 
 var context;
 
@@ -28,7 +28,7 @@ export class RoutesComponent { map: any;
     center: L.latLng({ lat: 38.991709, lng: -76.886109 }),
   };
 
-  constructor (private densityService: DensityMapService){
+  constructor (private densityService: BIService){
     this.getDensity();
 
     context = this;

@@ -213,12 +213,23 @@ export class AddWidgetsComponent implements AfterViewInit {
         this.attributes = [];
         this._devicesServices.readDevice(valueToCheck.entity_name).subscribe(res => {  
             if (res != undefined && res != null && !res.error){
-                this.attributes = Object.keys(res);
+                this.attributes = this.getAttributes(res);
             }else{
                 this.attributes = [];
             }
         });
         
+    }
+
+    private getAttributes (properties){
+        var result = [];
+        Object.keys(properties).forEach(property => {
+            properties[property].forEach(attribute => {
+                result.push(attribute.name);
+            });
+        });
+
+        return result;
     }
 
     checkSensors(entity_type){
