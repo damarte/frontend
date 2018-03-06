@@ -1,15 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, NgModule, Inject, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { MatSelectModule } from '@angular/material/select';
-import { FormControl, Validators } from '@angular/forms';
-import { DxSelectBoxModule, DxTextBoxModule, DxTemplateModule } from 'devextreme-angular';
-import { validateConfig } from '@angular/router/src/config';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
-import { Http } from '@angular/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from '../../services/fiwoo.service';
-
 
 declare var jQuery: any;
 var context: any;
@@ -20,22 +11,22 @@ var context: any;
   styleUrls: ['./test-models.component.scss']
 })
 
-export class TestModelsComponent implements OnInit {
+export class TestModelsComponent implements OnInit, AfterViewInit {
 
   @ViewChild('testModelModal') testModelModalRef: ElementRef;
 
   @Output() onHidden = new EventEmitter<boolean>();
 
-  modal: any;  
+  modal: any;
   modalTitle: string = "";
 
-  model: string;   
+  model: string;
   editedModel: any = null;
   modelSelected: string;
-  
+
 
   // validations
-  modelFormControl = new FormControl('');  
+  modelFormControl = new FormControl('');
 
   visible: boolean = true;
   selectable: boolean = true;
@@ -48,45 +39,23 @@ export class TestModelsComponent implements OnInit {
 
   // Change this when the ws is up
   models: any = ['one', 'two'];
-  parameters: any = [{key:'user', value:'user1'}, {key:'pwd', value:'nde19038sdui'}]; 
+  parameters: any = [{key:'user', value:'user1'}, {key:'pwd', value:'nde19038sdui'}];
 
-  
+  constructor() {
 
-  constructor(private http: Http,
-    private _fiwooService: FiwooService) {
-
-    // context = this;
-    // this.getResources();
   }
-
-
-  // resources: any[];
-
-  // private getResources() {
-  //   this._fiwooService.getResources().subscribe(
-  //     data => {
-  //       let resources: any[] = data;
-  //       this.resources = resources;
-  //     },
-  //     err => {
-  //       console.log(err);
-  //     }
-  //   );
-  // } 
-
 
   ngOnInit() {
 
   }
 
-  cleanValues() {   
+  cleanValues() {
 
   }
 
   runModel() {
     console.log('run model not implemented');
   }
-
 
   showModal(testModel) {
 
@@ -110,7 +79,7 @@ export class TestModelsComponent implements OnInit {
 
       this.modalTitle = "Edit Model";
       this.modelSelected = this.editedModel.model;
-    
+
     } else {
       this.modalTitle = "Test Model"
     }
@@ -119,7 +88,7 @@ export class TestModelsComponent implements OnInit {
   hideModal() {
     this.modal.modal('hide');
   }
- 
+
   ngAfterViewInit() {
     this.modal = jQuery(this.testModelModalRef.nativeElement);
   }
@@ -129,9 +98,9 @@ export class TestModelsComponent implements OnInit {
 
     if (!this.modelFormControl.hasError('required')) {
 
-     
+
       this.models = {
-        model: this.model        
+        model: this.model
       };
 
       if (this.editedModel != undefined) {
@@ -150,7 +119,7 @@ export class TestModelsComponent implements OnInit {
 
         // POST
         this.models = {
-          model: this.model        
+          model: this.model
         };
 
         console.log(JSON.stringify(this.model));
@@ -163,9 +132,6 @@ export class TestModelsComponent implements OnInit {
       }
 
       this.hideModal();
-
-
     }
   }
-
 }

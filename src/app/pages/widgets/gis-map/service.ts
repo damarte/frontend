@@ -19,7 +19,7 @@ let products: Product[] = [{
 }, {
     name: 'Floor 3',
     count: 19,
-    active: true 
+    active: true
 }, {
     name: 'Floor 4',
     count: 15,

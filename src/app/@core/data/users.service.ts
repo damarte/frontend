@@ -1,10 +1,6 @@
-import { UserLogin } from 'um_fiwoo';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
-
-
-
 
 let counter = 0;
 
@@ -22,16 +18,16 @@ export class UserService {
 
 
   userlogin: any = JSON.parse(localStorage.getItem('email'));
-  users: any; 
+  users: any;
 
   private userArray: any[];
 
   constructor() {
-   
+
     // if  (this.userlogin !== undefined) {
     //   this.userlogin = JSON.parse(localStorage.getItem('email'));
     // } else {
-      this.userlogin = "user@user.com";  
+      this.userlogin = "user@user.com";
     // }
 
    this.users = {
@@ -55,4 +51,3 @@ export class UserService {
     return Observable.of(this.userArray[counter]);
   }
 }
-

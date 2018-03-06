@@ -5,8 +5,6 @@ import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DynamicFormComponent } from '../../dynamic-form/dynamic-form.component';
 
-var context;
-
 export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterViewInit {
     @ViewChild(DynamicFormComponent) propertyPageForm: DynamicFormComponent;
     title: string;
@@ -15,7 +13,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
     widget: any;
     refreshTime = 5000;
 
-    
+
     /**
      * Used to determine when to show the controls that appear in the gadgets
      * heading area. This is set by the mouseover/mouseout events.
@@ -69,7 +67,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
 
     // internally controls dynamic form properties
     propertyPages: any[] = [];
-    
+
     errorObject: ErrorObject;
     errorExists = false;
 
@@ -77,8 +75,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
                 protected _gadgetInstanceService: WidgetsInstanceService,
                 protected _propertyService: WidgetsPropertyService,
                 protected changeDetectionRef: ChangeDetectorRef) {
-    
-            context = this;
+
     }
 
     public ngOnInit() {
@@ -208,7 +205,7 @@ export abstract class WidgetsBase implements IWidgets, OnDestroy, OnInit, AfterV
             context.toggleConfigMode();
         }, 10);
     }
-    
+
     protected setTitle(title: string) {
         this.title = title;
     }

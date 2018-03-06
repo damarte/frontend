@@ -1,37 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { User } from "um_fiwoo";
+import { Http } from '@angular/http';
 import { BaseService } from './base.service';
 
-let token: any;
-let auth: any;
-
 @Injectable()
-export class FiwooService extends BaseService {  
+export class FiwooService extends BaseService {
 
   isLoggedIn: boolean;
   redirectUrl: string;
 
-  constructor(public http: Http) { 
+  constructor(public http: Http) {
     super(http);
-   }
-
+  }
 
   // REGISTER
   public doRegister(user):any {
-    return this.http.post(`${this.urlBaseLogin}${this.endPointUsers}`, user);
+    return this.http.post(`${this.urlBaseUsers}${this.endPointUsers}`, user);
   }
 
   // LOGIN
   public doLogin(login):any {
     this.configureLogin();
-    return this.http.post(`${this.urlBaseLogin}${this.endPointLogin}`, login, {headers: this.headers});     
+    return this.http.post(`${this.urlBaseLogin}${this.endPointLogin}`, login, {headers: this.headers});
   }
 
   // LOGOUT
   public doLogout():any {
     this.configureGET();
-    return this.http.get(`${this.urlBaseLogin}${this.endPointLogout}`, {headers: this.headers});     
+    return this.http.get(`${this.urlBaseLogin}${this.endPointLogout}`, {headers: this.headers});
   }
 
 
@@ -39,19 +34,19 @@ export class FiwooService extends BaseService {
   public getMe():any {
     this.configureGET();
     return this.http.get(`${this.urlBaseUsers}${this.endPointMe}`, {headers: this.headers}).map(res => res.json());
-  } 
+  }
 
 
   // GET USERS
   public getUsers():any {
     this.configureGET();
     return this.http.get(`${this.urlBaseUsers}${this.endPointUsers}`, {headers: this.headers}).map(res => res.json());
-  } 
+  }
 
   // POST USERS
   public postUser(user:any):any{
     this.configureOthers();
-    return this.http.post(`${this.urlBaseUsers}${this.endPointUsers}`, user, {headers: this.headers});     
+    return this.http.post(`${this.urlBaseUsers}${this.endPointUsers}`, user, {headers: this.headers});
   }
 
   // PUT USERS
@@ -72,12 +67,12 @@ export class FiwooService extends BaseService {
    public getAssets():any{
     this.configureGET()
     return this.http.get(`${this.urlBaseUsers}${this.endPointAssets}`, {headers: this.headers}).map(res => res.json());
-  } 
+  }
 
   // POST ASSETS
-  public postAsset(asset:any):any{    
+  public postAsset(asset:any):any{
     this.configureOthers();
-    return this.http.post(`${this.urlBaseUsers}${this.endPointAssets}`, asset, {headers: this.headers});     
+    return this.http.post(`${this.urlBaseUsers}${this.endPointAssets}`, asset, {headers: this.headers});
   }
 
   // PUT ASSETS
@@ -98,12 +93,12 @@ export class FiwooService extends BaseService {
   public getRoles():any{
     this.configureGET()
     return this.http.get(`${this.urlBaseUsers}${this.endPointRoles}`, {headers: this.headers}).map(res => res.json());
-  } 
+  }
 
   // POST ROLES
   public postRol(rol:any):any{
     this.configureOthers();
-    return this.http.post(`${this.urlBaseUsers}${this.endPointRoles}`, rol, {headers: this.headers});     
+    return this.http.post(`${this.urlBaseUsers}${this.endPointRoles}`, rol, {headers: this.headers});
   }
 
   // PUT ROLES
@@ -124,5 +119,6 @@ export class FiwooService extends BaseService {
   public getResources():any{
     this.configureGET();
     return this.http.get(`${this.urlBaseUsers}${this.endPointResources}`, {headers: this.headers}).map(res => res.json());
-  }   
+  }
+
 }

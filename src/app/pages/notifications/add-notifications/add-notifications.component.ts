@@ -1,14 +1,5 @@
-import { NgModule, Inject, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { MatSelectModule } from '@angular/material/select';
-import { FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { validateConfig } from '@angular/router/src/config';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
-import { Http } from '@angular/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from '../../services/fiwoo.service';
+import { Output, EventEmitter, Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 declare var jQuery: any;
 var context: any;
@@ -32,7 +23,7 @@ export class AddNotificationsComponent implements OnInit {
   message: string;
   rolesSelected: any = [];
   contactsSelected: any = [];
-  vias: any = ['SMS', 'Email', 'Fiwoo'];  
+  vias: any = ['SMS', 'Email', 'Fiwoo'];
   public selectedMoment = new Date();
 
 
@@ -55,11 +46,8 @@ export class AddNotificationsComponent implements OnInit {
 
   saved: boolean = false;
 
-  constructor(private http: Http,
-    private _fiwooService: FiwooService) {
-
+  constructor() {
     context = this;
-    // this.getRoles();
   }
 
   // change this when the ws is up
@@ -68,7 +56,7 @@ export class AddNotificationsComponent implements OnInit {
   roles: any = ['Administrator', 'Citizen', 'Medical'];
   contacts: any = ['Jhon Doe', 'Mark Peter', 'Lisa Simpson'];
 
-  
+
 
   compareFn: ((f1: any, f2: any) => boolean) | null = this.compareByValue;
 
@@ -77,20 +65,20 @@ export class AddNotificationsComponent implements OnInit {
   }
 
 
-  //  private getRoles(){   
+  //  private getRoles(){
 
-  //   this._fiwooService.getRoles().subscribe( 
-  //     data => {           
-  //       let roles: any[] = data; 
+  //   this._fiwooService.getRoles().subscribe(
+  //     data => {
+  //       let roles: any[] = data;
   //       this.roles = roles;
-        
+
   //       console.log(this.roles);
   //     },
   //     err => {
-  //       console.log(err);      
+  //       console.log(err);
   //     }
-  //   );    
-  // } 
+  //   );
+  // }
 
   ngOnInit() {
   }
@@ -171,7 +159,7 @@ export class AddNotificationsComponent implements OnInit {
 
       this.notifications = {
         subject: this.subject,
-        message: this.message,      
+        message: this.message,
         roles: allRoles,
         contacts: allContacts
       };
@@ -192,7 +180,7 @@ export class AddNotificationsComponent implements OnInit {
 
         this.notifications = {
           subject: this.subject,
-          message: this.message,      
+          message: this.message,
           roles: allRoles,
           contacts: allContacts
         };
@@ -211,30 +199,4 @@ export class AddNotificationsComponent implements OnInit {
 
     }
   }
-
-
-  private changeDate(date: Date) {
-    var days: string;
-    var months: string;
-    var dd = date.getDate();
-    var mm = date.getMonth() + 1;
-    var yyyy = date.getFullYear();
-
-    days = dd + '';
-    months = mm + '';
-
-    if (dd < 10) {
-      days = '0' + dd;
-    }
-
-    if (mm < 10) {
-      months = '0' + mm;
-    }
-    return yyyy + '-' + months + '-' + days;
-  }
-
 }
-
-
-
-

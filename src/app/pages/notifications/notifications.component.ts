@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Http, RequestOptions, Headers } from '@angular/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from "../services/fiwoo.service";
 import swal from "sweetalert2";
 import { DatePipe } from '@angular/common';
 
@@ -16,7 +13,7 @@ export class NotificationsComponent {
 
   router: any;
 
-  settings = {   
+  settings = {
     mode: 'external',
     actions: {
       add: false
@@ -41,7 +38,7 @@ export class NotificationsComponent {
       id: {
         title: 'Notification id:',
         type: 'number',
-      },     
+      },
       subject: {
         title: 'Subject',
         type: 'string',
@@ -65,27 +62,25 @@ export class NotificationsComponent {
       sendAt: {
         title: 'Send at',
         type: 'number',
-        valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
+        valuePrepareFunction: (date) => {
+          var raw = new Date(date);
           var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted; 
+          return formatted;
         }
-      }, 
-    
-         
-    }, 
+      },
+
+
+    },
   };
 
   source: LocalDataSource = new LocalDataSource();
- 
 
-  constructor(private datePipe: DatePipe,              
-              private http: Http,
-              private _fiwooService: FiwooService) { 
-      //  this.loadAssets();  
+
+  constructor(private datePipe: DatePipe) {
+      //  this.loadAssets();
   }
 
-  
+
 
   // private loadAssets() {
   //   this._fiwooService.getAssets().subscribe(
@@ -98,7 +93,7 @@ export class NotificationsComponent {
   //   );
   // }
 
-  onModalHidden(reload){   
+  onModalHidden(reload){
     if (reload){
     //  this.loadAssets();
     }

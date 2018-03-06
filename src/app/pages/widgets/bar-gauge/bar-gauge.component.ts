@@ -3,11 +3,9 @@ import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
-import { Observable } from 'rxjs/Observable';
-import { ObservableWebSocketService } from '../../services/websocket-service';
-import { Product, Service, DeviceData } from './service';
-import { DevicesService, Device } from 'iot_devices_fiwoo';
-import { Router, NavigationStart } from '@angular/router';
+import { Service, DeviceData } from './service';
+import { DevicesService } from 'iot_devices_fiwoo';
+import { Router } from '@angular/router';
 
 var context;
 
@@ -47,12 +45,11 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     showRefreshControls = true;
 
     constructor(protected _runtimeService: RuntimeService,
-        protected _widgetsInstanceService: WidgetsInstanceService,
-        protected _propertyService: WidgetsPropertyService,
-        private _changeDetectionRef: ChangeDetectorRef,
-        private _webSocketService: ObservableWebSocketService,
-        private service: Service, public deviceService: DevicesService,
-        router: Router) {
+                protected _widgetsInstanceService: WidgetsInstanceService,
+                protected _propertyService: WidgetsPropertyService,
+                protected _changeDetectionRef: ChangeDetectorRef,
+                public deviceService: DevicesService,
+                router:Router) {
         super(_runtimeService,
             _widgetsInstanceService,
             _propertyService,
@@ -74,7 +71,7 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     }
 
     private loadDataGeneral() {
-        var context = this;
+        context = this;
         this.loadData();
         this.loadIntervalData();
 
@@ -148,7 +145,6 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
 
     public configDone() {
         if (this.widget != undefined && this.widget.sources != undefined) {
-            var source: any;
             this.devices = [];
             if (this.widget.sources.length > 0) {
 
@@ -161,7 +157,6 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                 });
 
                 if (this.devices && this.devices.length) {
-                    var context = this;
                     this.devices.forEach(function (currentValue, index, array) {
                         context.textNew = context.textNew.concat(currentValue.device_name.concat((index < (array.length - 1)) ? "-" : ""));
                     });
@@ -249,8 +244,6 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     }
 
     public ngOnDestroy() {
-
-        this.stop();
-
+      this.stop();
     }
 }

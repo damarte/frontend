@@ -7,9 +7,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NB_AUTH_OPTIONS_TOKEN } from '../../auth.options';
 import { getDeepFromObject } from '../../helpers';
-import { NbAuthResult, NbAuthService } from '../../services/auth.service';
-import { Http } from '@angular/http';
-import { NgForm, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { NbAuthService } from '../../services/auth.service';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from "../User";
 import sweetAlert from 'sweetalert2';
 import { FiwooService } from '../../../pages/services/fiwoo.service';
@@ -37,7 +36,6 @@ export class NbRegisterComponent implements OnInit {
   constructor(protected service: NbAuthService,
     @Inject(NB_AUTH_OPTIONS_TOKEN) protected config = {},
     protected router: Router,
-    private http: Http,
     private fb: FormBuilder,
     private userService: FiwooService) {
 
@@ -45,6 +43,8 @@ export class NbRegisterComponent implements OnInit {
     this.showMessages = this.getConfigValue('forms.register.showMessages');
     this.provider = this.getConfigValue('forms.register.provider');
   }
+
+  urlBase: string = 'https://platform.fiwoo.eu/api/user-management/users';
 
   //Property for the user
   private user: User;
@@ -64,7 +64,7 @@ export class NbRegisterComponent implements OnInit {
       surname: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-      password: ['', [Validators.required, Validators.minLength(8)]],       
+      password: ['', [Validators.required, Validators.minLength(8)]],
       gender: ['', Validators.required],
       terms: ['', Validators.requiredTrue]
     })
@@ -107,7 +107,6 @@ export class NbRegisterComponent implements OnInit {
 
 
 
-
   /*register(): void {
     this.errors = this.messages = [];
     this.submitted = true;
@@ -136,10 +135,10 @@ export class NbRegisterComponent implements OnInit {
 
     let name: string;
     let surname: string;
-    let email: string;    
+    let email: string;
     let password: string;
-    
-    var body = new URLSearchParams();    
+
+    var body = new URLSearchParams();
     body.append(name, this.form.value.name);
     body.append(surname, this.form.value.surname);
     body.append(email, this.form.value.email);
@@ -148,13 +147,13 @@ export class NbRegisterComponent implements OnInit {
 
     this.http.post(`${this.urlBase}/users`, body).subscribe(
       res => {
-         console.log('Register post: ', res); 
+         console.log('Register post: ', res);
         },
-      err => { // console.log(err);      
+      err => { // console.log(err);
         //TODO QUITAR DE AQUI
         this.router.navigate(['../auth/login']);
       }
-    );  
+    );
   }*/
 
   getConfigValue(key: string): any {

@@ -7,11 +7,9 @@ import { CircularGaugeService } from './service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 import { DevicesService } from 'iot_devices_fiwoo';
-import { Router, NavigationStart } from '@angular/router';
+import { Router } from '@angular/router';
 
-
-
-declare var d3: any;
+declare var context;
 
 @Component({
     selector: 'app-dynamic-component',
@@ -115,7 +113,7 @@ export class CircularGaugeComponent extends WidgetsBase {
     }
 
     private loadDataGeneral (){
-        var context = this;
+        context = this;
         clearInterval(this.interval);
         this.loadRepeatData(this, this.device_id, this.attribute);
         

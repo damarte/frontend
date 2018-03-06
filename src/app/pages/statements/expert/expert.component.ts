@@ -1,21 +1,17 @@
-import { Component, OnInit, ViewChild, ElementRef, NgModule, Inject, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormControl, Validators } from '@angular/forms';
-import { validateConfig } from '@angular/router/src/config';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { FiwooService } from '../../services/fiwoo.service';
 import { StatementsService } from '../../services/statements.service';
 import swal from "sweetalert2";
 
-
 declare var jQuery: any;
-var context: any;
 
 @Component({
   selector: 'app-expert',
   templateUrl: './expert.component.html',
   styleUrls: ['./expert.component.scss']
 })
-export class ExpertComponent implements OnInit {
+export class ExpertComponent implements OnInit, AfterViewInit {
 
   @ViewChild('expertStatementModal') expertStatementModalRef: ElementRef;
 
@@ -31,7 +27,7 @@ export class ExpertComponent implements OnInit {
 
   modalTitle: string = "";
 
-  // validations  
+  // validations
   descriptionFormControl = new FormControl();
   statementFormControl = new FormControl();
 
@@ -44,10 +40,12 @@ export class ExpertComponent implements OnInit {
   user_id: string;
 
 
+  context = this;
+
   constructor(private _fiwooService: FiwooService,
     private statementsService: StatementsService) {
 
-      context = this;
+      this.context = this;
 
       this._fiwooService.getMe().subscribe(user => {
         this.user_id = user.user_name;
@@ -78,9 +76,6 @@ export class ExpertComponent implements OnInit {
 
   ngOnInit() { }
 
-
-
-
   showModal(statement) {
 
     this.editedStatement = statement;
@@ -90,8 +85,8 @@ export class ExpertComponent implements OnInit {
     this.modal.modal({
       closable: true,
       onHidden: function () {
-        context.cleanValues();
-        context.onHidden.emit(true);
+        this.context.cleanValues();
+        this.context.onHidden.emit(true);
       }
     })
       .modal('show');
@@ -139,13 +134,6 @@ export class ExpertComponent implements OnInit {
 
         // PUT
         console.log(this.statement);
-        // this._fiwooService.updateStatement(this.editedStatement.id, this.statements).subscribe(
-        //   res => {
-        //     console.log(res);
-        //     this.saved = true;
-        //     this.hideModal();
-        //   });
-
       } else {
 
         // POST
@@ -168,5 +156,4 @@ export class ExpertComponent implements OnInit {
       
     }
   }
-
 }

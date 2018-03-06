@@ -1,11 +1,15 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
-import { Observable } from 'rxjs/Observable';
-import { ObservableWebSocketService } from '../../services/websocket-service';
-import { LineChartService, Coordinate } from '../line-chart/service';
+import { Coordinate } from '../line-chart/service';
+import { Http } from '@angular/http';
+import 'rxjs/Rx';
+import * as L from 'leaflet';
+import '../../../../../node_modules/leaflet-toolbar/dist/leaflet.toolbar.js';
+import { BIService } from '../../services/bi.service';
+import { GisService } from '../../services/gis.service';
 
 
 declare var require: any;
@@ -13,71 +17,57 @@ const moment = require('moment');
 
 var context;
 
-import {Http, Headers, RequestOptions} from '@angular/http';
-import 'rxjs/Rx';
-
-import * as L from 'leaflet';
-import '../../../../../node_modules/leaflet-toolbar/dist/leaflet.toolbar.js';
-
-import { MouseEvent as AGMMouseEvent } from '@agm/core';
-import { BIService } from '../../services/bi.service';
-import { GisService } from '../../services/gis.service';
 @Component({
     selector: 'app-dynamic-component',
     moduleId: module.id,
-    templateUrl: './view.html', 
-    styleUrls: ['../_common/styles-widgets.css', './gis-map.component.scss'] 
-   
-})
-export class GisMapComponent extends WidgetsBase implements OnDestroy {
+    templateUrl: './view.html',
+    styleUrls: ['../_common/styles-widgets.css', './gis-map.component.scss']
 
-	maps: any[];
-    map:any;
+})
+export class GisMapComponent extends WidgetsBase implements OnDestroy, AfterViewInit{
+
+    maps: any[];
+    map: any;
     prop: any;
     test: any;
-    attrs:any[];
-    features:any[];
-    lng:any[];
+    attrs: any[];
+    features: any[];
+    lng: any[];
     deviceId: any;
-    attrHistoric:any;
-    coordinates: Coordinate[]; 
-    showLineChart: boolean; 
-    
-    toolbar:any;
+    attrHistoric: any;
+    coordinates: Coordinate[];
+    showLineChart: boolean;
+
+    toolbar: any;
     area: any;
 
-    textNew:string = "";
+    textNew: string = "";
 
-  	constructor(protected _runtimeService: RuntimeService,
-                protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,                
-                private _changeDetectionRef: ChangeDetectorRef,
-                private _webSocketService: ObservableWebSocketService,
-                private densityService: BIService,
-                private gisService: GisService,
-                public http: Http) {
+    constructor(protected _runtimeService: RuntimeService,
+        protected _widgetsInstanceService: WidgetsInstanceService,
+        protected _propertyService: WidgetsPropertyService,
+        protected _changeDetectionRef: ChangeDetectorRef,
+        private densityService: BIService,
+        private gisService: GisService,
+        public http: Http) {
 
-                super(_runtimeService,
-                    _widgetsInstanceService,
-                    _propertyService,            
-                    _changeDetectionRef);
+        super(_runtimeService,
+            _widgetsInstanceService,
+            _propertyService,
+            _changeDetectionRef);
 
-                    context = this;
+        context = this;
 
     }
 
-	ngOnInit() {
-	  	
-	}
 
-
-   	public preRun(): void {
+    public preRun(): void {
     }
 
-    public configDone(){
+    public configDone() {
     }
 
-    public run() {  
+    public run() {
     }
 
     public stop() {
@@ -86,17 +76,14 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
     public updateData(data: any[]) {
     }
 
-    public updateProperties(updatedProperties: any) {   
+    public updateProperties(updatedProperties: any) {
     }
 
     public ngOnDestroy() {
         this.stop();
     }
 
-    private initMap(){
-
-
-        var instanceId = this.instanceId;
+    private initMap() {
         // var layer1 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');     
         // var layer2 = L.tileLayer.wms("http://stg-sac-fase-dos-instance-02.emergyalabs.com:10000/gis/ows?", {
         //     layers: 's4c:devices',
@@ -106,58 +93,54 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
         // });
 
         var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        osm = L.tileLayer(osmUrl);
-    
-        this.map = L.map('mapid'+ this.instanceId,{
-          layers:[osm],
-          maxBounds: null,
-          center: [0,0],
-          zoom:18,
-          maxBoundsViscosity: 1,
-          bounceAtZoomLimits: false,
-          worldCopyJump: true,
-          attributionControl: false
+            osm = L.tileLayer(osmUrl);
+
+        this.map = L.map('mapid' + this.instanceId, {
+            layers: [osm],
+            maxBounds: null,
+            center: [0, 0],
+            zoom: 18,
+            maxBoundsViscosity: 1,
+            bounceAtZoomLimits: false,
+            worldCopyJump: true,
+            attributionControl: false
         });
 
 
         this.addToolbar();
 
-      }
-
-    public ngAfterViewInit(){
-
-        var instanceId = this.instanceId;
-
-        this.getGISValue();
-
     }
-    
-    history(event){
+
+    public ngAfterViewInit() {
+        this.getGISValue();
+    }
+
+    history(event) {
         this.attrHistoric = event;
         this.http.get(
-            'https://platform.fiwoo.eu/api/device-management/devices/historics/?id='+ this.deviceId +'&attribute=' + event +'')
-             .map(res => res.json()).subscribe(
-                data => {
-                    if (data instanceof Array){
-                        this.coordinates = new  Array<Coordinate>();
-                        var i = 0;
+            'https://platform.fiwoo.eu/api/device-management/devices/historics/?id=' + this.deviceId + '&attribute=' + event + '')
+            .map(res => res.json()).subscribe(
+            data => {
+                if (data instanceof Array) {
+                    this.coordinates = new Array<Coordinate>();
+                    var i = 0;
 
-                        //TODO Only 50 last values
-                        var values = 50;
-                        data = data.slice(Math.max(data.length - values, 1))
+                    //TODO Only 50 last values
+                    var values = 50;
+                    data = data.slice(Math.max(data.length - values, 1))
 
-                        data.forEach(element => {
-                            this.coordinates.push({ arg: this.formatDate(element.createdAt), val: parseInt(element.value, 10)});
-                            i++;
-                        });
-                    }
-                    this.showLineChart = true;
+                    data.forEach(element => {
+                        this.coordinates.push({ arg: this.formatDate(element.createdAt), val: parseInt(element.value, 10) });
+                        i++;
+                    });
+                }
+                this.showLineChart = true;
             },
-                err => {console.log(err); this.showLineChart = false;}
+            err => { console.log(err); this.showLineChart = false; }
             );
     }
 
-    private formatDate (date){
+    private formatDate(date) {
         return (moment(date).format('YYYY-MM-DD HH:mm:ss'));
     }
 
@@ -167,156 +150,155 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy {
         };
     }
 
-    private getGISValue(){
-       this.gisService.getGISData().subscribe(
-           data => {
-            this.initMap();
+    private getGISValue() {
+        this.gisService.getGISData().subscribe(
+            data => {
+                this.initMap();
 
-            this.maps = data; 
+                this.maps = data;
 
-            var southWest = L.latLng(this.maps['bbox'][0], this.maps['bbox'][1]);
-            var northEast = L.latLng(this.maps['bbox'][2],this.maps['bbox'][3]);
-            var bounds = L.latLngBounds(southWest, northEast);
-            
-            this.features = this.maps['features'];
+                var southWest = L.latLng(this.maps['bbox'][0], this.maps['bbox'][1]);
+                var northEast = L.latLng(this.maps['bbox'][2], this.maps['bbox'][3]);
+                var bounds = L.latLngBounds(southWest, northEast);
 
-            var icon = L.icon({
-                iconUrl: 'assets/images/iconmap.png',
-                iconSize:     [20, 38], // size of the icon                   
-                shadowAnchor: [4, 62],  // the same for the shadow
+                this.features = this.maps['features'];
 
-            });
-            
+                var icon = L.icon({
+                    iconUrl: 'assets/images/iconmap.png',
+                    iconSize: [20, 38], // size of the icon                   
+                    shadowAnchor: [4, 62],  // the same for the shadow
 
-            var features = this.maps['features'];
-            var id;
-            var marker;
+                });
 
-            for (var feature in features) {
-                if(features[feature].geometry){      
-                    id = JSON.parse(features[feature]['id']);
-                    id = id['id'];  
 
-                    marker = L.marker([features[feature].geometry.coordinates[1], features[feature].geometry.coordinates[0]],
-                        {    
-                            'icon': icon,
-                            'title': id,
+                var features = this.maps['features'];
+                var id;
+                var marker;
 
-                        }
-                    ).on('click',
+                for (var feature in features) {
+                    if (features[feature].geometry) {
+                        id = JSON.parse(features[feature]['id']);
+                        id = id['id'];
+
+                        marker = L.marker([features[feature].geometry.coordinates[1], features[feature].geometry.coordinates[0]],
+                            {
+                                'icon': icon,
+                                'title': id,
+
+                            }
+                        ).on('click',
                             (e) => {
-                            var features = this.features;
-                            this.showLineChart = false;
-                            this.attrHistoric = '';
-                            document.getElementById('device').innerHTML = "";
-                            document.getElementById('properties').innerHTML = "";
-                            var attrNames = null;
-                            var id;
-                            features.forEach( function(valor, indice, array) {
-                                if(valor.geometry){               
-                                    if(valor.geometry.coordinates[0].toFixed(3) == parseFloat(e['latlng']['lng']).toFixed(3)  && valor.geometry.coordinates[1].toFixed(3) == parseFloat(e['latlng']['lat']).toFixed(3) ){
-                                        id = JSON.parse(valor['id']);
-                                        id = id['id'];
-                                        document.getElementById('device').innerHTML =  "Device: "  + id;      
-                                        //document.getElementById('properties').innerHTML =  "Properties: ";    
-                                        var properties = valor.properties;
-                                        attrNames = JSON.parse(properties['attrNames']);                      
+                                this.showLineChart = false;
+                                this.attrHistoric = '';
+                                document.getElementById('device').innerHTML = "";
+                                document.getElementById('properties').innerHTML = "";
+                                var attrNames = null;
+                                var idValue;
+                                features.forEach(function (valor, indice, array) {
+                                    if (valor.geometry) {
+                                        if (valor.geometry.coordinates[0].toFixed(3) == parseFloat(e['latlng']['lng']).toFixed(3) && valor.geometry.coordinates[1].toFixed(3) == parseFloat(e['latlng']['lat']).toFixed(3)) {
+                                            idValue = JSON.parse(valor['id']);
+                                            idValue = idValue['id'];
+                                            document.getElementById('device').innerHTML = "Device: " + id;
+                                            //document.getElementById('properties').innerHTML =  "Properties: ";    
+                                            var properties = valor.properties;
+                                            attrNames = JSON.parse(properties['attrNames']);
+                                        }
                                     }
-                                }
+                                });
+
+                                this.attrs = attrNames;
+                                this.deviceId = idValue;
                             });
-
-                            this.attrs = attrNames;
-                            this.deviceId  = id;
-                    });
-                    marker.addTo(this.map);
+                        marker.addTo(this.map);
+                    }
                 }
-            }
 
-            this.map.fitBounds(bounds); // [2]
+                this.map.fitBounds(bounds); // [2]
 
-            this.map.on('mousemove ', function(e){
-                document.getElementById('location').innerHTML =  parseFloat(e['latlng']['lat']).toFixed(3) + " / " + parseFloat(e['latlng']['lng']).toFixed(3);      
+                this.map.on('mousemove ', function (e) {
+                    document.getElementById('location').innerHTML = parseFloat(e['latlng']['lat']).toFixed(3) + " / " + parseFloat(e['latlng']['lng']).toFixed(3);
+                });
             });
-       });
     }
 
-    private getDensity(){
+    private getDensity() {
         var points = [];
         var heatPercentage: any;
         this.densityService.getDensityMap().subscribe(data => {
-        console.log(data);
-        if (data.length && data.length == 2){
-            var coordinates = data[0].coordinates;
-            heatPercentage = data[1].HeatPercentage;
-            if (coordinates){
-                coordinates.forEach(coordinate => {
-                    var coords = coordinate.split(',');
-                    points.push(coords);
-                });
+            console.log(data);
+            if (data.length && data.length == 2) {
+                var coordinates = data[0].coordinates;
+                heatPercentage = data[1].HeatPercentage;
+                if (coordinates) {
+                    coordinates.forEach(coordinate => {
+                        var coords = coordinate.split(',');
+                        points.push(coords);
+                    });
+                }
             }
-        }
 
-        var bounds = L.latLngBounds(points);
-        this.map.fitBounds(bounds, {padding: L.point(20, 20)});
+            var bounds = L.latLngBounds(points);
+            this.map.fitBounds(bounds, { padding: L.point(20, 20) });
 
 
-        this.area = L.polygon(points, {
-            weight: 5,
-            color: this.getHeatColour(heatPercentage),
-            opacity: 1.0
-        }).addTo(this.map);
+            this.area = L.polygon(points, {
+                weight: 5,
+                color: this.getHeatColour(heatPercentage),
+                opacity: 1.0
+            }).addTo(this.map);
 
-        
-        this.area.bindPopup("Contamination<br><b>" + heatPercentage + " %</b>");
-        
+
+            this.area.bindPopup("Contamination<br><b>" + heatPercentage + " %</b>");
+
         });
-      }
+    }
 
 
-      private getHeatColour (percentage){
+    private getHeatColour(percentage) {
         //TODO Set Colours and Limits
-        if (percentage >= 0 && percentage <= 20){
-          return 'blue'
-        }else if (percentage > 20 && percentage <= 40){
-          return 'green'
-        }else if (percentage > 40 && percentage <= 60){
-          return 'yellow'
-        }else if (percentage > 60 && percentage <= 80){
-          return 'orange'
-        }else if (percentage > 80 && percentage <= 100){
-          return 'red'
+        if (percentage >= 0 && percentage <= 20) {
+            return 'blue'
+        } else if (percentage > 20 && percentage <= 40) {
+            return 'green'
+        } else if (percentage > 40 && percentage <= 60) {
+            return 'yellow'
+        } else if (percentage > 60 && percentage <= 80) {
+            return 'orange'
+        } else if (percentage > 80 && percentage <= 100) {
+            return 'red'
         }
-    
-      }
 
-      toogleAreaVisibility(){
-        if (this.area){
-          this.map.removeLayer(this.area);
-          this.area = null;
-        }else{
-          this.getDensity();
+    }
+
+    toogleAreaVisibility() {
+        if (this.area) {
+            this.map.removeLayer(this.area);
+            this.area = null;
+        } else {
+            this.getDensity();
         }
-      }
-    
-      private addToolbar (){
-        var showContaminationLayer = L.Toolbar2.Action.extend({
-          options: {
-              toolbarIcon: {
-                  className: 'fa fa-eye',
-                  tooltip: 'View/Hide Contamination Layer'
-              },
-              
-          },
-          addHooks: function () {
-            context.toogleAreaVisibility();
-          }
-        });
-    
-        this.toolbar = new L.Toolbar2.Control({
-            position: 'topleft',
-            className: 'toolbar',
-            actions: [showContaminationLayer]
-        });
-        this.toolbar.addTo(this.map);
-      }
+    }
+
+    private addToolbar() {
+        // var showContaminationLayer = L.Toolbar2.Action.extend({
+        //   options: {
+        //       toolbarIcon: {
+        //           className: 'fa fa-eye',
+        //           tooltip: 'View/Hide Contamination Layer'
+        //       },
+
+        //   },
+        //   addHooks: function () {
+        //     context.toogleAreaVisibility();
+        //   }
+        // });
+
+        // this.toolbar = new L.Toolbar2.Control({
+        //     position: 'topleft',
+        //     className: 'toolbar',
+        //     actions: [showContaminationLayer]
+        // });
+        // this.toolbar.addTo(this.map);
+    }
 }

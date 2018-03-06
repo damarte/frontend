@@ -1,16 +1,8 @@
-import { NgModule, Output, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import {MatSelectModule} from '@angular/material/select';
-
+import { Output, EventEmitter } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-
-import { DxSelectBoxModule,
-         DxTextBoxModule,
-         DxTemplateModule } from 'devextreme-angular';
-
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { DevicesService } from '../../services/devices.service';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 
 declare var jQuery: any;
@@ -23,7 +15,7 @@ var context: any;
   templateUrl: './send-command.component.html',
   styleUrls: ['./send-command.component.scss']
 })
-export class SendCommandComponent implements OnInit {
+export class SendCommandComponent implements AfterViewInit {
 
   saved: boolean = false;
 
@@ -53,9 +45,6 @@ export class SendCommandComponent implements OnInit {
 
     context = this;
 
-  }
-
-  ngOnInit() {
   }
 
   public showModal(device) {

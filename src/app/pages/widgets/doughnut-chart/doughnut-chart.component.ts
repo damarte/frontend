@@ -14,7 +14,7 @@ import { LanguageData, Service } from './service';
     providers: [Service],
 })
 export class DoughnutChartComponent extends WidgetsBase implements OnDestroy {
-    
+
     internetLanguages: LanguageData[];
 
     single: any = [];
@@ -26,16 +26,10 @@ export class DoughnutChartComponent extends WidgetsBase implements OnDestroy {
 
     constructor(protected service: Service, protected _procMonRuntimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,                
-                private _changeDetectionRef: ChangeDetectorRef) {
-        super(_procMonRuntimeService,
-            _widgetsInstanceService,
-            _propertyService,            
-            _changeDetectionRef);
-
-
-            this.internetLanguages = service.getLanguagesData();
-
+                protected _propertyService: WidgetsPropertyService,
+                protected _changeDetectionRef: ChangeDetectorRef) {
+        super(_procMonRuntimeService, _widgetsInstanceService, _propertyService, _changeDetectionRef);
+        this.internetLanguages = service.getLanguagesData();
     }
 
     customizeLabel(point) {
@@ -50,7 +44,7 @@ export class DoughnutChartComponent extends WidgetsBase implements OnDestroy {
 
     }
 
-    public run() {        
+    public run() {
     }
 
     public stop() {

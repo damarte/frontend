@@ -1,15 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { style, trigger, animate, transition, state } from '@angular/animations';
 import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
-import { LinearGaugeService } from './service'; 
+import { LinearGaugeService } from './service';
 import { DevicesService } from 'iot_devices_fiwoo';
-import { Router, NavigationStart } from '@angular/router';
-
-
-declare var jQuery: any;
+import { Router } from '@angular/router';
 
 var context;
 
@@ -89,7 +86,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
     constructor(protected _procMonRuntimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
                 protected _propertyService: WidgetsPropertyService,                
-                private _changeDetectionRef: ChangeDetectorRef,
+                protected _changeDetectionRef: ChangeDetectorRef,
                 private _linearGaugeService: LinearGaugeService,
                 private devicesService: DevicesService,
                 router:Router) {
@@ -115,7 +112,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
                     
                     source = this.widget.sources[0];
     
-                    var device_name, from, to;
+                    var device_name;
                     source.parameters.forEach(param => {
                         if (param.name === "device_name"){
                             device_name = param.value;
@@ -147,7 +144,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
     }
 
     private loadDataGeneral (){
-        var context = this;
+        context = this;
         clearInterval(this.interval);
         this.loadRepeatData(this, this.device_id, this.attribute);
         

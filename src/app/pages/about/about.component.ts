@@ -28,13 +28,13 @@ export class AboutComponent{
         title: 'License',
         type: 'string',
       }
-  
+
     }
   };
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private aboutService: AboutService) {
+  constructor(protected aboutService: AboutService) {
     this.source.setSort([{ field: 'name', direction: 'asc' }]);
     this.source.load(aboutService.getItems());
   }

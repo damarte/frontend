@@ -8,7 +8,6 @@ import { Facet } from '../facet/facet-model';
 import { FacetTagProcessor } from '../facet/facet-tag-processor';
 import { DevicesService } from "iot_devices_fiwoo";
 import { FormControl } from '@angular/forms';
-import { componentFactoryName } from '@angular/compiler';
 
 declare var jQuery: any;
 
@@ -83,7 +82,7 @@ export class AddWidgetsComponent implements AfterViewInit {
     messageModal: any;
 
    
-    sensors : any[];
+    sensors: any[];
     attributes: any[];
 
     selectedDevice: any;

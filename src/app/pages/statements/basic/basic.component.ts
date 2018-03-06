@@ -1,14 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, NgModule, Inject, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { MatSelectModule } from '@angular/material/select';
-import { FormControl, Validators } from '@angular/forms';
-import { DxSelectBoxModule, DxTextBoxModule, DxTemplateModule } from 'devextreme-angular';
-import { validateConfig } from '@angular/router/src/config';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
-import { Http } from '@angular/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from '../../services/fiwoo.service';
 
 declare var jQuery: any;
 var context: any;
@@ -19,7 +11,7 @@ var context: any;
   templateUrl: './basic.component.html',
   styleUrls: ['./basic.component.scss']
 })
-export class BasicComponent implements OnInit {
+export class BasicComponent implements OnInit, AfterViewInit {
 
   @ViewChild('basicStatementModal') basicStatementModalRef: ElementRef;
 
@@ -57,18 +49,18 @@ export class BasicComponent implements OnInit {
   firstSelected: string;
   filterSelected: string;
   conditions: any = {};
-  condition : string;
-  first :string = this.firstSelected;
-  filter :string = this.filterSelected;
-  second :string;
+  condition: string;
+  first: string = this.firstSelected;
+  filter: string = this.filterSelected;
+  second: string;
   createdConditions: Array<any> = [];
-  attribute:string;
-  sms:string;
-  email:string;
-  makepost:string;
-  twitter:string;
- 
-  
+  attribute: string;
+  sms: string;
+  email: string;
+  makepost: string;
+  twitter: string;
+
+
 
   // Change this when the ws is up
   devices: any = ['one', 'two'];
@@ -76,47 +68,30 @@ export class BasicComponent implements OnInit {
   filters: any = ['> More than', '> Less than'];
 
 
-
-  constructor(private http: Http,
-    private _fiwooService: FiwooService) {
+  constructor() {
     context = this;
-    // this.getResources();
   }
 
   onConditionCreated(event): void {
 
     this.createCondition();
-   
+
   }
 
   private createCondition(){
-    
+
     this.conditions = {
       condition: this.condition,
       first: this.firstSelected,
       filter: this.filterSelected,
       second: this.second
     }
-    
+
     this.createdConditions.push(this.conditions);
 
     return this.createdConditions;
 
-    
-  }
 
-
-  
-  private generateCondition(): any {
-    // var deviceDevice: Devices = {};
-    // deviceDevice.templateId = this.currentTemplate._id;
-    // var device: DevicesDevice = {};
-    // device.deviceId = this.entity_type;
-    // device.name = this.device_name;
-    // deviceDevice.device = new Array<DevicesDevice>();
-    // deviceDevice.device.push(device);
-
-    // return deviceDevice;
   }
 
   removeCreatedCondition(createdCondition): void {
@@ -177,7 +152,7 @@ export class BasicComponent implements OnInit {
     }
   }
 
-  hideModal() {    
+  hideModal() {
     this.modal.modal('hide');
     this.cleanValues();
   }

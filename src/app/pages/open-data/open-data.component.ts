@@ -41,11 +41,11 @@ export class OpenDataComponent implements OnInit {
   }
 
 
-  private formatDate (date){
+  formatDate (date){
     return (moment(date).format('DD/MM/YY'));
   }
 
-  private getFormatIcon (formatId){
+  getFormatIcon (formatId){
 
     var result = this.formats.filter(function( format ) {
       return format.id == formatId;

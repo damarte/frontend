@@ -19,7 +19,7 @@ export const  defaultBoard = {
         //             gadgets: [],
         //             widgets: []
         //         },
-                
+
         //     ]
         // }
     ]

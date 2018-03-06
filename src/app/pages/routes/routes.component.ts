@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import * as L from 'leaflet';
 import 'leaflet-toolbar'
@@ -34,7 +34,7 @@ export class RoutesComponent { map: any;
     context = this;
   }
 
- 
+
   private getDensity(){
     var points = [];
     var heatPercentage: any;
@@ -49,9 +49,9 @@ export class RoutesComponent { map: any;
             points.push(coords);
           });
         }
-        
+
       }
-    
+
       if (!this.map){
         this.init();
       }
@@ -66,11 +66,11 @@ export class RoutesComponent { map: any;
           opacity: 1.0
       }).addTo(this.map);
 
-      
+
       this.area.bindPopup("Contamination<br><b>" + heatPercentage + " %</b>");
 
       this.addToolbar();
-      
+
     });
   }
 
@@ -116,13 +116,13 @@ export class RoutesComponent { map: any;
   }
 
   private addToolbar (){
-    var showContaminationLayer = L.Toolbar2.Action.extend({
+    /*var showContaminationLayer = L.Toolbar2.Action.extend({
       options: {
           toolbarIcon: {
               className: 'fa fa-eye',
               tooltip: 'View/Hide Contamination Layer'
           },
-          
+
       },
       addHooks: function () {
         context.toogleAreaVisibility();
@@ -134,7 +134,7 @@ export class RoutesComponent { map: any;
         className: 'toolbar',
         actions: [showContaminationLayer]
     });
-    this.toolbar.addTo(this.map);
+    this.toolbar.addTo(this.map);*/
   }
 
 }

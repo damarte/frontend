@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
-import { DevicesService, Template } from 'iot_devices_fiwoo';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Output } from '@angular/core/src/metadata/directives';
-import { HttpClient } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
 import { FiwooService } from '../services/fiwoo.service';
 import swal from "sweetalert2";
@@ -43,8 +38,8 @@ export class RolesComponent {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: true,
     },
-    columns: {     
-      name: { 
+    columns: {
+      name: {
         title: 'Name:',
         type: 'string',
       },
@@ -65,37 +60,34 @@ export class RolesComponent {
             return false;
           }
         },
-      },  
-    }, 
+      },
+    },
   };
 
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private _templatesService: DevicesService,              
-              private http: Http,
-              private datePipe: DatePipe,
-              private _fiwooService: FiwooService ) {
+  constructor(private _fiwooService: FiwooService ) {
     this.loadRoles();
   }
- 
 
-  onModalHidden(reload){   
+
+  onModalHidden(reload){
     if (reload){
      this.loadRoles();
     }
   }
 
-  private loadRoles() {   
-    this._fiwooService.getRoles().subscribe( 
-      data => {           
+  private loadRoles() {
+    this._fiwooService.getRoles().subscribe(
+      data => {
         this.source.load(data);
       },
       err => {
-        console.log(err);      
+        console.log(err);
       }
-    );  
-} 
+    );
+}
 
   onDeleteConfirm(event): void {
     swal({

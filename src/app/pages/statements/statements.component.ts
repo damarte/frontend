@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Output } from '@angular/core/src/metadata/directives';
-import { HttpClient } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
-import { FiwooService } from '../services/fiwoo.service';
 import swal from "sweetalert2";
 import { StatementsService } from '../services/statements.service';
+import { FiwooService } from '../services/fiwoo.service';
 
 @Component({
   selector: 'app-statements',
@@ -72,9 +68,7 @@ export class StatementsComponent  {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private http: Http,
-              private datePipe: DatePipe,
-              private statementsService: StatementsService,
+  constructor(private statementsService: StatementsService,
               private fiwooService: FiwooService) {
      this.loadStatements();
   }
@@ -87,7 +81,6 @@ export class StatementsComponent  {
   }
 
   loadStatements (){
-    var context = this;
     this.fiwooService.getMe().subscribe(user => {
       this.statementsService.getUserStatements("select4cities").subscribe(data => {
         this.source.load(data);

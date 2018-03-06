@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AddWidgetsService } from '../add-widgets/service';
-import { Facet, Tag } from './facet-model';
+import { Facet } from './facet-model';
 
 @Component({
     moduleId: module.id,

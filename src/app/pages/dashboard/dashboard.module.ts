@@ -25,13 +25,13 @@ import { ToastModule } from '../toast/toast.module';
 
 @NgModule({
     imports: [
-        CommonModule,        
+        CommonModule,
         AddWidgetsModule,
         ConfigurationModule,
         TypeAheadInputModule,
         ToastModule,
         GridModule.withComponents([
-            BarGaugeComponent,            
+            BarGaugeComponent,
             CircularGaugeComponent,
             LineChartComponent,
             LinearGaugeComponent,

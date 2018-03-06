@@ -1,7 +1,7 @@
 .terms-container {
     color: #fff;
     font-size: 15px;
-    background: #477EFF;
+    background: #477eff;
     border-radius: 5px;
     padding: 30px;
 }
@@ -15,7 +15,7 @@
 
 .terms-container p {
     font-size:12px;
-    margin: 14px 0px;    
+    margin: 14px 0;
 }
 
 .nb-theme-default a:hover,  .nb-theme-default a:active, .nb-theme-default a:focus {
@@ -27,11 +27,11 @@
 }
 
 .btn-login {
-    background: #FF284F !important;
-    opacity: 1 !important;                
+    background: #ff284f !important;
+    opacity: 1 !important;
 }
 .btn-login:hover {
-    background: #FE1D45 !important;
+    background: #fe1d45 !important;
     cursor:pointer !important;
-    opacity: 0.8 !important; 
-}      
+    opacity: 0.8 !important;
+}

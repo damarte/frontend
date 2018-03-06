@@ -1,10 +1,5 @@
 import { Component } from "@angular/core";
-import { DevicesService, Template } from "iot_devices_fiwoo";
 import { LocalDataSource } from "ng2-smart-table";
-import { Output } from "@angular/core/src/metadata/directives";
-import { HttpClient } from "@angular/common/http";
-import { HttpErrorResponse } from "@angular/common/http";
-import { Http } from "@angular/http";
 import { DatePipe } from "@angular/common";
 import { FiwooService } from "../services/fiwoo.service";
 import swal from "sweetalert2";
@@ -55,7 +50,7 @@ export class UsersComponent {
       surname: {
         title: "Surname",
         type: "string"
-      },     
+      },
       roles: {
         title:"Role",
         valuePrepareFunction: (roles) => {
@@ -69,18 +64,13 @@ export class UsersComponent {
             return false;
           }
         },
-      },     
+      },
     }
   };
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(
-    private _templatesService: DevicesService,
-    private http: Http,
-    private datePipe: DatePipe,
-    private _fiwooService: FiwooService
-  ) {
+  constructor(private _fiwooService: FiwooService) {
     this.loadUsers();
   }
 
@@ -100,7 +90,7 @@ export class UsersComponent {
         console.log(err);
       }
     );
-  } 
+  }
 
   onDeleteConfirm(event): void {
     swal({

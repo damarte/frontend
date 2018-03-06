@@ -1,12 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfigurationService } from '../services/configuration.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import {Http, Headers, RequestOptions} from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/Rx';
 import { Router, NavigationStart } from '@angular/router';
-
-
-declare var jQuery: any;
 
 var context;
 
@@ -20,7 +16,7 @@ export class DashboardComponent implements OnInit {
 
 
     dashboardList: any[] = [];
-    selectedBoard:any = null;  
+    selectedBoard:any = null;
 
     detailMenuOpen = 'out';
 
@@ -40,21 +36,21 @@ export class DashboardComponent implements OnInit {
     }
 
     onLoadFinished(){
-        
+
     }
 
     ngOnInit() {
-        this.updateDashboardMenu('');        
+        this.updateDashboardMenu('');
     }
 
     updateDashboardMenu(selectedBoard: any) {
-       
+
         this._configurationService.getBoards().subscribe(data => {
 
             const me = this;
             if (data && data instanceof Array && data.length) {
                 this.dashboardList.length = 0;
-                
+
                 //TODO CHANGE WHEN STRUCTURE GOES OK
                 // data  = [{"title": data[0].name, "structure": data[0].structure}];
                 if (!this._configurationService.demo){
@@ -70,7 +66,7 @@ export class DashboardComponent implements OnInit {
                         }
                     }
                     data = newData;
-                }               
+                }
                 console.log(data);
 
                 // sort boards
@@ -96,10 +92,10 @@ export class DashboardComponent implements OnInit {
             setTimeout(function (){
                 // window.dispatchEvent(new Event('resize'));
             }, 1000);
-           
+
 
         });
-    } 
+    }
 
     selectBoard(selectedBoard: any) {
         this.selectedBoard = selectedBoard;

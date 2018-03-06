@@ -1,19 +1,5 @@
-import { NgModule, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import {MatSelectModule} from '@angular/material/select';
-
-import {FormControl, Validators} from '@angular/forms';
-
-import { DxSelectBoxModule,
-         DxTextBoxModule,
-         DxTemplateModule } from 'devextreme-angular';
-
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Template, DevicesService, Device, Devices, DevicesDevice } from 'iot_devices_fiwoo';
-
-
-declare var jQuery: any;
+import { Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 var context: any;
 
@@ -35,9 +21,9 @@ export class DevicesFilterComponent implements OnInit {
 
 
   formData: any = {};
- 
 
-  constructor() { 
+
+  constructor() {
     context = this;
   }
 
@@ -46,18 +32,18 @@ export class DevicesFilterComponent implements OnInit {
 
   resetFilters(): void{
     this.cleanFields();
-    this.onResetFilters.emit(); 
+    this.onResetFilters.emit();
   }
 
   applyFilters(): void{
-    this.onApplyFilters.emit(this.formData); 
+    this.onApplyFilters.emit(this.formData);
   }
 
   getActiveFilters(){
    return this.filtersApplied;
   }
 
-  
+
   cleanFields(){
     this.formData = {};
   }

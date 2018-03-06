@@ -1,13 +1,12 @@
-import { Component, EventEmitter, Input, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-//import { SmartTableService } from '../../../@core/data/smart-table.service';
 import { DevicesService } from 'iot_devices_fiwoo';
-//import { isDevMode } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import swal from "sweetalert2";
 import { ViewCell } from 'ng2-smart-table/components/cell/cell-view-mode/view-cell';
 import { SendCommandComponent } from './send-command/send-command.component';
 
+declare var require: any;
+const moment = require('moment');
 
 
 @Component({
@@ -33,8 +32,6 @@ export class ButtonViewComponent implements ViewCell, OnInit {
   }
 }
 
-declare var jQuery: any;
-
 var context: any;
 
 
@@ -42,7 +39,7 @@ var context: any;
   selector: 'ngx-smart-table',
   templateUrl: './devices.component.html',
   styleUrls: ['./devices.component.scss'],
-  providers: [DatePipe]
+  providers: []
 })
 
 
@@ -99,9 +96,8 @@ export class DevicesComponent {
       createdAt: {
         title: 'Created',
         type: 'number',
-        valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
-          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
+        valuePrepareFunction: (date) => {
+          var formatted = moment(date).format('DD MMM YYYY');
           return formatted; 
         }
       }, 
@@ -109,8 +105,7 @@ export class DevicesComponent {
         title: 'Updated',
         type: 'number',
         valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
-          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
+          var formatted = moment(date).format('DD MMM YYYY');
           return formatted; 
         }
       },
@@ -130,9 +125,7 @@ export class DevicesComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private devicesService: DevicesService,
-              private datePipe: DatePipe
-             ) {
+  constructor(private devicesService: DevicesService) {
     this.loadDevices(null);
 
     context = this;
@@ -140,13 +133,13 @@ export class DevicesComponent {
 
   private loadDevices(filterData): void{
     if (filterData != undefined && filterData != null){
-      const data = this.devicesService.listDevices(filterData.name, filterData.entity_name, filterData.protocol,
+      this.devicesService.listDevices(filterData.name, filterData.entity_name, filterData.protocol,
                                                    filterData.entity_type, filterData.transportProtocol,
                                                    filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {     
         this.source.load(this.addCommand(res));
       });
     }else{
-      const data = this.devicesService.listDevices().subscribe(res => {     
+      this.devicesService.listDevices().subscribe(res => {     
         this.source.load(this.addCommand(res));
       });
     }

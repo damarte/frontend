@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Output } from '@angular/core/src/metadata/directives';
-import { HttpClient } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Http } from '@angular/http';
 import { DatePipe } from '@angular/common';
-import { FiwooService } from '../services/fiwoo.service';
 import swal from "sweetalert2";
 
 @Component({
@@ -39,8 +34,8 @@ export class ModelsComponent  {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: true,
     },
-    columns: {     
-      id: { 
+    columns: {
+      id: {
         title: 'Model Id',
         type: 'string',
       },
@@ -59,50 +54,48 @@ export class ModelsComponent  {
       created: {
         title: 'Created',
         type: 'number',
-        valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
+        valuePrepareFunction: (date) => {
+          var raw = new Date(date);
           var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted; 
+          return formatted;
         }
-      }, 
+      },
       updated: {
         title: 'Updated',
         type: 'number',
-        valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
+        valuePrepareFunction: (date) => {
+          var raw = new Date(date);
           var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted; 
+          return formatted;
         }
-      }   
-    },   
+      }
+    },
   };
 
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private http: Http,
-              private datePipe: DatePipe,
-              private _fiwooService: FiwooService ) {
+  constructor(private datePipe: DatePipe) {
     //  this.loadModels();
   }
- 
 
-  onModalHidden(reload){   
+
+  onModalHidden(reload){
     if (reload){
       // this.loadModels();
     }
   }
 
-  // private loadModels() {   
-  //   this._fiwooService.getModels().subscribe( 
-  //     data => {           
+  // private loadModels() {
+  //   this._fiwooService.getModels().subscribe(
+  //     data => {
   //       this.source.load(data);
   //     },
   //     err => {
-  //       console.log(err);      
+  //       console.log(err);
   //     }
-  //   );  
-  // } 
+  //   );
+  // }
 
   onDeleteConfirm(event): void {
     swal({

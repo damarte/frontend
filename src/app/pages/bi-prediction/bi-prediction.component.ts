@@ -40,7 +40,7 @@ export class BiPredictionComponent implements OnInit {
             this.data = this.data.slice(Math.max(this.data.length - values, 1))
 
 
-            this.data.push({ date: this.formatNow(), value: parseInt(result.value) });
+            this.data.push({ date: this.formatNow(), value: parseInt(result.value, 10) });
             
             //Fix the width narrowing problem
             this.dataChart.instance.render();         
@@ -53,7 +53,7 @@ export class BiPredictionComponent implements OnInit {
         var keys = {};
         this.dataHistorics.forEach(hist => {
             if (!(hist.content.date in keys)){
-                this.data.push({ date: this.formatDate(hist.content.date), value: parseInt(hist.content.glucosa) });
+                this.data.push({ date: this.formatDate(hist.content.date), value: parseInt(hist.content.glucosa, 10) });
                 keys[hist.content.date] = hist.content.date;
             }
             

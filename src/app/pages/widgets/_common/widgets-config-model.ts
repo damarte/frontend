@@ -1,5 +1,18 @@
 import { PropertyBase } from '../../dynamic-form/property-base';
 
+class PropertyPage {
+    displayName: string;
+    groupId: string;
+    position: number;
+    properties: PropertyBase<any>[];
+
+    constructor(displayName: string, groupId: string, position: number, properties: PropertyBase<any>[]) {
+        this.displayName = displayName;
+        this.groupId = groupId;
+        this.position = position;
+        this.properties = properties;
+    }
+}
 
 export class WidgetsConfigModel {
     propertyPages: PropertyPage[] = [];
@@ -32,19 +45,5 @@ export class WidgetsConfigModel {
 
             this.propertyPages.push(new PropertyPage(page.displayName, page.groupId, page.position, props));
         });
-    }
-}
-
-class PropertyPage {
-    displayName: string;
-    groupId: string;
-    position: number;
-    properties: PropertyBase<any>[];
-
-    constructor(displayName: string, groupId: string, position: number, properties: PropertyBase<any>[]) {
-        this.displayName = displayName;
-        this.groupId = groupId;
-        this.position = position;
-        this.properties = properties;
     }
 }
