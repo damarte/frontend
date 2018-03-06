@@ -6,6 +6,8 @@ import swal from "sweetalert2";
 
 declare var jQuery: any;
 
+var context;
+
 @Component({
   selector: 'app-expert',
   templateUrl: './expert.component.html',
@@ -40,12 +42,12 @@ export class ExpertComponent implements OnInit, AfterViewInit {
   user_id: string;
 
 
-  context = this;
+  
 
   constructor(private _fiwooService: FiwooService,
     private statementsService: StatementsService) {
 
-      this.context = this;
+      context = this;
 
       this._fiwooService.getMe().subscribe(user => {
         this.user_id = user.user_name;
@@ -85,8 +87,8 @@ export class ExpertComponent implements OnInit, AfterViewInit {
     this.modal.modal({
       closable: true,
       onHidden: function () {
-        this.context.cleanValues();
-        this.context.onHidden.emit(true);
+        context.cleanValues();
+        context.onHidden.emit(true);
       }
     })
       .modal('show');
