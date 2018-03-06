@@ -4,37 +4,31 @@ import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
 import { LineChartService, Coordinate } from './service';
-import { Observable } from 'rxjs/Observable';
-import { DevicesService, Device } from 'iot_devices_fiwoo';
-import { DxChartModule, DxChartComponent, DxRangeSelectorModule } from 'devextreme-angular';
-import { forEach } from '@angular/router/src/utils/collection';
-import { DatePipe } from '@angular/common';
+import { DevicesService } from 'iot_devices_fiwoo';
+import { DxChartComponent } from 'devextreme-angular';
 
 declare var require: any;
 const moment = require('moment');
 
-
-declare var d3: any;
-
 @Component({
-    selector: 'app-dynamic-component', 
+    selector: 'app-dynamic-component',
     moduleId: module.id,
     templateUrl: './view.html',
     styleUrls: ['./line-chart.component.css']
 })
 
 export class LineChartComponent extends WidgetsBase {
-    
+
     @ViewChild(DxChartComponent) chart: DxChartComponent;
-    
-    
+
+
     chartDataSource: any;
     sensorsDataSource: any;
     currentDevice: any;
-    coordinates: Coordinate[];     
+    coordinates: Coordinate[];
 
     textNew: string;
-      
+
     autoScale = true;
     collectors: Array<string> = [];
     eventTimerSubscription: any;
@@ -42,26 +36,14 @@ export class LineChartComponent extends WidgetsBase {
     constructor(protected _trendLineService: LineChartService,
                 protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,                
+                protected _propertyService: WidgetsPropertyService,
                 protected _changeDetectionRef: ChangeDetectorRef,
                 public deviceService: DevicesService) {
         super(_runtimeService,
             _widgetsInstanceService,
-            _propertyService,            
+            _propertyService,
             _changeDetectionRef);
 
-    }
-
-    private getEntityNameByDeviceId(deviceId) {
-        var result = null;
-        if (this.sensorsDataSource != null){
-            this.sensorsDataSource.forEach(element => {
-                if (element._id === deviceId){
-                    result = element.entity_name;
-                }
-            });
-        }
-        return result;
     }
 
     private loadData(deviceId, attribute, from, to){
@@ -75,11 +57,10 @@ export class LineChartComponent extends WidgetsBase {
                     i++;
                 });
             }
-            
+
         });
     }
 
-    
     private formatDate (date){
         return (moment(date).format('YYYY-MM-DD HH:mm:ss'));
     }
@@ -89,24 +70,24 @@ export class LineChartComponent extends WidgetsBase {
             text: "Date: ".concat(arg.argumentText).concat("\n\n").concat("Value: ").concat(arg.valueText)
         };
     }
-   
+
     onValueChanged(data) {
-           
+
     }
-   
+
 
     valueChanged(arg: any) {
         this.chart.instance.zoomArgument(arg.value[0], arg.value[1]);
     }
-    
+
 
     public configDone() {
 
         if (this.widget != undefined && this.widget.sources != undefined){
             var source: any;
-            
+
             if (this.widget.sources.length > 0){
-                
+
                 source = this.widget.sources[0];
 
                 var device_name, device_id, attribute, from, to;
@@ -129,23 +110,23 @@ export class LineChartComponent extends WidgetsBase {
                 this.textNew = device_name;
 
                 this.loadData(device_id, attribute, from, to);
-            }        
+            }
         }
- 
+
     }
 
     public preRun(): void {
-        
+
     }
 
-    public run() {      
+    public run() {
     }
 
-    public stop() {        
+    public stop() {
     }
 
     public updateData() {
-      
+
     }
 
 
@@ -180,6 +161,6 @@ export class LineChartComponent extends WidgetsBase {
         });
 
         this.title = updatedPropsObject.title;
-        this.showOperationControls = true;       
+        this.showOperationControls = true;
     }
 }

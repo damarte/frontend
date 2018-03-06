@@ -1,4 +1,4 @@
-import {Series} from './series.model';
+import { Series } from './series.model';
 
 export abstract class Bar {
 
@@ -10,5 +10,4 @@ export abstract class Bar {
         this.name = name;
         this.series = series;
     }
-
 }

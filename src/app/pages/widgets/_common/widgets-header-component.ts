@@ -23,7 +23,7 @@ export class WidgetsHeaderComponent {
     @Output() helpEvent: EventEmitter<any> = new EventEmitter();
 
 
-    remove() {       
+    remove() {
         swal({
             title: 'Are you sure you want to delete this widget?',
             text: "You won't be able to revert this!",
@@ -62,5 +62,4 @@ export class WidgetsHeaderComponent {
     help(){
         this.helpEvent.emit();
     }
-
 }

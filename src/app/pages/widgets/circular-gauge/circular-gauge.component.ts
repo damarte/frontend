@@ -7,11 +7,7 @@ import { CircularGaugeService } from './service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
 import { DevicesService } from 'iot_devices_fiwoo';
-import { Router, NavigationStart } from '@angular/router';
-
-
-
-declare var d3: any;
+import { Router } from '@angular/router';
 
 var interval;
 
@@ -24,7 +20,7 @@ var interval;
 
 export class CircularGaugeComponent extends WidgetsBase {
 
-    
+
     customizeText(arg: any) {
         return arg.valueText;
     }
@@ -37,7 +33,7 @@ export class CircularGaugeComponent extends WidgetsBase {
 
     constructor(protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,                
+                protected _propertyService: WidgetsPropertyService,
                 protected _changeDetectionRef: ChangeDetectorRef,
                 protected _circularGaugeService: CircularGaugeService,
                 iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
@@ -45,12 +41,12 @@ export class CircularGaugeComponent extends WidgetsBase {
                 router:Router) {
         super(_runtimeService,
             _widgetsInstanceService,
-            _propertyService,            
+            _propertyService,
             _changeDetectionRef);
 
         iconRegistry.addSvgIcon(
             'thumbs-up',
-            sanitizer.bypassSecurityTrustResourceUrl('assets/images/svg-icons/ic_add_white_36px.svg'));  
+            sanitizer.bypassSecurityTrustResourceUrl('assets/images/svg-icons/ic_add_white_36px.svg'));
 
     }
 
@@ -72,12 +68,12 @@ export class CircularGaugeComponent extends WidgetsBase {
                     }
                 });
 
-               
+
                 this.loadDataGeneral(device_id, attribute);
 
                 this.minValue = this.getPropFromPropertyPages("min");
                 this.maxValue = this.getPropFromPropertyPages("max");
-    
+
             }
         }
         this.run();
@@ -104,19 +100,18 @@ export class CircularGaugeComponent extends WidgetsBase {
 
 
     private loadDataGeneral (deviceId, attribute){
-        var context = this;
         this.loadData(deviceId, attribute);
-        
+
         //Avoiding repeating widgets context problem.
         interval = setInterval(
-            (function(self) {         
+            (function(self) {
                 return function() {
                     self.loadData(deviceId, attribute);
                 }
             })(this),
             this.refreshTime
-        ); 
-         
+        );
+
     }
 
     loadData (deviceId, attribute){
@@ -157,9 +152,9 @@ export class CircularGaugeComponent extends WidgetsBase {
             }
         });
 
-        this.title = updatedPropsObject.title;      
-        this.minValue = updatedPropsObject.min;      
-        this.maxValue = updatedPropsObject.max;       
+        this.title = updatedPropsObject.title;
+        this.minValue = updatedPropsObject.min;
+        this.maxValue = updatedPropsObject.max;
 
         this.showOperationControls = true;
 

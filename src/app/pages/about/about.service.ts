@@ -72,13 +72,11 @@ export class AboutService {
     { name: 'Scala', license: 'BSD 3-clause' },
     { name: 'Spring boot', license: 'Apache 2.0' },
     { name: 'Junit', license: 'Eclipse public license 1.0' }
-   
+
   ];
 
-  private userArray: any[];
-
   constructor() {
-    // this.userArray = Object.values(this.users);
+
   }
 
   getItems() {

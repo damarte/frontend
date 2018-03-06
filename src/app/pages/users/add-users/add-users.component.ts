@@ -1,20 +1,7 @@
-import { NgModule, Inject, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import {MatSelectModule} from '@angular/material/select';
-import {FormControl, Validators} from '@angular/forms';
-import { DxSelectBoxModule,
-         DxTextBoxModule,
-         DxTemplateModule } from 'devextreme-angular';
+import { Output, EventEmitter } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Template, DevicesService, Device, Devices, DevicesDevice, TemplateAttributes, TemplateCommands, TemplateInternalAttributes, TemplateLazy, TemplateStaticAttributes } from 'iot_devices_fiwoo';
-import { validateConfig } from '@angular/router/src/config';
-
-import {ENTER, COMMA} from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
-import { Http } from '@angular/http';
-import { HttpErrorResponse } from '@angular/common/http';
 import { FiwooService } from '../../services/fiwoo.service';
-
 
 declare var jQuery: any;
 var context: any;
@@ -35,7 +22,7 @@ export class AddUsersComponent implements OnInit {
   modal: any;
 
   user: any = {};
-  
+
   name: string;
   surname: string;
   username: string;
@@ -72,12 +59,12 @@ export class AddUsersComponent implements OnInit {
   roleFormControl = new FormControl('', [
     Validators.required
   ]);
-  genderFormControl = new FormControl();  
+  genderFormControl = new FormControl();
   assetFormControl = new FormControl();
-  birthFormControl = new FormControl(); 
+  birthFormControl = new FormControl();
 
 
- 
+
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
@@ -85,60 +72,58 @@ export class AddUsersComponent implements OnInit {
 
   showValue: boolean = false;
 
-  saved: boolean = false;  
+  saved: boolean = false;
 
-  constructor(private devicesService: DevicesService,
-              private http: Http,
-              private _fiwooService: FiwooService ) {
+  constructor(private _fiwooService: FiwooService ) {
 
-    context = this;     
+    context = this;
     this.getRoles();
     this.getAssets();
   }
 
-  
+
   genders:any = ['Male', 'Female'];
 
   compareFn: ((f1: any, f2: any) => boolean)|null = this.compareByValue;
 
-  compareByValue(f1: any, f2: any) { 
-    return f1 && f2 && f1.id === f2.id; 
+  compareByValue(f1: any, f2: any) {
+    return f1 && f2 && f1.id === f2.id;
   }
 
- 
+
 
   roles: any[];
   assets: any[];
 
-  private getRoles(){ 
-    this._fiwooService.getRoles().subscribe( 
-      data => {           
-        let roles: any[] = data; 
+  private getRoles(){
+    this._fiwooService.getRoles().subscribe(
+      data => {
+        let roles: any[] = data;
         this.roles = roles;
       },
       err => {
-        console.log(err);      
+        console.log(err);
       }
-    );  
-  } 
+    );
+  }
 
 
-  private getAssets(){     
-     this._fiwooService.getAssets().subscribe( 
-      data => {           
-        let assets: any[] = data; 
+  private getAssets(){
+     this._fiwooService.getAssets().subscribe(
+      data => {
+        let assets: any[] = data;
         this.assets = assets;
       },
       err => {
-        console.log(err);      
+        console.log(err);
       }
-    );  
-  } 
+    );
+  }
 
   ngOnInit() {
   }
 
-  cleanValues (){ 
+  cleanValues (){
 
     this.name = "";
     this.surname = "";
@@ -150,7 +135,7 @@ export class AddUsersComponent implements OnInit {
     this.roleSelected = {};
     this.assetSelected = [];
     this.date_of_birth = null;
-     
+
   }
 
   showModal(user) {
@@ -172,8 +157,8 @@ export class AddUsersComponent implements OnInit {
   configureUserToEdit(){
 
     if (this.editedUser != null){
-      
-      this.modalTitle = "Edit User";      
+
+      this.modalTitle = "Edit User";
       this.name = this.editedUser.name;
       this.surname = this.editedUser.surname;
       this.username = this.editedUser.username;
@@ -200,18 +185,18 @@ export class AddUsersComponent implements OnInit {
     // select multiple
     jQuery('.dropdown1').dropdown();
   }
-  
 
-  sendUser (){   
+
+  sendUser (){
     console.log('Edited User: ', this.editedUser);
-    
+
     if (!this.nameFormControl.hasError('required') &&
         !this.surnameFormControl.hasError('required') &&
         !this.usernameFormControl.hasError('required') &&
         !this.emailFormControl.hasError('required') &&
         !this.roleFormControl.hasError('required') &&
         this.password == this.confirmPassword) {
-        
+
         let allRoles = [];
 
         if (this.roleSelected instanceof Array) {
@@ -227,7 +212,7 @@ export class AddUsersComponent implements OnInit {
         } else {
           allAssets = [this.assetSelected];
         }
- 
+
         this.user = {
           name: this.name,
           surname: this.surname,
@@ -237,7 +222,7 @@ export class AddUsersComponent implements OnInit {
           roles: allRoles,
           assets: allAssets,
           gender: this.genderSelected,
-          date_of_birth: this.date_of_birth     
+          date_of_birth: this.date_of_birth
         };
 
         if (this.password !== ''){
@@ -252,9 +237,9 @@ export class AddUsersComponent implements OnInit {
           this._fiwooService.updateUser(this.editedUser.id, this.user).subscribe(
             res => {
               console.log(res);
-              this.saved = true;              
-              this.hideModal();         
-          });          
+              this.saved = true;
+              this.hideModal();
+          });
 
         }else{
 
@@ -268,18 +253,17 @@ export class AddUsersComponent implements OnInit {
             roles: allRoles,
             assets: allAssets,
             gender: this.genderSelected,
-            //date_of_birth: this.changeDate(this.date_of_birth)
-           date_of_birth: this.date_of_birth
+            date_of_birth: this.date_of_birth
           };
 
           console.log(JSON.stringify(this.user));
 
           this._fiwooService.postUser(this.user).subscribe(
             res => {
-              console.log(res);                    
-          });       
-        
-        
+              console.log(res);
+          });
+
+
         }
 
         this.hideModal();
@@ -287,29 +271,4 @@ export class AddUsersComponent implements OnInit {
 
     }
   }
-
-
-  private changeDate (date: Date){
-    var days:string;
-    var months:string;
-    var dd = date.getDate();
-    var mm = date.getMonth()+1; 
-    var yyyy = date.getFullYear();
-    
-    days = dd + '';
-    months = mm + '';
-
-    if(dd<10){
-        days ='0'+ dd;
-    }
-
-    if(mm<10){
-        months = '0'+ mm;
-    }
-    return yyyy + '-' + months + '-' + days;
 }
-
-}
-
-
-

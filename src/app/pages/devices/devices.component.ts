@@ -49,33 +49,33 @@ export class DevicesComponent {
       entity_type: {
         title: 'Entity Type',
         type: 'string',
-      },     
+      },
       transport_protocol: {
         title: 'Transport Protocol',
         type: 'string',
-      }, 
+      },
       owner: {
         title: 'Owner',
         type: 'string',
-      },    
+      },
       createdAt: {
         title: 'Created',
         type: 'number',
-        valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
+        valuePrepareFunction: (date) => {
+          var raw = new Date(date);
           var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted; 
+          return formatted;
         }
-      }, 
+      },
       updatedAt: {
         title: 'Updated',
         type: 'number',
-        valuePrepareFunction: (date) => { 
-          var raw = new Date(date);  
+        valuePrepareFunction: (date) => {
+          var raw = new Date(date);
           var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted; 
+          return formatted;
         }
-      }   
+      }
     },
   };
 
@@ -89,13 +89,13 @@ export class DevicesComponent {
 
   private loadDevices(filterData): void{
     if (filterData != undefined && filterData != null){
-      const data = this.devicesService.listDevices(filterData.name, filterData.entity_name, filterData.protocol,
+      this.devicesService.listDevices(filterData.name, filterData.entity_name, filterData.protocol,
                                                    filterData.entity_type, filterData.transportProtocol,
-                                                   filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {     
+                                                   filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {
         this.source.load(res);
       });
     }else{
-      const data = this.devicesService.listDevices().subscribe(res => {     
+      this.devicesService.listDevices().subscribe(res => {
         this.source.load(res);
       });
     }
@@ -125,7 +125,7 @@ export class DevicesComponent {
     if (reload){
       this.loadDevices(this.filterData);
     }
-  }  
+  }
 
   onDeleteConfirm(event): void {
     swal({
@@ -164,4 +164,3 @@ export class DevicesComponent {
     }
   }
 }
- 

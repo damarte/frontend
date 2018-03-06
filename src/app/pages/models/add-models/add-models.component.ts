@@ -1,15 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, NgModule, Inject, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { MatSelectModule } from '@angular/material/select';
-import { FormControl, Validators } from '@angular/forms';
-import { DxSelectBoxModule, DxTextBoxModule, DxTemplateModule } from 'devextreme-angular';
-import { validateConfig } from '@angular/router/src/config';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
-import { Http } from '@angular/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from '../../services/fiwoo.service';
-
 
 declare var jQuery: any;
 var context: any;
@@ -20,7 +12,7 @@ var context: any;
   styleUrls: ['./add-models.component.scss']
 })
 
-export class AddModelsComponent implements OnInit {
+export class AddModelsComponent implements OnInit, AfterViewInit {
 
   @ViewChild('addModelModal') addModelModalRef: ElementRef;
 
@@ -36,13 +28,13 @@ export class AddModelsComponent implements OnInit {
   type: string;
 
   editedModel: any;
-  modelTypeSelected :string;
-  modelLanguageSelected :string;
+  modelTypeSelected: string;
+  modelLanguageSelected: string;
   modalTitle: any;
   model: any = [];
 
   outputs: any = {};
-  output : string;
+  output: string;
   createdOutputs: Array<any> = [];
 
 
@@ -102,14 +94,9 @@ export class AddModelsComponent implements OnInit {
   }
 
 
-  constructor(private http: Http,
-    private _fiwooService: FiwooService) {
+  constructor() {
     context = this;
-    // this.getResources();
   }
-
-
-
 
   // resources: any[];
 
@@ -141,35 +128,21 @@ export class AddModelsComponent implements OnInit {
   onOutputCreated(event): void {
 
     this.createOutput();
-   
+
   }
 
   private createOutput(){
-    
+
     this.outputs = {
-      format: this.format,     
+      format: this.format,
       type: this.type
     }
-    
+
     this.createdOutputs.push(this.outputs);
 
     return this.createdOutputs;
 
-    
-  }
 
-
-  
-  private generateOutput(): any {
-    // var deviceDevice: Devices = {};
-    // deviceDevice.templateId = this.currentTemplate._id;
-    // var device: DevicesDevice = {};
-    // device.deviceId = this.entity_type;
-    // device.name = this.device_name;
-    // deviceDevice.device = new Array<DevicesDevice>();
-    // deviceDevice.device.push(device);
-
-    // return deviceDevice;
   }
 
   removeCreatedOutput(createdOutput): void {
@@ -239,7 +212,7 @@ export class AddModelsComponent implements OnInit {
 
   sendModel() {
 
-    if (!this.nameFormControl.hasError('required')) {      
+    if (!this.nameFormControl.hasError('required')) {
 
       if (this.editedModel != undefined) {
 
@@ -251,16 +224,6 @@ export class AddModelsComponent implements OnInit {
           type: this.type
         };
 
-        // PUT
-        console.log(JSON.stringify(this.model));
-
-        // this._fiwooService.updateModel(this.editedModel.id, this.model).subscribe(
-        //   res => {
-        //     console.log(res);
-        //     this.saved = true;
-        //     this.hideModal();
-        //   });
-
       } else {
 
         // POST
@@ -271,14 +234,6 @@ export class AddModelsComponent implements OnInit {
           format: this.format,
           type: this.type
         };
-
-        console.log(JSON.stringify(this.model));
-
-        // this._fiwooService.postModel(this.model).subscribe(
-        //   res => {
-        //     console.log(res);
-        //   });
-
       }
 
       this.hideModal();
@@ -286,5 +241,4 @@ export class AddModelsComponent implements OnInit {
 
     }
   }
-
 }

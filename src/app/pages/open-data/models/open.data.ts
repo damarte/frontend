@@ -14,7 +14,7 @@ export class OpenData {
         this.date = date;
         this.createdBy = createdBy;
         this.resources = files;
-        this.topics = topics;        
+        this.topics = topics;
     }
 }
 
@@ -26,7 +26,7 @@ export class OpenDataFormat {
     constructor (id: string, name: string, icon: string){
         this.id = id;
         this.name = name;
-        this.icon = icon;        
+        this.icon = icon;
     }
 }
 
@@ -38,7 +38,7 @@ export class OpenDataTopic {
     constructor (id: string, name: string, icon: string){
         this.id = id;
         this.name = name;
-        this.icon = icon;        
+        this.icon = icon;
     }
 }
 
@@ -52,6 +52,6 @@ export class OpenDataMedia {
         this.id = id;
         this.name = name;
         this.url = url;
-        this.format = format;   
+        this.format = format;
     }
 }

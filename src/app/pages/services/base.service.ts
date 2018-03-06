@@ -35,7 +35,7 @@ export class BaseService {
   // urlBaseOpenData = '';
   // urlBaseLogin = 'https://us1.fiwoo.eu:7000/users';
   // urlBI = '';
-  // urlBaseDensityMaps = 'http://us2.fiwoo.eu:5000/api/bi/density'; 
+  // urlBaseDensityMaps = 'http://us2.fiwoo.eu:5000/api/bi/density';
   // urlBaseDataVisualization = 'https://platform.fiwoo.eu/api/data-visualization';
   // urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
 
@@ -66,5 +66,4 @@ export class BaseService {
     this.headers.append('Authorization', auth);
     this.headers.append('Content-Type', 'application/json');
   }
-
 }

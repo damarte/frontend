@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { AssetsService } from 'um_fiwoo';
-import { Http, RequestOptions, Headers } from '@angular/http';
-import { HttpErrorResponse } from '@angular/common/http';
 import { FiwooService } from "../services/fiwoo.service";
 import swal from "sweetalert2";
 
@@ -18,7 +15,7 @@ import swal from "sweetalert2";
 export class AssetsComponent {
   router: any;
 
-  settings = {   
+  settings = {
     mode: 'external',
     actions: {
       add: false
@@ -43,7 +40,7 @@ export class AssetsComponent {
       id: {
         title: 'Asset id:',
         type: 'number',
-      },     
+      },
       name: {
         title: 'Name',
         type: 'string',
@@ -64,8 +61,8 @@ export class AssetsComponent {
         title: 'Childrens',
         type: 'string'
       }*/
-         
-    }, 
+
+    },
   };
 
 
@@ -73,15 +70,13 @@ export class AssetsComponent {
 
 
   source: LocalDataSource = new LocalDataSource();
- 
 
-  constructor(private _assetsService: AssetsService,              
-              private http: Http,
-              private _fiwooService: FiwooService) { 
-       this.loadAssets();  
+
+  constructor(private _fiwooService: FiwooService) {
+       this.loadAssets();
   }
 
-  
+
 
   private loadAssets() {
     this._fiwooService.getAssets().subscribe(
@@ -94,7 +89,7 @@ export class AssetsComponent {
     );
   }
 
-  onModalHidden(reload){   
+  onModalHidden(reload){
     if (reload){
      this.loadAssets();
     }

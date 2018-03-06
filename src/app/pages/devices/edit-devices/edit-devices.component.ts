@@ -1,32 +1,39 @@
-import { NgModule, Inject, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import {MatSelectModule} from '@angular/material/select';
-
-import {FormControl, Validators} from '@angular/forms';
-
-import { DxSelectBoxModule,
-         DxTextBoxModule,
-         DxTemplateModule } from 'devextreme-angular';
-
+import { Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Template, DevicesService, Device, Devices, DevicesDevice, TemplateAttributes, TemplateCommands, TemplateInternalAttributes, TemplateLazy, TemplateStaticAttributes } from 'iot_devices_fiwoo';
-import { validateConfig } from '@angular/router/src/config';
+import { Template, DevicesService } from 'iot_devices_fiwoo';
 
-import {ENTER, COMMA} from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
-
-import { Http, Headers } from '@angular/http';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 declare var jQuery: any;
 var context: any;
+
+class Protocol {
+  key: Template.ProtocolEnum;
+  value: string;
+  transportProtocols: TransportProtocol[];
+  constructor(key: Template.ProtocolEnum, value: string, transportProtocols: TransportProtocol[]) {
+    this.key = key;
+    this.value = value;
+    this.transportProtocols = transportProtocols;
+  }
+}
+
+class TransportProtocol {
+  key: Template.TransportProtocolEnum;
+  value: string;
+  constructor(key:  Template.TransportProtocolEnum, value: string) {
+    this.key = key;
+    this.value = value;
+  }
+}
 
 @Component({
   selector: 'app-edit-devices',
   templateUrl: './edit-devices.component.html',
   styleUrls: ['./edit-devices.component.scss']
 })
-export class EditDevicesComponent implements OnInit {
+export class EditDevicesComponent implements OnInit, AfterViewInit {
 
   @ViewChild('editDeviceModal') editDeviceModalRef: ElementRef;
 
@@ -46,7 +53,7 @@ export class EditDevicesComponent implements OnInit {
 
   protocols: Protocol[];
   transportProtocols: TransportProtocol[];
-  
+
   commands: any[] = [];
   internalAttrs: any[] = [];
   attributes: any[] = [];
@@ -88,7 +95,7 @@ export class EditDevicesComponent implements OnInit {
   propertyTypeFormControl = new FormControl('', [
     Validators.required
   ]);
- 
+
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
@@ -104,7 +111,7 @@ export class EditDevicesComponent implements OnInit {
 
   data:any = { selectedProperty: this.selectedProperty, showValue: this.showValue, name: "", formType: "", value: "" }
 
-  constructor(private devicesService: DevicesService, private _http: Http) {
+  constructor(private devicesService: DevicesService) {
 
     context = this;
 
@@ -170,12 +177,12 @@ export class EditDevicesComponent implements OnInit {
 
         this.restart();
       }
-     
-    } 
+
+    }
   }
 
   remove(object: any, objects: any[]): void {
-    
+
     let index = objects.indexOf(object);
 
     if (index >= 0) {
@@ -187,7 +194,7 @@ export class EditDevicesComponent implements OnInit {
   }
 
   cleanValues (){
-    this.currentAttributeToCreate = null;  
+    this.currentAttributeToCreate = null;
 
     this.template_name = "";
     this.entity_name = "";
@@ -230,7 +237,7 @@ export class EditDevicesComponent implements OnInit {
   configureTemplateToEdit(){
     if (this.editedTemplate != null){
       this.modalTitle = "Edit template"
-      this.currentAttributeToCreate = null;  
+      this.currentAttributeToCreate = null;
 
       this.template_name = this.editedTemplate.name;
       this.entity_name = this.editedTemplate.entity_name;
@@ -323,26 +330,4 @@ export class EditDevicesComponent implements OnInit {
         }
     }
   }
-
-}
-
-class Protocol {
-  key: Template.ProtocolEnum;
-  value: string;
-  transportProtocols: TransportProtocol[];
-  constructor(key: Template.ProtocolEnum, value: string, transportProtocols: TransportProtocol[]) {
-    this.key = key;
-    this.value = value;
-    this.transportProtocols = transportProtocols;
-  }
-}
-
-class TransportProtocol {
-  key: Template.TransportProtocolEnum;
-  value: string;
-  constructor(key:  Template.TransportProtocolEnum, value: string) {
-    this.key = key;
-    this.value = value;
-  }
-
 }

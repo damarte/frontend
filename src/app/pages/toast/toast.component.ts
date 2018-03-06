@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ToastService} from './toast.service';
-import {Message} from './message';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { ToastService } from './toast.service';
+import { Message } from './message';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
     selector: 'app-toast',

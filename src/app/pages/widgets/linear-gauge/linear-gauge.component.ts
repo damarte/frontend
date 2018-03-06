@@ -1,15 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { style, trigger, animate, transition, state } from '@angular/animations';
 import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
-import { LinearGaugeService } from './service'; 
+import { LinearGaugeService } from './service';
 import { DevicesService } from 'iot_devices_fiwoo';
-import { Router, NavigationStart } from '@angular/router';
-
-
-declare var jQuery: any;
+import { Router } from '@angular/router';
 
 var interval;
 var context;
@@ -18,7 +15,7 @@ var context;
     selector: 'app-dynamic-component',
     moduleId: module.id,
     templateUrl: './view.html',
-    styleUrls: ['./linear-gauge.css'],     
+    styleUrls: ['./linear-gauge.css'],
     animations: [
         trigger(
             'showHideAnimation',
@@ -60,7 +57,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
     titleNew: any;
     minValue: number;
     maxValue: number;
-        
+
     // chart options
     showXAxis = true;
     showYAxis = true;
@@ -77,19 +74,19 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
     };
 
     remoteService: any;
-    detailMenuOpen: string;  
+    detailMenuOpen: string;
     selectedUri: string;
 
     constructor(protected _procMonRuntimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,                
-                private _changeDetectionRef: ChangeDetectorRef,
+                protected _propertyService: WidgetsPropertyService,
+                protected _changeDetectionRef: ChangeDetectorRef,
                 private _linearGaugeService: LinearGaugeService,
                 private devicesService: DevicesService,
                 router:Router) {
         super(_procMonRuntimeService,
             _widgetsInstanceService,
-            _propertyService,            
+            _propertyService,
             _changeDetectionRef);
 
         const single = [];
@@ -97,19 +94,19 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
         context = this;
 
         Object.assign(this, {single});
-       
+
     }
 
     public configDone(){
         if(this.devicesService != null){
             if (this.widget != undefined && this.widget.sources != undefined){
                 var source: any;
-                
+
                 if (this.widget.sources.length > 0){
-                    
+
                     source = this.widget.sources[0];
-    
-                    var device_name, device_id, attribute, from, to;
+
+                    var device_name, device_id, attribute;
                     source.parameters.forEach(param => {
                         if (param.name === "device_name"){
                             device_name = param.value;
@@ -119,7 +116,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
                             attribute = param.value;
                         }
                     });
-    
+
                     this.titleNew = device_name;
                     this.loadDataGeneral(device_id, attribute);
 
@@ -128,28 +125,28 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
                 }
             }
         }
-        this.run();        
+        this.run();
     }
 
     currentValue: number = 0;
 
     private loadDataGeneral (deviceId, attribute){
         this.loadData(deviceId, attribute);
-       
+
          //Avoiding repeating widgets context problem.
          interval = setInterval(
-            (function(self) {         
+            (function(self) {
                 return function() {
                     self.loadData(deviceId, attribute);
                 }
             })(this),
             this.refreshTime
-        );          
+        );
     }
 
     loadData (deviceId, attribute){
         this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
-          
+
             if (res.value != undefined){
                 this.currentValue = res.value;
             }
@@ -158,7 +155,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     public preRun(): void {
         this.detailMenuOpen = 'out';
-       
+
     }
 
     // private reload (){
@@ -173,8 +170,8 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
     //     setTimeout(this.reloadView(this), 100);
     // }
 
-    public run() {           
-        
+    public run() {
+
     }
 
     public checkPoxySelection() {
@@ -201,10 +198,10 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     }
 
-    public stop() {       
+    public stop() {
     }
 
-    public updateData(data: any[]) {       
+    public updateData(data: any[]) {
 
     }
 
@@ -238,15 +235,15 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
             }
         });
 
-        this.title = updatedPropsObject.title;      
-        this.minValue = updatedPropsObject.min;      
-        this.maxValue = updatedPropsObject.max;         
+        this.title = updatedPropsObject.title;
+        this.minValue = updatedPropsObject.min;
+        this.maxValue = updatedPropsObject.max;
 
         this.showOperationControls = true;
 
     }
 
-    updateGraph() {       
+    updateGraph() {
 
     }
 
@@ -269,8 +266,6 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
      customizeTooltip(arg) {
         return {
             text: arg.valueText
-        };       
+        };
     }
 }
-
-

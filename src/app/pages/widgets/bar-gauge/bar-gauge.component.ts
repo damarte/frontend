@@ -3,11 +3,9 @@ import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
-import { Observable } from 'rxjs/Observable';
-import { ObservableWebSocketService } from '../../services/websocket-service';
-import { Product, Service, DeviceData } from './service';
-import { DevicesService, Device } from 'iot_devices_fiwoo';
-import { Router, NavigationStart } from '@angular/router';
+import { Service, DeviceData } from './service';
+import { DevicesService } from 'iot_devices_fiwoo';
+import { Router } from '@angular/router';
 
 var interval;
 
@@ -16,7 +14,7 @@ var context;
 @Component({
     selector: 'app-dynamic-component',
     moduleId: module.id,
-    templateUrl: './view.html', 
+    templateUrl: './view.html',
     styleUrls: ['../_common/styles-widgets.css'],
     providers: [Service]
 })
@@ -46,14 +44,13 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
 
     constructor(protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,                
-                private _changeDetectionRef: ChangeDetectorRef,
-                private _webSocketService: ObservableWebSocketService,
-                private service: Service, public deviceService: DevicesService,
+                protected _propertyService: WidgetsPropertyService,
+                protected _changeDetectionRef: ChangeDetectorRef,
+                public deviceService: DevicesService,
                 router:Router) {
         super(_runtimeService,
             _widgetsInstanceService,
-            _propertyService,            
+            _propertyService,
             _changeDetectionRef);
 
            context = this
@@ -72,20 +69,19 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     }
 
     private loadDataGeneral (){
-        var context = this;
         this.loadData();
-        
+
         //Avoiding repeating widgets context problem.
         interval = setInterval(
-            (function(self) {         
+            (function(self) {
                 return function() {
                     self.loadRepeatData(self);
                 }
             })(this),
             this.refreshTime
-        ); 
-    
-    }    
+        );
+
+    }
 
     loadData (){
         this.deviceData = [];
@@ -98,8 +94,8 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                         active: true});
                 }
                 this.devicesToValues();
-            });            
-        }); 
+            });
+        });
     }
     loadRepeatData (self){
         self.devices.forEach(device => {
@@ -109,8 +105,8 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                     data.value = res.value;
                 }
                 self.devicesToValues();
-            });            
-        }); 
+            });
+        });
     }
 
     getValueData (name){
@@ -127,17 +123,16 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
         // var device = context.deviceData[arg.index];
         return {
             text: arg.valueText
-        };       
+        };
     }
     public preRun(): void {
     }
 
     public configDone(){
         if (this.widget != undefined && this.widget.sources != undefined){
-            var source: any;
             this.devices = [];
             if (this.widget.sources.length > 0){
-                
+
                 this.widget.sources.forEach(source => {
                     var device: any = {};
                     source.parameters.forEach(param => {
@@ -145,25 +140,24 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
                     });
                     this.devices.push(device);
                 });
-               
+
                 if (this.devices && this.devices.length){
-                    var context = this;
                     this.devices.forEach(function (currentValue, index, array){
-                        context.textNew = context.textNew.concat(currentValue.device_name.concat((index < (array.length - 1)) ? "-": ""));                       
+                        this.textNew = this.textNew.concat(currentValue.device_name.concat((index < (array.length - 1)) ? "-": ""));
                     });
                 }
-               
+
 
                 this.deviceData = new Array<DeviceData>();
                 this.loadDataGeneral();
 
                 this.startValue = this.getPropFromPropertyPages("min");
                 this.endValue = this.getPropFromPropertyPages("max");
-            }        
+            }
         }
     }
 
-    public run() {     
+    public run() {
     }
 
     public stop() {
@@ -217,17 +211,14 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
             }
         });
 
-        this.title = updatedPropsObject.title;       
+        this.title = updatedPropsObject.title;
         this.showOperationControls = true;
 
-        this.startValue = updatedPropsObject.min;      
-        this.endValue = updatedPropsObject.max; 
+        this.startValue = updatedPropsObject.min;
+        this.endValue = updatedPropsObject.max;
     }
 
     public ngOnDestroy() {
-
-        this.stop();
-
+      this.stop();
     }
-
 }

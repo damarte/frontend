@@ -1,13 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-
 import { NbMenuService, NbSidebarService } from '@nebular/theme';
 import { UserService } from '../../../@core/data/users.service';
 import { AnalyticsService } from '../../../@core/utils/analytics.service';
 import { Router } from '@angular/router';
-import { FiwooService } from '../../../pages/services/fiwoo.service';
-import { error } from 'selenium-webdriver';
-
-
 
 @Component({
   selector: 'ngx-header',
@@ -29,8 +24,7 @@ export class HeaderComponent implements OnInit {
               private menuService: NbMenuService,
               private userService: UserService,
               private analyticsService: AnalyticsService,
-              private router: Router,
-              private fiwooService: FiwooService        
+              private router: Router
             ) {
   }
 
@@ -42,24 +36,15 @@ export class HeaderComponent implements OnInit {
 
       // TODO WHEN LOGOUT WORKS, CHANGE IT
       this.router.navigate(['../auth/login']);
-
-      // this.fiwooService.doLogout().subscribe(
-      //   data => {
-      //     this.fiwooService.isLoggedIn = false;
-      //     this.router.navigate(['../auth/login']);
-      //   }, error => {
-
-      //   }
-      // );
     }
   }
 
   ngOnInit() {
     this.userService.getUsers()
       .subscribe((users: any) => {
-        this.user = users.first; 
+        this.user = users.first;
       });
-     
+
   }
 
   toggleSidebar(): boolean {
@@ -82,9 +67,9 @@ export class HeaderComponent implements OnInit {
 
 
   goToNotifications(){
-    
+
     this.router.navigate(['../pages/notifications']);
   }
-  
+
 
 }

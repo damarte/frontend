@@ -5,7 +5,6 @@
  */
 import { Component, OnDestroy } from '@angular/core';
 import { NbAuthService } from '../services/auth.service';
-import { UsersService } from 'um_fiwoo/api/users.service';
 
 
 @Component({

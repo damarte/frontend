@@ -1,4 +1,4 @@
-import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { WidgetsInstanceService } from './grid.service';
 import { ConfigurationService } from '../../services/configuration.service';
 import { WidgetsConfigModel } from '../../widgets/_common/widgets-config-model';
@@ -16,7 +16,7 @@ import { FiwooService } from '../../services/fiwoo.service';
 export class GridComponent {
     @Output() boardUpdateEvent: EventEmitter<any> = new EventEmitter();
     @Output() addWidgetEvent: EventEmitter<any> = new EventEmitter();
-    
+
 
     model: any = {};
     noGadgets = true;
@@ -222,7 +222,9 @@ export class GridComponent {
 
         // clear temporary object
         for (const member in  _model) {
-            delete  _model[member];
+            if (_model[member] != null) {
+              delete  _model[member];
+            }
         }
 
         this.saveBoard('Grid Layout Update', false);
@@ -306,12 +308,12 @@ export class GridComponent {
 
     private initializeBoard() {
 
-       
+
 
         this._configurationService.getBoards().subscribe(board => {
 
             if (board && board instanceof Array && board.length) {
-                
+
                 //TODO CHANGE
                 var newData = [];
                 var i = board.length - 1; //ONLY LAST 3 DASHBOARDS - TEST
@@ -383,19 +385,14 @@ export class GridComponent {
        }
    }
 
-
     //TODO CHANGE WHEN WS Ok
     private updateBoard(board){
         if (board != null){
             board.title = board.name;
-            if (board.structure == null){   
+            if (board.structure == null){
                 board.structure = "8-4-4";
             }
             var columnEmptyObject1 = {"styleClass": "eight wide", gadgets: []};
-            var columnEmptyObject2 = {"styleClass": "four wide", gadgets: []};
-            var columnEmptyObject2 = {"styleClass": "four wide", gadgets: []};
-            var rowEmptyObject = {columns: [columnEmptyObject1, columnEmptyObject2]}
-
 
             if (board.rows.length == 0){
 
@@ -404,15 +401,15 @@ export class GridComponent {
                     board.rows.push({"columns": [{"styleClass": "eight wide", gadgets: []}, {"styleClass": "four wide", gadgets: []}, {"styleClass": "four wide", gadgets: []}]});
                 }
 
-               
+
             }
             else{
                 board.rows.forEach(row => {
                     if (row.columns.length == 1){
                         row.columns.push(columnEmptyObject1);
-                    }   
-                    row.columns.forEach(column => {                                               
-                        column.gadgets = Object.assign([], column.widgets);                        
+                    }
+                    row.columns.forEach(column => {
+                        column.gadgets = Object.assign([], column.widgets);
                         column.gadgets.forEach(gadget => {
                             gadget.componentType = this.getLocalWidgetType(gadget.type);
                             gadget.instanceId = gadget.id;
@@ -427,11 +424,11 @@ export class GridComponent {
                                     property.label = property._label;
                                     property.value = property._value;
                                     property.required = property._required;
-                                    property.order = property._order;        
+                                    property.order = property._order;
                                 });
                             });
-                        });                        
-                    });    
+                        });
+                    });
                 });
             }
         }
@@ -508,7 +505,7 @@ export class GridComponent {
 
         this.updateServicesAndGridWithModel();
 
-        this._configurationService.saveBoard(this.getModel()).subscribe(result => { 
+        this._configurationService.saveBoard(this.getModel()).subscribe(result => {
 
                 this._toastService.sendMessage(this.getModel().title + ' has been updated!', '');
 
@@ -517,7 +514,7 @@ export class GridComponent {
                 }
                 if (this.getModel().isNew){
                     this.getModel().isNew = false;
-                    result = result.json();              
+                    result = result.json();
                     if (result){
                         this.clearGridModelAndGadgetInstanceStructures();
                         result = this.updateBoard(result);
@@ -528,7 +525,7 @@ export class GridComponent {
                         this.loadBoardById(this.model.id);
                     }
                 }else{
-                    // result = result.json();              
+                    // result = result.json();
                     // if (result){
                     //     this.clearGridModelAndGadgetInstanceStructures();
                     //     result = this.updateBoard(result);
@@ -539,7 +536,7 @@ export class GridComponent {
                         this.loadBoardById(this.model.id);
                     // }
                 }
-                
+
 
             },
             error => console.error('Error' + error),

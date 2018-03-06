@@ -1,11 +1,11 @@
-import { Component, Inject  } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
+import { NgForm } from '@angular/forms';
 import { Router } from "@angular/router";
 import { NB_AUTH_OPTIONS_TOKEN } from "../../auth.options";
 import { getDeepFromObject } from "../../helpers";
-import { NbAuthResult, NbAuthService } from "../../services/auth.service";
-import { NgForm } from "@angular/forms";
-import { UsersService, UserLogin } from "um_fiwoo";
-import { Http, Headers, RequestOptions, URLSearchParams } from "@angular/http";
+import { NbAuthService } from "../../services/auth.service";
+import { UsersService } from "um_fiwoo";
+import { URLSearchParams } from "@angular/http";
 import "rxjs/Rx";
 import sweetAlert from "sweetalert2";
 import { FiwooService } from "../../../pages/services/fiwoo.service";
@@ -18,7 +18,7 @@ import { FiwooService } from "../../../pages/services/fiwoo.service";
   styleUrls: ["./login.component.css"],
   providers: [UsersService]
 })
-export class NbLoginComponent {
+export class NbLoginComponent implements OnInit {
 
   rememberMe: boolean = false;
   redirectDelay: number = 0;
@@ -36,7 +36,6 @@ export class NbLoginComponent {
     protected router: Router,
     protected _usersService: UsersService,
     private fiwooService: FiwooService,
-    private http: Http,
     // private authService: AuthService
   ) {
     this.redirectDelay = this.getConfigValue("forms.login.redirectDelay");
@@ -61,7 +60,7 @@ export class NbLoginComponent {
   // signOut(): void {
   //   this.authService.signOut();
   // }
-  
+
 
   username: string;
   password: string;
@@ -102,14 +101,14 @@ export class NbLoginComponent {
 
         // sweetAlert({
         //   title: "OK!",
-        //   text: "You have logged in!",         
+        //   text: "You have logged in!",
         //   showLoaderOnConfirm: false,
 
         //   preConfirm: (email) => {
         //     return new Promise((resolve) => {
         //       window.location.href = "/#/pages/dashboard";
-        //       setTimeout(() => {                               
-        //         resolve()                
+        //       setTimeout(() => {
+        //         resolve()
         //       }, 5000)
         //     })
         //   },
@@ -133,7 +132,7 @@ export class NbLoginComponent {
         sweetAlert("Oops!", "Something went wrong!", "error");
       }
     );
-  } 
+  }
 
   getConfigValue(key: string): any {
     return getDeepFromObject(this.config, key, null);

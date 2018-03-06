@@ -3,11 +3,6 @@ import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
-import { Observable } from 'rxjs/Observable';
-import { ObservableWebSocketService } from '../../services/websocket-service';
-import { ErrorObject } from '../../error/error-model';
-import { ErrorHandler } from '../../error/error-handler';
-import { Series } from '../_common/base-chart-models/series.model';
 import { CountryInfo, Service } from './service';
 
 @Component({
@@ -21,7 +16,7 @@ import { CountryInfo, Service } from './service';
 export class BarChartComponent extends WidgetsBase implements OnDestroy, OnInit {
 
     // chart options
-    countriesInfo: CountryInfo[];   
+    countriesInfo: CountryInfo[];
 
     gradient = true;
     legend = false;
@@ -42,12 +37,12 @@ export class BarChartComponent extends WidgetsBase implements OnDestroy, OnInit 
 
     constructor(protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,                
-                private _changeDetectionRef: ChangeDetectorRef,
-                private _webSocketService: ObservableWebSocketService,  private service: Service) {
+                protected _propertyService: WidgetsPropertyService,
+                protected _changeDetectionRef: ChangeDetectorRef,
+                protected service: Service) {
         super(_runtimeService,
             _widgetsInstanceService,
-            _propertyService,            
+            _propertyService,
             _changeDetectionRef,
         );
 
@@ -67,14 +62,14 @@ export class BarChartComponent extends WidgetsBase implements OnDestroy, OnInit 
     public preRun(): void {
     }
 
-    public run() {       
+    public run() {
     }
 
-    public stop() {        
+    public stop() {
 
     }
 
-    public updateGraph() {      
+    public updateGraph() {
     }
 
 
@@ -120,7 +115,7 @@ export class BarChartComponent extends WidgetsBase implements OnDestroy, OnInit 
         this.yAxis = updatedPropsObject.yAxis;
         this.showGridLines = updatedPropsObject.showGridLines;
         this.showXAxisLabel = updatedPropsObject.showXAxisLabel;
-        this.showYAxisLabel = updatedPropsObject.showYAxisLabel;       
+        this.showYAxisLabel = updatedPropsObject.showYAxisLabel;
 
         this.showOperationControls = true;
 

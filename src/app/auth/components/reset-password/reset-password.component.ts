@@ -12,7 +12,7 @@ import { NB_AUTH_OPTIONS_TOKEN } from '../../auth.options';
 @Component({
   selector: 'nb-reset-password-page',
   styleUrls: ['./reset-password.component.scss'],
-  templateUrl: './reset-password.component.html' 
+  templateUrl: './reset-password.component.html'
 })
 export class NbResetPasswordComponent {
 
@@ -27,7 +27,7 @@ export class NbResetPasswordComponent {
 
   constructor(protected service: NbAuthService,
     @Inject(NB_AUTH_OPTIONS_TOKEN) protected config = {},
-              protected router: Router) {              
+              protected router: Router) {
 
     this.redirectDelay = this.getConfigValue('forms.resetPassword.redirectDelay');
     this.showMessages = this.getConfigValue('forms.resetPassword.showMessages');

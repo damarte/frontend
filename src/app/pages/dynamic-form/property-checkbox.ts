@@ -1,6 +1,5 @@
 import {PropertyBase} from './property-base';
 
-
 export class CheckboxProperty extends PropertyBase<boolean> {
 
     controlType = 'checkbox';
@@ -11,5 +10,4 @@ export class CheckboxProperty extends PropertyBase<boolean> {
         super(options);
         this.type = 'checkbox'; // options['type'] || '';
     }
-
 }

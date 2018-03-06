@@ -7,9 +7,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NB_AUTH_OPTIONS_TOKEN } from '../../auth.options';
 import { getDeepFromObject } from '../../helpers';
-import { NbAuthResult, NbAuthService } from '../../services/auth.service';
+import { NbAuthService } from '../../services/auth.service';
 import { Http } from '@angular/http';
-import { NgForm, FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from "../User";
 import sweetAlert from 'sweetalert2';
 
@@ -64,7 +64,7 @@ export class NbRegisterComponent implements OnInit {
       surname: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
-      password: ['', [Validators.required, Validators.minLength(8)]],       
+      password: ['', [Validators.required, Validators.minLength(8)]],
       gender: ['', Validators.required],
       terms: ['', Validators.requiredTrue]
     })
@@ -81,10 +81,10 @@ export class NbRegisterComponent implements OnInit {
   public onFormSubmit() {
     if (this.signupForm.valid) {
       this.user = this.signupForm.value;
-      console.log('User: ', this.user);     
-      this.http.post(`${this.urlBase}/users`, this.user).subscribe( 
+      console.log('User: ', this.user);
+      this.http.post(`${this.urlBase}/users`, this.user).subscribe(
         res => {
-           console.log('Register post: ', res); 
+           console.log('Register post: ', res);
            sweetAlert({
             title: "OK!",
             text: "You have registered!",
@@ -95,11 +95,11 @@ export class NbRegisterComponent implements OnInit {
             }
           });
           },
-        err => { 
-           console.error(err);   
-           sweetAlert("Oops!", "Something went wrong!", "error");           
+        err => {
+           console.error(err);
+           sweetAlert("Oops!", "Something went wrong!", "error");
         }
-      );  
+      );
 
     }
   }
@@ -136,10 +136,10 @@ export class NbRegisterComponent implements OnInit {
 
     let name: string;
     let surname: string;
-    let email: string;    
+    let email: string;
     let password: string;
-    
-    var body = new URLSearchParams();    
+
+    var body = new URLSearchParams();
     body.append(name, this.form.value.name);
     body.append(surname, this.form.value.surname);
     body.append(email, this.form.value.email);
@@ -148,13 +148,13 @@ export class NbRegisterComponent implements OnInit {
 
     this.http.post(`${this.urlBase}/users`, body).subscribe(
       res => {
-         console.log('Register post: ', res); 
+         console.log('Register post: ', res);
         },
-      err => { // console.log(err);      
+      err => { // console.log(err);
         //TODO QUITAR DE AQUI
         this.router.navigate(['../auth/login']);
       }
-    );  
+    );
   }*/
 
   getConfigValue(key: string): any {

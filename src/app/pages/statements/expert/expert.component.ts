@@ -1,25 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef, NgModule, Inject, Output, Input, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { MatSelectModule } from '@angular/material/select';
-import { FormControl, Validators } from '@angular/forms';
-import { DxSelectBoxModule, DxTextBoxModule, DxTemplateModule } from 'devextreme-angular';
-import { validateConfig } from '@angular/router/src/config';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material';
-import { Http } from '@angular/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { FiwooService } from '../../services/fiwoo.service';
-
 
 declare var jQuery: any;
-var context: any;
 
 @Component({
   selector: 'app-expert',
   templateUrl: './expert.component.html',
   styleUrls: ['./expert.component.scss']
 })
-export class ExpertComponent implements OnInit {
+export class ExpertComponent implements OnInit, AfterViewInit {
 
   @ViewChild('expertStatementModal') expertStatementModalRef: ElementRef;
 
@@ -34,7 +24,7 @@ export class ExpertComponent implements OnInit {
 
   modalTitle: string = "";
 
-  // validations  
+  // validations
   descriptionFormControl = new FormControl();
   statementFormControl = new FormControl();
 
@@ -46,16 +36,13 @@ export class ExpertComponent implements OnInit {
   saved: boolean = false;
   separatorKeysCodes = [ENTER, COMMA];
 
+  constructor() {
 
-  constructor(private http: Http,
-    private _fiwooService: FiwooService) {   
-    
   }
- 
-  ngOnInit() { }
 
-  
+  ngOnInit() {
 
+  }
 
   showModal(statement) {
 
@@ -66,8 +53,8 @@ export class ExpertComponent implements OnInit {
     this.modal.modal({
       closable: true,
       onHidden: function () {
-        context.cleanValues();
-        context.onHidden.emit(true);
+        this.context.cleanValues();
+        this.context.onHidden.emit(true);
       }
     })
       .modal('show');
@@ -83,7 +70,7 @@ export class ExpertComponent implements OnInit {
 
     if (this.editedStatement != null) {
 
-      this.modalTitle = "Edit statement (Expert Mode)";      
+      this.modalTitle = "Edit statement (Expert Mode)";
       this.description = this.editedStatement.description;
       this.statement = this.editedStatement.statement;
     } else {
@@ -95,7 +82,7 @@ export class ExpertComponent implements OnInit {
     this.modal.modal('hide');
   }
 
-  
+
   ngAfterViewInit() {
     this.modal = jQuery(this.expertStatementModalRef.nativeElement);
   }
@@ -104,13 +91,13 @@ export class ExpertComponent implements OnInit {
   sendStatement() {
 
     if (!this.statementFormControl.hasError('required') &&
-      !this.descriptionFormControl.hasError('required')) {      
+      !this.descriptionFormControl.hasError('required')) {
 
       if (this.editedStatement != undefined) {
 
         this.statements = {
           statement: this.statement,
-          description: this.description,         
+          description: this.description,
         };
 
         // PUT
@@ -128,7 +115,7 @@ export class ExpertComponent implements OnInit {
         // POST
         this.statements = {
           statement: this.statement,
-          description: this.description,         
+          description: this.description,
         };
 
         console.log(this.statements);
@@ -141,9 +128,6 @@ export class ExpertComponent implements OnInit {
       }
 
       this.hideModal();
-
-
     }
   }
-
 }

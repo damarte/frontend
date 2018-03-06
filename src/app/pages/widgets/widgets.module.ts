@@ -25,8 +25,8 @@ import {PolarChartComponent} from './polar-chart/polar-chart.component';
 import {PolarChartService} from './polar-chart/service';
 import {FacetModule} from '../facet/facet.module';
 import {TypeAheadInputModule} from '../typeahead-input/typeahead-input.module';
-import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectBoxModule, DxSliderModule,DxCheckBoxModule, DxPieChartModule, 
-    DxChartModule, DxChartComponent, DxPolarChartModule, DxMapModule, DxTextBoxModule, DxTemplateModule, DxRangeSelectorModule, DxDateBoxModule} from 'devextreme-angular';
+import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectBoxModule, DxSliderModule,DxCheckBoxModule, DxPieChartModule,
+    DxChartModule, DxPolarChartModule, DxMapModule, DxTextBoxModule, DxTemplateModule, DxRangeSelectorModule, DxDateBoxModule} from 'devextreme-angular';
 
 
 
@@ -50,7 +50,7 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         TypeAheadInputModule,
         DataListModule,
         DxCircularGaugeModule,
-        DxLinearGaugeModule, 
+        DxLinearGaugeModule,
         DxBarGaugeModule,
         DxSelectBoxModule,
         DxSliderModule,
@@ -59,27 +59,27 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         DxChartModule,
         DxMapModule,
         DxPolarChartModule,
-        DxTextBoxModule, 
+        DxTextBoxModule,
         DxTemplateModule,
         DxRangeSelectorModule,
         DxDateBoxModule,
         MatSelectModule
     ],
     declarations: [
-        BarChartComponent,        
+        BarChartComponent,
         BarGaugeComponent,
-        LinearGaugeComponent,       
-        LineChartComponent,       
-        CircularGaugeComponent,                
-        DoughnutChartComponent,        
-        PolarChartComponent, 
+        LinearGaugeComponent,
+        LineChartComponent,
+        CircularGaugeComponent,
+        DoughnutChartComponent,
+        PolarChartComponent,
         GisMapComponent
     ],
 
     providers: [
-        LinearGaugeService,        
+        LinearGaugeService,
         PolarChartService
-        
+
     ],
 
     exports: [
@@ -87,12 +87,11 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         BarGaugeComponent,
         LinearGaugeComponent,
         LineChartComponent,
-        CircularGaugeComponent,        
-        DoughnutChartComponent,        
+        CircularGaugeComponent,
+        DoughnutChartComponent,
         PolarChartComponent,
         GisMapComponent
     ]
 })
 export class WidgetsModule {
 }
-

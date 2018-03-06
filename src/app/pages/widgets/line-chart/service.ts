@@ -1,7 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {RuntimeService} from '../../services/runtime.service';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class LineChartService {
@@ -54,7 +52,8 @@ export class LineChartService {
                 return 'sat';
         }
     }
-    constructor(private _http: HttpClient) {
+
+    constructor() {
     }
 
     public get(collectors: any[]) {
@@ -75,7 +74,7 @@ export class LineChartService {
         subscription.unsubscribe();
     }
 
-    
+
 }
 
 export class Coordinate  {

@@ -1,17 +1,7 @@
-import { NgModule, Output, EventEmitter } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import {MatSelectModule} from '@angular/material/select';
-
-import {FormControl, Validators} from '@angular/forms';
-
-import { DxSelectBoxModule,
-         DxTextBoxModule,
-         DxTemplateModule } from 'devextreme-angular';
-
+import { Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Template, DevicesService, Device, Devices, DevicesDevice } from 'iot_devices_fiwoo';
-
+import { DevicesService, Devices, DevicesDevice } from 'iot_devices_fiwoo';
 
 declare var jQuery: any;
 
@@ -22,7 +12,7 @@ var context: any;
   templateUrl: './add-devices.component.html',
   styleUrls: ['./add-devices.component.scss']
 })
-export class AddDevicesComponent implements OnInit {
+export class AddDevicesComponent implements OnInit, AfterViewInit {
 
   saved: boolean = false;
 
@@ -55,12 +45,12 @@ export class AddDevicesComponent implements OnInit {
     Validators.required
   ]);
 
-  constructor(private devicesService: DevicesService) { 
+  constructor(private devicesService: DevicesService) {
 
     context = this;
 
     this.devicesService.getTemplates().subscribe(res => {
-      console.log(res); 
+      console.log(res);
       this.templates = res;
     });
   }
@@ -70,7 +60,7 @@ export class AddDevicesComponent implements OnInit {
 
   showModal(device) {
     this.editedDevice = device;
-    
+
     this.configureDeviceToEdit();
 
     this.saved = false;
@@ -97,7 +87,7 @@ export class AddDevicesComponent implements OnInit {
       this.modalTitle = "Add device"
     }
   }
-  
+
   cleanFields(){
     this.createdDevices = [];
 
@@ -122,7 +112,7 @@ export class AddDevicesComponent implements OnInit {
         this.createDevice();
     }
 
-   
+
   }
 
   removeCreatedDevice(createdDevice): void {
@@ -140,7 +130,7 @@ export class AddDevicesComponent implements OnInit {
     this.device = this.generateDevice();
     deviceWrapper.device = this.device;
     this.createdDevices.push(deviceWrapper);
-    
+
 
     //Delete data
     this.device_name = null;
@@ -171,6 +161,6 @@ export class AddDevicesComponent implements OnInit {
       this.saved = true;
 
       this.hideModal();
-    }    
+    }
   }
 }

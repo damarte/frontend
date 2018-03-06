@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { DevicesService, Template } from 'iot_devices_fiwoo';
+import { DevicesService } from 'iot_devices_fiwoo';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Output } from '@angular/core/src/metadata/directives';
-import { HttpClient } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
 import swal from "sweetalert2";
 
 @Component({
@@ -81,7 +78,7 @@ export class TemplatesComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private _templatesService: DevicesService, private _http: HttpClient) {
+  constructor(private _templatesService: DevicesService) {
     this.loadTemplates(null);
   }
 
@@ -112,13 +109,13 @@ export class TemplatesComponent {
 
   private loadTemplates(filterData):void{
     if (filterData != undefined && filterData != null){
-      const data = this._templatesService.getTemplates(filterData.name, filterData.protocol,
+      this._templatesService.getTemplates(filterData.name, filterData.protocol,
                                                    filterData.entity_type, filterData.transportProtocol,
-                                                   filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {     
+                                                   filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {
         this.source.load(res);
       });
     }else{
-      const data = this._templatesService.getTemplates().subscribe(res => {     
+      this._templatesService.getTemplates().subscribe(res => {
         this.source.load(res);
       });
     }
@@ -163,7 +160,7 @@ export class TemplatesComponent {
 
   onCreateConfirm(event) {
     if (window.confirm('Are you sure you want to create?')) {
-      //event.newData['name'] += ' + added in code';      
+      //event.newData['name'] += ' + added in code';
       this._templatesService.addTemplate(event.newData);
       event.confirm.resolve(event.newData);
     } else {
