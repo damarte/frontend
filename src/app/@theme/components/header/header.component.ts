@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NbMenuService, NbSidebarService } from '@nebular/theme';
-import { UserService } from '../../../@core/data/users.service';
 import { AnalyticsService } from '../../../@core/utils/analytics.service';
 import { Router } from '@angular/router';
+import { FiwooService } from '../../../pages/services/fiwoo.service';
 
 @Component({
   selector: 'ngx-header',
@@ -22,9 +22,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
-              private userService: UserService,
               private analyticsService: AnalyticsService,
-              private router: Router
+              private router: Router,
+              private fiwooService: FiwooService
             ) {
   }
 
@@ -40,10 +40,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getUsers()
-      .subscribe((users: any) => {
-        this.user = users.first;
-      });
+    this.fiwooService.getMe().subscribe((user: any) => {
+      this.user = user; 
+    });
 
   }
 

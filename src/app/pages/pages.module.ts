@@ -3,7 +3,7 @@ import { PagesComponent } from './pages.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { DevicesComponent } from './devices/devices.component';
+import { DevicesComponent, ButtonViewComponent } from './devices/devices.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { UsersComponent } from "./users/users.component";
 import { TemplatesComponent } from './templates/templates.component';
@@ -33,12 +33,17 @@ import { ExpertComponent } from './statements/expert/expert.component';
 import { BasicComponent } from './statements/basic/basic.component';
 import { OpenDataComponent } from './open-data/open-data.component';
 import { OpendataService } from './services/opendata.service';
-import { DensityMapService } from './services/densitymap.service';
+import { BIService } from './services/bi.service';
 import { RoutesComponent } from './routes/routes.component';
 import { GisService } from './services/gis.service';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { AddNotificationsComponent } from './notifications/add-notifications/add-notifications.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { DevicesService } from './services/devices.service';
+import { SendCommandComponent } from './devices/send-command/send-command.component';
+import { BiPredictionComponent } from './bi-prediction/bi-prediction.component';
+import { DxChartModule } from 'devextreme-angular';
+import { StatementsService } from './services/statements.service';
 
 
 const PAGES_COMPONENTS = [
@@ -69,13 +74,16 @@ const PAGES_COMPONENTS = [
     ImageUploadModule.forRoot(),
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
+    DxChartModule
   ],
   providers: [
     AboutService,
     FiwooService,
     OpendataService,
-    DensityMapService,
-    GisService
+    BIService,
+    GisService,
+    DevicesService,
+    StatementsService
   ],
   declarations: [
     ...PAGES_COMPONENTS, 
@@ -89,9 +97,9 @@ const PAGES_COMPONENTS = [
     RolesComponent,
     AssetsComponent,    
     EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, ModelsComponent, AddModelsComponent, TestModelsComponent, StatementsComponent, TypesComponent, ExpertComponent, BasicComponent, 
-     OpenDataComponent, NotificationsComponent, AddNotificationsComponent, RoutesComponent
+     OpenDataComponent, NotificationsComponent, AddNotificationsComponent, RoutesComponent, ButtonViewComponent, SendCommandComponent, BiPredictionComponent
   ],
-  entryComponents: [],
+  entryComponents: [ButtonViewComponent],
 })
 export class PagesModule {
 }

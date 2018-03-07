@@ -8,14 +8,13 @@ import { LinearGaugeService } from './service';
 import { DevicesService } from 'iot_devices_fiwoo';
 import { Router } from '@angular/router';
 
-var interval;
 var context;
 
 @Component({
     selector: 'app-dynamic-component',
     moduleId: module.id,
     templateUrl: './view.html',
-    styleUrls: ['./linear-gauge.css'],
+    styleUrls: ['./linear-gauge.css'],     
     animations: [
         trigger(
             'showHideAnimation',
@@ -57,7 +56,7 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
     titleNew: any;
     minValue: number;
     maxValue: number;
-
+        
     // chart options
     showXAxis = true;
     showYAxis = true;
@@ -73,20 +72,27 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
         domain: ['#0d5481', '#0AFF16', '#da871e', '#D449E1']
     };
 
+    interval:any;
+
+    showRefreshControls = true;
+
+    device_id:any;
+    attribute:any;
+
     remoteService: any;
-    detailMenuOpen: string;
+    detailMenuOpen: string;  
     selectedUri: string;
 
     constructor(protected _procMonRuntimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,
+                protected _propertyService: WidgetsPropertyService,                
                 protected _changeDetectionRef: ChangeDetectorRef,
                 private _linearGaugeService: LinearGaugeService,
                 private devicesService: DevicesService,
                 router:Router) {
         super(_procMonRuntimeService,
             _widgetsInstanceService,
-            _propertyService,
+            _propertyService,            
             _changeDetectionRef);
 
         const single = [];
@@ -94,68 +100,79 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
         context = this;
 
         Object.assign(this, {single});
-
+       
     }
 
     public configDone(){
         if(this.devicesService != null){
             if (this.widget != undefined && this.widget.sources != undefined){
                 var source: any;
-
+                
                 if (this.widget.sources.length > 0){
-
+                    
                     source = this.widget.sources[0];
-
-                    var device_name, device_id, attribute;
+    
+                    var device_name;
                     source.parameters.forEach(param => {
                         if (param.name === "device_name"){
                             device_name = param.value;
                         }else if (param.name === "device_id"){
-                            device_id = param.value;
+                            this.device_id = param.value;
                         }else if (param.name === "attribute"){
-                            attribute = param.value;
+                            this.attribute = param.value;
                         }
                     });
-
+    
                     this.titleNew = device_name;
-                    this.loadDataGeneral(device_id, attribute);
+                    this.loadDataGeneral();
 
                     this.minValue = this.getPropFromPropertyPages("min");
                     this.maxValue = this.getPropFromPropertyPages("max");
+
+                    this.refreshTime = this.getPropFromPropertyPages("refresh");
                 }
             }
         }
-        this.run();
+        this.run();        
     }
 
     currentValue: number = 0;
 
-    private loadDataGeneral (deviceId, attribute){
-        this.loadData(deviceId, attribute);
 
-         //Avoiding repeating widgets context problem.
-         interval = setInterval(
-            (function(self) {
+    refresh(){
+        this.loadDataGeneral();
+    }
+
+    private loadDataGeneral (){
+        context = this;
+        clearInterval(this.interval);
+        this.loadRepeatData(this, this.device_id, this.attribute);
+        
+        //Avoiding repeating widgets context problem.
+        this.interval = setInterval(
+            (function(self) {         
                 return function() {
-                    self.loadData(deviceId, attribute);
+                    self.loadRepeatData(self, self.device_id, self.attribute)
                 }
             })(this),
             this.refreshTime
-        );
+        ); 
+         
     }
 
-    loadData (deviceId, attribute){
-        this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
 
+    loadRepeatData(self, deviceId, attribute) {
+        self.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
             if (res.value != undefined){
-                this.currentValue = res.value;
+                self.currentValue = res.value;
+                console.log(self.currentValue);
             }
         });
     }
 
     public preRun(): void {
         this.detailMenuOpen = 'out';
-
+       
     }
 
     // private reload (){
@@ -170,8 +187,8 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
     //     setTimeout(this.reloadView(this), 100);
     // }
 
-    public run() {
-
+    public run() {           
+        
     }
 
     public checkPoxySelection() {
@@ -198,10 +215,10 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
 
     }
 
-    public stop() {
+    public stop() {       
     }
 
-    public updateData(data: any[]) {
+    public updateData(data: any[]) {       
 
     }
 
@@ -235,15 +252,21 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
             }
         });
 
-        this.title = updatedPropsObject.title;
-        this.minValue = updatedPropsObject.min;
-        this.maxValue = updatedPropsObject.max;
+        this.title = updatedPropsObject.title;      
+        this.minValue = updatedPropsObject.min;      
+        this.maxValue = updatedPropsObject.max;     
+        
+        var refreshTime = updatedPropsObject.refresh;
+        if (refreshTime !== this.refreshTime) {
+            this.refreshTime = refreshTime;
+           this.loadDataGeneral();
+        }
 
         this.showOperationControls = true;
 
     }
 
-    updateGraph() {
+    updateGraph() {       
 
     }
 
@@ -266,6 +289,8 @@ export class LinearGaugeComponent extends WidgetsBase implements OnDestroy {
      customizeTooltip(arg) {
         return {
             text: arg.valueText
-        };
+        };       
     }
 }
+
+

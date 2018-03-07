@@ -1,0 +1,52 @@
+<div class="ui modal tiny" #sendCommandModal>
+  <div class="header">
+    {{ modalTitle }}
+  </div>
+  <div class="content">
+    
+
+
+    <div class="doubling stackable two column ui grid container" style="margin-top: 20px">
+
+      <div class="column">
+          <mat-form-field>
+              <mat-select [(value)]="currentCommand" placeholder="Choose one command" [formControl]="commandSelectedFormControl">
+                <mat-option *ngFor="let command of commands" [value]="command">
+                  {{ command.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="commandSelectedFormControl.hasError('required')">
+                Command
+                <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+      </div>
+
+    
+      <div class="column">
+        <div class="field">
+          <mat-form-field>
+            <input matInput type="text" placeholder="New value" [(ngModel)]="commandValue" [formControl]="commandValueFormControl" />
+            <button mat-button *ngIf="commandValue" matSuffix mat-icon-button aria-label="Clear" (click)="commandValue=''">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="commandValueFormControl.hasError('required')">
+              New value
+              <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button">
+      <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+    </div>
+    <div class="ui button">
+      <button mat-raised-button color="primary" (click)="sendCommand()">Send command</button>
+    </div>
+  </div>
+</div>

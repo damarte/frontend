@@ -133,9 +133,9 @@ export class AddRolesComponent implements OnInit {
 
         if (this.resourceSelected instanceof Array) {
           allResources = this.resourceSelected;
-        } else {
+        } else if (this.resourceSelected != null){
           allResources = [this.resourceSelected];
-        }
+        }  
 
         this.role = {
           name: this.name,

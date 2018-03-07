@@ -33,6 +33,8 @@ class TransportProtocol {
   templateUrl: './add-template.component.html',
   styleUrls: ['./add-template.component.scss']
 })
+
+
 export class AddTemplateComponent implements OnInit, AfterViewInit {
 
   @ViewChild('addTemplateModal') addTemplateModalRef: ElementRef;
@@ -53,7 +55,7 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
 
   protocols: Protocol[];
   transportProtocols: TransportProtocol[];
-
+  
   commands: any[] = [];
   internalAttrs: any[] = [];
   attributes: any[] = [];
@@ -93,7 +95,7 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
   propertyTypeFormControl = new FormControl('', [
     Validators.required
   ]);
-
+ 
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
@@ -155,35 +157,61 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
 
       if (!this.propertyNameFormControl.hasError('required') &&
          (!this.propertyValueFormControl.hasError('required') || !result.showValue) &&
-         (!this.propertyObjectIdFormControl.hasError('required') || !result.showObjectId) &&
-         !this.propertyTypeFormControl.hasError('required')){
+        //  (!this.propertyObjectIdFormControl.hasError('required') || !result.showObjectId) &&
+         !this.propertyTypeFormControl.hasError('required') &&
+         !this.checkObjectIdExists(result) && result.objectId){
 
         switch (result.selectedProperty){
           case "command":
-            this.commands.push({name : result.name, object_id : result.objectId, formType: result.formType});
+            this.commands.push({name : result.name, id : result.objectId, formType: result.formType});
           break;
           case "internal attribute":
-            this.internalAttrs.push({name : result.name, object_id : result.objectId, formType: result.formType});
+            this.internalAttrs.push({name : result.name, id : result.objectId, formType: result.formType});
           break;
           case "attribute":
-            this.attributes.push({name : result.name, object_id : result.objectId, formType: result.formType});
+            this.attributes.push({name : result.name, id : result.objectId, formType: result.formType});
           break;
           case "lazy":
-            this.lazy.push({name : result.name, object_id : result.objectId, formType: result.formType});
+            this.lazy.push({name : result.name, id : result.objectId, formType: result.formType});
           break;
           case "static attribute":
-            this.statics.push({name : result.name, object_id : result.objectId, formType: result.formType, value: result.value});
+            this.statics.push({name : result.name, id : result.objectId, formType: result.formType, value: result.value});
           break;
         }
 
         this.restart();
       }
+     
+    } 
+  }
+  private checkObjectIdExists (value){
+    var result = false;
+    var arrayToCheck = this.getPropertyArray(value.selectedProperty);
+    arrayToCheck.forEach(element => {
+      if (element.id === value.objectId){
+        result = true;
+      }
+    });
+    return result;
+  }
 
+  private getPropertyArray(selectedProperty){
+    switch (selectedProperty){
+      case "command":
+        return this.commands;
+      case "internal attribute":
+        return this.internalAttrs;
+      case "attribute":
+        return this.attributes;
+      case "lazy":
+        return this.lazy;
+      case "static attribute":
+        return this.statics;
     }
   }
 
   remove(object: any, objects: any[]): void {
-
+    
     let index = objects.indexOf(object);
 
     if (index >= 0) {
@@ -195,7 +223,7 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
   }
 
   cleanValues (){
-    this.currentAttributeToCreate = null;
+    this.currentAttributeToCreate = null;  
 
     this.template_name = "";
     this.entity_type = "";
@@ -243,7 +271,7 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
   configureTemplateToEdit(){
     if (this.editedTemplate != null){
       this.modalTitle = "Edit template"
-      this.currentAttributeToCreate = null;
+      this.currentAttributeToCreate = null;  
 
       this.template_name = this.editedTemplate.name;
       this.entity_type = this.editedTemplate.entity_type;
@@ -295,7 +323,7 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
   }
 
   onChangeTransportProtocol(event): void {
-
+    
   }
 
   sendTemplate (){
@@ -337,3 +365,4 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
   }
 
 }
+

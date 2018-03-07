@@ -1,18 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-//import { SmartTableService } from '../../../@core/data/smart-table.service';
 import { DevicesService } from 'iot_devices_fiwoo';
-//import { isDevMode } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import swal from "sweetalert2";
+import { ViewCell } from 'ng2-smart-table/components/cell/cell-view-mode/view-cell';
+import { SendCommandComponent } from './send-command/send-command.component';
+
+declare var require: any;
+const moment = require('moment');
+
+
+@Component({
+  selector: 'button-view',
+  template: `
+    <button *ngIf="value" mat-raised-button color="primary" (click)="onClick()">{{ renderValue }}</button>
+  `,
+})
+export class ButtonViewComponent implements ViewCell, OnInit {
+  renderValue: string;
+
+  @Input() value: string | number;
+  @Input() rowData: any;
+
+  @Output() sendCommand: EventEmitter<any> = new EventEmitter();
+
+  ngOnInit() {
+    this.renderValue = this.value.toString().toUpperCase();
+  }
+
+  onClick() {
+    this.sendCommand.emit(this.rowData);
+  }
+}
+
+var context: any;
+
 
 @Component({
   selector: 'ngx-smart-table',
   templateUrl: './devices.component.html',
   styleUrls: ['./devices.component.scss'],
-  providers: [DatePipe]
+  providers: []
 })
+
+
 export class DevicesComponent {
+
+  @ViewChild('sendCommandModal') sendCommandModalRef: SendCommandComponent;
+
+  modal: any;
 
   settings = {
     actions: {
@@ -49,57 +84,77 @@ export class DevicesComponent {
       entity_type: {
         title: 'Entity Type',
         type: 'string',
-      },
+      },     
       transport_protocol: {
         title: 'Transport Protocol',
         type: 'string',
-      },
+      }, 
       owner: {
         title: 'Owner',
         type: 'string',
-      },
+      },    
       createdAt: {
         title: 'Created',
         type: 'number',
         valuePrepareFunction: (date) => {
-          var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted;
+          var formatted = moment(date).format('DD MMM YYYY');
+          return formatted; 
         }
-      },
+      }, 
       updatedAt: {
         title: 'Updated',
         type: 'number',
-        valuePrepareFunction: (date) => {
-          var raw = new Date(date);
-          var formatted = this.datePipe.transform(raw, 'dd MMM yyyy');
-          return formatted;
+        valuePrepareFunction: (date) => { 
+          var formatted = moment(date).format('DD MMM YYYY');
+          return formatted; 
         }
-      }
+      },
+      command: {
+        title: null,
+        type: 'custom',
+        filter: false,
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction(instance) {
+          instance.sendCommand.subscribe(row => {
+            context.showModal(row);
+          });
+        }
+      },   
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private devicesService: DevicesService,
-              private datePipe: DatePipe
-             ) {
+  constructor(private devicesService: DevicesService) {
     this.loadDevices(null);
+
+    context = this;
   }
 
   private loadDevices(filterData): void{
     if (filterData != undefined && filterData != null){
       this.devicesService.listDevices(filterData.name, filterData.entity_name, filterData.protocol,
                                                    filterData.entity_type, filterData.transportProtocol,
-                                                   filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {
-        this.source.load(res);
+                                                   filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {     
+        this.source.load(this.addCommand(res));
       });
     }else{
-      this.devicesService.listDevices().subscribe(res => {
-        this.source.load(res);
+      this.devicesService.listDevices().subscribe(res => {     
+        this.source.load(this.addCommand(res));
       });
     }
 
+  }
+
+  private addCommand(data){
+    data.forEach(device => {
+      if (device.commands.length){
+        device.command = "Send Command";
+      }
+      
+    });
+
+    return data;
   }
 
   filterData: any = {};
@@ -125,6 +180,13 @@ export class DevicesComponent {
     if (reload){
       this.loadDevices(this.filterData);
     }
+  }
+
+  showModal(device) {
+    if (device.commands.length){
+      this.sendCommandModalRef.showModal(device);
+    }
+    
   }
 
   onDeleteConfirm(event): void {
@@ -164,3 +226,4 @@ export class DevicesComponent {
     }
   }
 }
+ 

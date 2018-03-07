@@ -81,14 +81,14 @@ export class AddWidgetsComponent implements AfterViewInit {
 
     messageModal: any;
 
-
+   
     sensors: any[];
     attributes: any[];
 
     selectedDevice: any;
     selectedAttribute: any;
 
-    fromDate: Date;
+    fromDate:Date;
     toDate = new Date();
     minDate = new Date(2017, 0, 1);
     maxDate = new Date();
@@ -119,7 +119,7 @@ export class AddWidgetsComponent implements AfterViewInit {
             this.resetSensors();
         });
     }
-
+    
     checkComponents(){
         var componentType = this.widgetSelected.componentType;
         switch(componentType){
@@ -208,16 +208,27 @@ export class AddWidgetsComponent implements AfterViewInit {
         }else{
             valueToCheck = value;
         }
-
+        
         this.attributes = [];
-        this._devicesServices.readDevice(valueToCheck.entity_name).subscribe(res => {
+        this._devicesServices.readDevice(valueToCheck.entity_name).subscribe(res => {  
             if (res != undefined && res != null && !res.error){
-                this.attributes = Object.keys(res);
+                this.attributes = this.getAttributes(res);
             }else{
                 this.attributes = [];
             }
         });
+        
+    }
 
+    private getAttributes (properties){
+        var result = [];
+        Object.keys(properties).forEach(property => {
+            properties[property].forEach(attribute => {
+                result.push(attribute.name);
+            });
+        });
+
+        return result;
     }
 
     checkSensors(entity_type){
@@ -242,12 +253,12 @@ export class AddWidgetsComponent implements AfterViewInit {
                 element.selected = false;
             });
         }
-
+       
     }
 
     onAttributeChanged(value):void {
         console.log(value);
-
+        
     }
 
     updateWidgetInfo (widget: any){
@@ -263,7 +274,7 @@ export class AddWidgetsComponent implements AfterViewInit {
         if (widget.type != WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.cards]){
             widget = this.updateWidgetField(widget, "title", this.selectedAttribute);
         }
-
+      
         devices.forEach(element => {
             var parameters = [];
             parameters.push({
@@ -276,13 +287,13 @@ export class AddWidgetsComponent implements AfterViewInit {
                 "name": "device_id",
                 "value": element.entity_name,
                 "operator": "="
-
+ 
              });
              parameters.push({
                 "name": "attribute",
                 "value": this.selectedAttribute,
                 "operator": "="
-
+ 
              });
             var url = `https://platform.fiwoo.eu/api/device-management/devices/historics?${element.entity_name}&attribute=${this.selectedAttribute}`;
             if (this.showDateControls){
@@ -291,13 +302,13 @@ export class AddWidgetsComponent implements AfterViewInit {
                     "name": "from",
                     "value": this.changeDate(this.fromDate),
                     "operator": "="
-
+     
                  });
                  parameters.push({
                     "name": "to",
                     "value": this.changeDate(this.toDate),
                     "operator": "="
-
+     
                  });
             }
             widget.sources.push({
@@ -319,7 +330,7 @@ export class AddWidgetsComponent implements AfterViewInit {
             //Add Directly by the moment
             actionItem = this.updateWidgetInfo(actionItem);
             this.addGadgetEvent.emit(actionItem);
-            this.hideMessageModal();
+            this.hideMessageModal(); 
         }
 
     }
@@ -347,8 +358,8 @@ export class AddWidgetsComponent implements AfterViewInit {
            (this.selectedAttribute != undefined && this.selectedAttribute != null)) {
             actionItem = this.updateWidgetInfo(actionItem);
             this.addGadgetEvent.emit(actionItem);
-            this.hideMessageModal();
-        }
+            this.hideMessageModal();           
+        } 
     }
 
 
@@ -361,7 +372,7 @@ export class AddWidgetsComponent implements AfterViewInit {
         );
     }
 
-    showMessageModal(icon: string, header: string, message: string) {
+    showMessageModal(icon: string, header: string, message: string) {        
         this.modalicon = icon;
         this.modalheader = header;
         this.modalmessage = message;
@@ -409,9 +420,9 @@ export class AddWidgetsComponent implements AfterViewInit {
         var months:string;
         var dd = date.getDate();
 
-        var mm = date.getMonth()+1;
+        var mm = date.getMonth()+1; 
         var yyyy = date.getFullYear();
-
+        
         days = dd + '';
         months = mm + '';
 

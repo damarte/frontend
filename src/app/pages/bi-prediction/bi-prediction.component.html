@@ -1,0 +1,37 @@
+<nb-card>
+  <nb-card-header>BI Prediction</nb-card-header>
+  <nb-card-body>
+    <dx-chart #biChart [dataSource]="data" [title]="title" [customizePoint]="customizePoint">
+      <dxi-series color="#007bff"></dxi-series>
+      <dxo-common-series-settings argumentField="date" valueField="value" type="splinearea">
+        <dxo-point [visible]="true"></dxo-point>
+      </dxo-common-series-settings>
+      <dxo-argument-axis [valueMarginsEnabled]="false">
+        <dxo-grid [visible]="false"></dxo-grid>
+      </dxo-argument-axis>
+      <dxo-argument-axis ></dxo-argument-axis>
+      <dxi-value-axis>
+        <dxo-grid [visible]="true"></dxo-grid>
+      </dxi-value-axis>
+      <dxo-legend [visible]="false"></dxo-legend>
+      <dxo-tooltip
+          [enabled]="true"
+          [customizeTooltip]="customizeTooltip">
+      </dxo-tooltip>
+      <dxo-crosshair
+        [enabled]="true"
+        color="#949494"
+        [width]="3"
+        dashStyle="dot">
+        <dxo-label
+            [visible]="true"
+            backgroundColor="#949494">
+            <dxo-font
+                color="#fff"
+                [size]="12">
+            </dxo-font>
+        </dxo-label>
+      </dxo-crosshair>
+    </dx-chart>
+  </nb-card-body>
+</nb-card>

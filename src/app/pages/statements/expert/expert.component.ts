@@ -1,8 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { FiwooService } from '../../services/fiwoo.service';
+import { StatementsService } from '../../services/statements.service';
+import swal from "sweetalert2";
 
 declare var jQuery: any;
+
+var context;
 
 @Component({
   selector: 'app-expert',
@@ -16,10 +20,11 @@ export class ExpertComponent implements OnInit, AfterViewInit {
   @Output() onHidden = new EventEmitter<boolean>();
 
   modal: any;
+  statementField: any;
 
   description: string;
   statement: string;
-  editedStatement:any = [];
+  editedStatement: any = [];
   statements: any = {};
 
   modalTitle: string = "";
@@ -34,15 +39,44 @@ export class ExpertComponent implements OnInit, AfterViewInit {
   addOnBlur: boolean = true;
   showValue: boolean = false;
   saved: boolean = false;
-  separatorKeysCodes = [ENTER, COMMA];
+  user_id: string;
 
-  constructor() {
 
+  
+
+  constructor(private _fiwooService: FiwooService,
+    private statementsService: StatementsService) {
+
+      context = this;
+
+      this._fiwooService.getMe().subscribe(user => {
+        this.user_id = user.user_name;
+      });
+
+      //TEST
+
+      this.description = `Sets isHigh to false if temperature is lower than 21`;
+
+      this.statement = `{
+          "name": "rule_temperature_update_lower",
+          "text": "select *,\"rule_temperature_update_lower\" as ruleName from pattern [every ev=iotEvent(cast(cast(temperature?,String),float)<=21 and type=\"temperature_entity\" and cast(id?,String)=\"temp1\")]",
+          "action": {
+              "type": "update",
+              "parameters": {
+              "id" : "temp1",
+              "type" : "temperature_entity",
+                  "attributes": [
+                      {
+                          "name": "isHigh",
+                          "value": "false",
+                          "type": "boolean"
+                      }]
+              }
+          }
+      }`;
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   showModal(statement) {
 
@@ -53,8 +87,8 @@ export class ExpertComponent implements OnInit, AfterViewInit {
     this.modal.modal({
       closable: true,
       onHidden: function () {
-        this.context.cleanValues();
-        this.context.onHidden.emit(true);
+        context.cleanValues();
+        context.onHidden.emit(true);
       }
     })
       .modal('show');
@@ -69,10 +103,9 @@ export class ExpertComponent implements OnInit, AfterViewInit {
   configureStatementToEdit() {
 
     if (this.editedStatement != null) {
-
       this.modalTitle = "Edit statement (Expert Mode)";
-      this.description = this.editedStatement.description;
-      this.statement = this.editedStatement.statement;
+      this.description = this.editedStatement.rule_description;
+      this.statement = this.editedStatement.rule;
     } else {
       this.modalTitle = "Add statement (Expert Mode)"
     }
@@ -93,41 +126,36 @@ export class ExpertComponent implements OnInit, AfterViewInit {
     if (!this.statementFormControl.hasError('required') &&
       !this.descriptionFormControl.hasError('required')) {
 
-      if (this.editedStatement != undefined) {
+      this.statements = {
+        rule: this.statement,
+        description: this.description,
+        user_id: this.user_id
+      };
 
-        this.statements = {
-          statement: this.statement,
-          description: this.description,
-        };
+      if (this.editedStatement != undefined) {
 
         // PUT
         console.log(this.statement);
-
-        // this._fiwooService.updateStatement(this.editedStatement.id, this.statements).subscribe(
-        //   res => {
-        //     console.log(res);
-        //     this.saved = true;
-        //     this.hideModal();
-        //   });
-
       } else {
 
         // POST
-        this.statements = {
-          statement: this.statement,
-          description: this.description,
-        };
-
         console.log(this.statements);
 
-        // this._fiwooService.postStatement(this.statements).subscribe(
-        //   res => {
-        //     console.log(res);
-        //   });
+        this.statementsService.postUserStatement(this.statements).subscribe(data => {
+          console.log(data);
+
+          this.hideModal();
+        },
+        error => {
+          swal(
+            'Error!',
+            'An error has ocurred',
+            'error'
+          )
+        });
 
       }
-
-      this.hideModal();
+      
     }
   }
 }

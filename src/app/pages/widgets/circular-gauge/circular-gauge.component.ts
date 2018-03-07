@@ -9,7 +9,7 @@ import { MatIconRegistry } from '@angular/material';
 import { DevicesService } from 'iot_devices_fiwoo';
 import { Router } from '@angular/router';
 
-var interval;
+declare var context;
 
 @Component({
     selector: 'app-dynamic-component',
@@ -20,7 +20,7 @@ var interval;
 
 export class CircularGaugeComponent extends WidgetsBase {
 
-
+    
     customizeText(arg: any) {
         return arg.valueText;
     }
@@ -29,11 +29,18 @@ export class CircularGaugeComponent extends WidgetsBase {
     minValue: number;
     maxValue: number;
 
+    interval: any;
+
+    device_id:any;
+    attribute:any;
+
     showOperationControls = true;
+
+    showRefreshControls = true;
 
     constructor(protected _runtimeService: RuntimeService,
                 protected _widgetsInstanceService: WidgetsInstanceService,
-                protected _propertyService: WidgetsPropertyService,
+                protected _propertyService: WidgetsPropertyService,                
                 protected _changeDetectionRef: ChangeDetectorRef,
                 protected _circularGaugeService: CircularGaugeService,
                 iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
@@ -41,12 +48,12 @@ export class CircularGaugeComponent extends WidgetsBase {
                 router:Router) {
         super(_runtimeService,
             _widgetsInstanceService,
-            _propertyService,
+            _propertyService,            
             _changeDetectionRef);
 
         iconRegistry.addSvgIcon(
             'thumbs-up',
-            sanitizer.bypassSecurityTrustResourceUrl('assets/images/svg-icons/ic_add_white_36px.svg'));
+            sanitizer.bypassSecurityTrustResourceUrl('assets/images/svg-icons/ic_add_white_36px.svg'));  
 
     }
 
@@ -57,23 +64,25 @@ export class CircularGaugeComponent extends WidgetsBase {
                 if (this.widget.sources.length > 0){
                     source = this.widget.sources[0];
                 }
-                var device_id, attribute;
+    
                 source.parameters.forEach(param => {
                     if (param.name === "device_name"){
                         this.titleNew = param.value;
                     }else if (param.name === "device_id"){
-                        device_id = param.value;
+                        this.device_id = param.value;
                     }else if (param.name === "attribute"){
-                        attribute = param.value;
+                        this.attribute = param.value;
                     }
                 });
 
-
-                this.loadDataGeneral(device_id, attribute);
+               
+                this.loadDataGeneral();
 
                 this.minValue = this.getPropFromPropertyPages("min");
                 this.maxValue = this.getPropFromPropertyPages("max");
 
+                this.refreshTime = this.getPropFromPropertyPages("refresh");
+    
             }
         }
         this.run();
@@ -99,25 +108,33 @@ export class CircularGaugeComponent extends WidgetsBase {
     currentValue: number = 0;
 
 
-    private loadDataGeneral (deviceId, attribute){
-        this.loadData(deviceId, attribute);
+    refresh(){
+        this.loadDataGeneral();
+    }
 
+    private loadDataGeneral (){
+        context = this;
+        clearInterval(this.interval);
+        this.loadRepeatData(this, this.device_id, this.attribute);
+        
         //Avoiding repeating widgets context problem.
-        interval = setInterval(
-            (function(self) {
+        this.interval = setInterval(
+            (function(self) {         
                 return function() {
-                    self.loadData(deviceId, attribute);
+                    self.loadRepeatData(self, self.device_id, self.attribute)
                 }
             })(this),
             this.refreshTime
-        );
-
+        ); 
+         
     }
 
-    loadData (deviceId, attribute){
-       this.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
+
+    loadRepeatData(self, deviceId, attribute) {
+        self.devicesService.readAttrDevice(deviceId, attribute).subscribe(res => {
             if (res.value != undefined){
-                this.currentValue = res.value;
+                self.currentValue = res.value;
+                console.log(self.currentValue);
             }
         });
     }
@@ -152,11 +169,18 @@ export class CircularGaugeComponent extends WidgetsBase {
             }
         });
 
-        this.title = updatedPropsObject.title;
-        this.minValue = updatedPropsObject.min;
-        this.maxValue = updatedPropsObject.max;
+        this.title = updatedPropsObject.title;      
+        this.minValue = updatedPropsObject.min;      
+        this.maxValue = updatedPropsObject.max;       
 
         this.showOperationControls = true;
+
+        var refreshTime = updatedPropsObject.refresh;
+        if (refreshTime !== this.refreshTime) {
+            this.refreshTime = refreshTime;
+           this.loadDataGeneral();
+        }
+
 
     }
 

@@ -13,11 +13,15 @@ export class TypesComponent implements AfterViewInit {
   @Output() onModalHidden = new EventEmitter<boolean>();
 
   modal: any;
+  
+  constructor() {} 
+ 
+  statementToUse: any;
 
-  constructor() {}
+  showModal(statementToUse) {   
 
+    this.statementToUse = statementToUse;
 
-  showModal() {
     this.modal.modal({
       closable: true,
       // onModalHidden: function () {
@@ -33,4 +37,9 @@ export class TypesComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.modal = jQuery(this.typeStatementModal.nativeElement);
   }
+
+  openMode(modal){
+    modal.showModal(this.statementToUse);
+  }
+
 }

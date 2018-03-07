@@ -8,10 +8,10 @@ import { Router } from '@angular/router';
 import { NB_AUTH_OPTIONS_TOKEN } from '../../auth.options';
 import { getDeepFromObject } from '../../helpers';
 import { NbAuthService } from '../../services/auth.service';
-import { Http } from '@angular/http';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { User } from "../User";
 import sweetAlert from 'sweetalert2';
+import { FiwooService } from '../../../pages/services/fiwoo.service';
 
 
 
@@ -36,8 +36,8 @@ export class NbRegisterComponent implements OnInit {
   constructor(protected service: NbAuthService,
     @Inject(NB_AUTH_OPTIONS_TOKEN) protected config = {},
     protected router: Router,
-    private http: Http,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private userService: FiwooService) {
 
     this.redirectDelay = this.getConfigValue('forms.register.redirectDelay');
     this.showMessages = this.getConfigValue('forms.register.showMessages');
@@ -82,9 +82,10 @@ export class NbRegisterComponent implements OnInit {
     if (this.signupForm.valid) {
       this.user = this.signupForm.value;
       console.log('User: ', this.user);
-      this.http.post(`${this.urlBase}/users`, this.user).subscribe(
+
+      this.userService.doRegister(this.user).subscribe( 
         res => {
-           console.log('Register post: ', res);
+           console.log('Register post: ', res); 
            sweetAlert({
             title: "OK!",
             text: "You have registered!",
@@ -95,15 +96,13 @@ export class NbRegisterComponent implements OnInit {
             }
           });
           },
-        err => {
-           console.error(err);
-           sweetAlert("Oops!", "Something went wrong!", "error");
+        err => { 
+           console.error(err);   
+           sweetAlert("Oops!", "Something went wrong!", "error");           
         }
       );
-
     }
   }
-
 
 
 

@@ -38,6 +38,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Density Maps',
         icon: 'ion-ios-location-outline',
         link: '/pages/routes',    
+      }, 
+      {
+        title: 'Prediction',
+        icon: 'ion-ios-location-outline',
+        link: '/pages/bi-prediction',    
       },    
     ]
   }, 

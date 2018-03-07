@@ -5,7 +5,7 @@
       <div class="cstm">
         <div class="ui icon header">
           <div class="expert-mode"></div>
-          <a class="item" (click)="expertStatementModal.showModal()">
+          <a class="item" (click)="openMode(expertStatementModal)">
             <button mat-raised-button color="accent" style="font-size: 18px">Expert Mode</button>
           </a>
         </div>
@@ -13,7 +13,7 @@
       <div class="cstm">
         <div class="ui icon header">
           <div class="basic-mode"></div>
-          <a class="item" (click)="basicStatementModal.showModal()">
+          <a class="item" (click)="openMode(basicStatementModal)">
             <button mat-raised-button color="primary" style="font-size: 18px">Basic Mode</button>
           </a>
         </div>

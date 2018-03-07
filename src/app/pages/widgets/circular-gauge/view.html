@@ -2,8 +2,8 @@
 
                 <app-gadget-header (mouseover)="showGadgetControls(true)" (mouseleave)="showGadgetControls(true)" [title]="title" [inRun]="inRun"
                         [inConfig]="inConfig" [actionInitiated]="actionInitiated" [showOperationControls]="false" [gadgetHasOperationControls]="gadgetHasOperationControls"
-                        [showConfigurationControl]="showConfigurationControl" [showControls]="showControls" (toggleConfigModeEvent)="toggleConfigMode()"
-                        (removeEvent)="remove()">
+                        [showConfigurationControl]="showConfigurationControl"  [showRefreshControls]="showRefreshControls" [showControls]="showControls" (toggleConfigModeEvent)="toggleConfigMode()"
+                        (removeEvent)="remove()" (refreshEvent)="refresh()">
                 </app-gadget-header>
         
                 <div *ngIf="!inConfig">
