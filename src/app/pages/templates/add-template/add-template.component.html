@@ -1,159 +1,147 @@
-<div class="ui modal" #addTemplateModal>
-    <div class="header">
-          <div class="ui grid">
-              <div class="twelve wide column">
-                      {{modalTitle}}
-              </div>
-              <div class="two wide column">
-                      <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
-              </div>
-              <div class="one wide column">
-                      <button mat-raised-button color="primary" (click)="sendTemplate()">Save</button>
-              </div>
-          </div>  
-          
+<div class="ui modal add-template" #addTemplateModal>
+  <div class="header">
+    <div class="ui grid">
+      <div class="twelve wide column">
+        {{modalTitle}}
+      </div>
+      <div class="two wide column">
+        <button mat-raised-button color="warn" (click)="hideModal()">Cancel</button>
+      </div>
+      <div class="one wide column">
+        <button mat-raised-button color="primary" class="btn-save" (click)="sendTemplate()">Save</button>
+      </div>
     </div>
-    <div class="scrolling content">
-        <div class="ui grid">
-            <!-- col1-->
-            <div class="four wide column">
-                <div class="field">
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="Name of the template" [(ngModel)]="template_name" [formControl]="templateNameFormControl"/>
-                        <button mat-button *ngIf="template_name" matSuffix mat-icon-button aria-label="Clear" (click)="template_name=''">
+
+  </div>
+  <div class="scrolling content">
+    <div class="ui grid">
+      <!-- col1-->
+      <div class="four wide column">
+        <div class="field">
+          <mat-form-field>
+            <input matInput type="text" placeholder="Name of the template" name="template_name" [(ngModel)]="template_name" [formControl]="templateNameFormControl" />
+            <button mat-button *ngIf="template_name" matSuffix mat-icon-button aria-label="Clear" (click)="template_name=''">
                             <mat-icon>close</mat-icon>
                         </button>
-                        <mat-error *ngIf="templateNameFormControl.hasError('required')">
-                            Template name <strong>required</strong>
-                        </mat-error>
-                    </mat-form-field>
-                    <section style="margin-top: 20px">
-                        <h4>Protocol</h4>
-                        <div class="field">
-                            <mat-radio-group [(ngModel)]="protocolSelected" style="display: inline-flex; flex-direction: column;" (change)="onChangeProtocol($event.value)"
-                                [formControl]="protocolFormControl">
-                                <mat-radio-button *ngFor="let protocol of protocols" [value]="protocol" style="margin: 5px;">
-                                    {{protocol.value}}
-                                </mat-radio-button>
-                            </mat-radio-group>
-                            <mat-error *ngIf="protocolFormControl.hasError('required')">
-                                Protocol <strong>required</strong>
-                            </mat-error>
-                        </div>
-                    </section>
+            <mat-error *ngIf="templateNameFormControl.hasError('required')">
+              Template name <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <section style="margin-top: 20px">
+            <h4>Protocol</h4>
+            <div class="field">
+              <mat-radio-group class="protocol_select" [(ngModel)]="protocolSelected" style="display: inline-flex; flex-direction: column;" (change)="onChangeProtocol($event.value)" [formControl]="protocolFormControl">
+                <mat-radio-button *ngFor="let protocol of protocols" [value]="protocol" style="margin: 5px;" class="radio_option">
+                  {{protocol.value}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <mat-error *ngIf="protocolFormControl.hasError('required')">
+                Protocol <strong>required</strong>
+              </mat-error>
+            </div>
+          </section>
 
-                </div>
-          </div>
-          <div class="four wide column">
-                <div class="field">
-                    <mat-form-field>
-                        <input matInput type="text" placeholder="Entity Type" [(ngModel)]="entity_type" [formControl]="entityTypeFormControl"/>
-                        <button mat-button *ngIf="entity_type" matSuffix mat-icon-button aria-label="Clear" (click)="entity_type=''">
+        </div>
+      </div>
+      <div class="four wide column">
+        <div class="field">
+          <mat-form-field>
+            <input matInput type="text" placeholder="Entity Type" name="entity_type" [(ngModel)]="entity_type" [formControl]="entityTypeFormControl" />
+            <button mat-button *ngIf="entity_type" matSuffix mat-icon-button aria-label="Clear" (click)="entity_type=''">
                             <mat-icon>close</mat-icon>
                         </button>
-                        <mat-error *ngIf="entityTypeFormControl.hasError('required')">
-                            Entity Type <strong>required</strong>
-                        </mat-error>
-                    </mat-form-field>
-                    <section style="margin-top: 20px" *ngIf="protocolSelected">
-                        <h4>Tansport Protocol</h4>
-                        <div class="field">
-                            <mat-radio-group [(ngModel)]="transportSelected" style="display: inline-flex; flex-direction: column;" (change)="onChangeTransportProtocol($event.value)"
-                            [formControl]="transportProtocolFormControl">
-                                <mat-radio-button *ngFor="let transportProtocol of transportProtocols" [value]="transportProtocol" style="margin: 5px;">
-                                {{transportProtocol.value}}
-                                </mat-radio-button>
-                            </mat-radio-group>
-                            <mat-error *ngIf="transportProtocolFormControl.hasError('required')">
-                                Transport protocol <strong>required</strong>
-                            </mat-error>
-                        </div>
-                    </section>
-
-                </div>
-          </div>
-
-            <div class="eight wide column">
-                <mat-card class="result">
-                    <mat-card-content>
-                        <h4 class="example-h2">Add new property</h4>
-                        <mat-form-field style="width: 100%">
-                            <mat-select placeholder="Choose property" [(value)]="currentAttributeToCreate" (change)="onAttributeChanged()">
-                                <section *ngFor="let property of propertiesSelect">
-                                    <mat-option [value]="property">
-                                    {{ property.type | uppercase}}
-                                    </mat-option>
-                                </section>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <section>
-                            <mat-form-field *ngIf="data.showObjectId" style="width: 100%" >
-                                <input matInput type="text" maxlength="3" placeholder="Object ID (Max 3 letters)" [(ngModel)]="data.objectId" [formControl]="propertyObjectIdFormControl"/>
-                                <!-- <mat-error *ngIf="propertyObjectIdFormControl.hasError('required')">
-                                    Object Id <strong>required</strong>
-                                </mat-error> -->
-                                <mat-error *ngIf="propertyObjectIdFormControl.hasError('exists')">
-                                    Object Id <strong>already exists!</strong>
-                                </mat-error>
-                            </mat-form-field>
-                            <mat-form-field style="width: 100%">
-                                <input matInput type="text" placeholder="Name (property's name)" [(ngModel)]="data.name" [formControl]="propertyNameFormControl"/>
-                                <mat-error *ngIf="propertyNameFormControl.hasError('required')">
-                                   Name <strong>required</strong>
-                                </mat-error>
-                            </mat-form-field>
-                            <mat-form-field style="width: 100%" >
-                                <input matInput type="text" placeholder="Type (string, boolean....)" [(ngModel)]="data.formType" [formControl]="propertyTypeFormControl"/>
-                                <mat-error *ngIf="propertyTypeFormControl.hasError('required')">
-                                    Type <strong>required</strong>
-                                </mat-error>
-                            </mat-form-field>
-                            <mat-form-field *ngIf="data.showValue" style="width: 100%" >
-                                <input matInput type="text" placeholder="Value" [(ngModel)]="data.value" [formControl]="propertyValueFormControl"/>
-                                <mat-error *ngIf="propertyValueFormControl.hasError('required')">
-                                    Value <strong>required</strong>
-                                </mat-error>
-                            </mat-form-field>
-                            <button style="margin-top: 10px" mat-raised-button color="warn" (click)="restart()">Restart</button>
-                            <button style="margin-top: 10px" mat-raised-button color="accent" (click)="addObject(data)">Add Property</button>
-                        </section>
-                    </mat-card-content>
-                </mat-card>  
+            <mat-error *ngIf="entityTypeFormControl.hasError('required')">
+              Entity Type <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <section style="margin-top: 20px" *ngIf="protocolSelected">
+            <h4>Tansport Protocol</h4>
+            <div class="field">
+              <mat-radio-group [(ngModel)]="transportSelected" style="display: inline-flex; flex-direction: column;" (change)="onChangeTransportProtocol($event.value)" [formControl]="transportProtocolFormControl">
+                <mat-radio-button *ngFor="let transportProtocol of transportProtocols" [value]="transportProtocol" style="margin: 5px;">
+                  {{transportProtocol.value}}
+                </mat-radio-button>
+              </mat-radio-group>
+              <mat-error *ngIf="transportProtocolFormControl.hasError('required')">
+                Transport protocol <strong>required</strong>
+              </mat-error>
             </div>
+          </section>
+
         </div>
+      </div>
 
+      <div class="eight wide column">
+        <mat-card class="result">
+          <mat-card-content>
+            <h4 class="example-h2">Add new property</h4>
+            <mat-form-field style="width: 100%">
+              <mat-select placeholder="Choose property" name="choose_property" [(value)]="currentAttributeToCreate" (change)="onAttributeChanged()">
+                <section *ngFor="let property of propertiesSelect" class="select_section">
+                  <mat-option [value]="property" class="select_option">
+                    {{property.type | uppercase}}
+                  </mat-option>
+                </section>
+              </mat-select>
+            </mat-form-field>
 
-        <div class="ui grid">
-            <div class="eight wide column" style="text-align: center">
-                <mat-slide-toggle [(ngModel)]="isPublic"
-                    color="primary"
-                    [checked]="isPublic">
-                    Public
-                </mat-slide-toggle>
-            </div>
-        </div>
+            <section>
+              <mat-form-field *ngIf="data.showObjectId" style="width: 100%">
+                <input matInput type="text" maxlength="3" name="object_id" placeholder="Object ID (Max 3 letters)" [(ngModel)]="data.objectId" [formControl]="propertyObjectIdFormControl" />
+                <mat-error *ngIf="propertyObjectIdFormControl.hasError('exists')">
+                  Object Id <strong>already exists!</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" name="property_name" placeholder="Name (property's name)" [(ngModel)]="data.name" [formControl]="propertyNameFormControl" />
+                <mat-error *ngIf="propertyNameFormControl.hasError('required')">
+                  Name <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field style="width: 100%">
+                <input matInput type="text" name="property_type" placeholder="Type (string, boolean....)" [(ngModel)]="data.formType" [formControl]="propertyTypeFormControl" />
+                <mat-error *ngIf="propertyTypeFormControl.hasError('required')">
+                  Type <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field *ngIf="data.showValue" style="width: 100%">
+                <input matInput type="text" placeholder="Value" [(ngModel)]="data.value" [formControl]="propertyValueFormControl" />
+                <mat-error *ngIf="propertyValueFormControl.hasError('required')">
+                  Value <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <button style="margin-top: 10px" mat-raised-button color="warn" (click)="restart()">Restart</button>
+              <button style="margin-top: 10px" mat-raised-button color="accent" name="btn-add-property" (click)="addObject(data)">Add Property</button>
+            </section>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
 
-       
+    <div class="ui grid">
+      <div class="eight wide column" style="text-align: center">
+        <mat-slide-toggle [(ngModel)]="isPublic" color="primary" [checked]="isPublic">
+          Public
+        </mat-slide-toggle>
+      </div>
+    </div>
 
-
-        <div class="ui grid">
-            <div class="eight wide column" *ngFor="let property of properties">
-                <mat-card class="result">
-                    <mat-card-content>
-                        <h4 class="example-h2">{{property.type | uppercase}}</h4>
-                        <section>
-                            <mat-chip-list >
-                                <mat-chip *ngFor="let object of property.prop" [selectable]="selectable"
-                                        [removable]="removable" (remove)="remove(object, property.prop)">
-                                    {{object.name}}
-                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                                </mat-chip>
-                            </mat-chip-list>
-                        </section>
-                    </mat-card-content>
-                </mat-card>   
-            </div>
-        </div>
+    <div class="ui grid">
+      <div class="eight wide column" *ngFor="let property of properties">
+        <mat-card class="result">
+          <mat-card-content>
+            <h4 class="example-h2">{{property.type | uppercase}}</h4>
+            <section>
+              <mat-chip-list>
+                <mat-chip *ngFor="let object of property.prop" [selectable]="selectable" class="property_item" [removable]="removable" (remove)="remove(object, property.prop)">
+                  {{object.name}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+            </section>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
+</div>

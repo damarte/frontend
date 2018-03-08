@@ -1,29 +1,27 @@
 <nb-card>
-    <nb-card-header>
+  <nb-card-header>
 
-        <div class="ui grid">
-            <div class="ten wide column">
-                Templates
-            </div>
-            <div class="six wide column custom-btn">
-                <a class="item" (click)="addTemplateModal.showModal()">
-                    <button mat-raised-button color="primary">Add Template</button>
+    <div class="ui grid">
+      <div class="ten wide column">
+        Templates
+      </div>
+      <div class="six wide column custom-btn">
+        <a class="item" (click)="addTemplateModal.showModal()">
+                    <button mat-raised-button color="primary" class="btn-add">Add Template</button>
                 </a>
-            </div>
-        </div>
+      </div>
+    </div>
 
 
-    </nb-card-header>
-    <nb-card-body>
+  </nb-card-header>
+  <nb-card-body>
 
-        <app-devices-filter style="padding: 10px" title="templates" [showEntityName]="false" [filtersApplied]="getActiveFilters()"
-            (onApplyFilters)="onApplyFilters($event)" (onResetFilters)="onResetFilters()">
-        </app-devices-filter>
+    <app-devices-filter style="padding: 10px" title="templates" [showEntityName]="false" [filtersApplied]="getActiveFilters()" (onApplyFilters)="onApplyFilters($event)" (onResetFilters)="onResetFilters()">
+    </app-devices-filter>
 
-        <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (createConfirm)="onCreateConfirm($event)"
-            (editConfirm)="onSaveConfirm($event)" (edit)="addTemplateModal.showModal($event.data)" (delete)="onDeleteConfirm($event)">
-        </ng2-smart-table>
-    </nb-card-body>
+    <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)" (createConfirm)="onCreateConfirm($event)" (editConfirm)="onSaveConfirm($event)" (edit)="addTemplateModal.showModal($event.data)" (delete)="onDeleteConfirm($event)">
+    </ng2-smart-table>
+  </nb-card-body>
 </nb-card>
 
 <!-- the modal will emit an event and call the grid component to add the requested cell to the board -->
