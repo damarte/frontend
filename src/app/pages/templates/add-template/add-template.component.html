@@ -87,9 +87,9 @@
 
             <section>
               <mat-form-field *ngIf="data.showObjectId" style="width: 100%">
-                <input matInput type="text" name="object_id" placeholder="Object ID" [(ngModel)]="data.value" [formControl]="propertyObjectIdFormControl" />
-                <mat-error *ngIf="propertyObjectIdFormControl.hasError('required')">
-                  Value <strong>required</strong>
+                <input matInput type="text" maxlength="3" name="object_id" placeholder="Object ID (Max 3 letters)" [(ngModel)]="data.objectId" [formControl]="propertyObjectIdFormControl" />
+                <mat-error *ngIf="propertyObjectIdFormControl.hasError('exists')">
+                  Object Id <strong>already exists!</strong>
                 </mat-error>
               </mat-form-field>
               <mat-form-field style="width: 100%">
