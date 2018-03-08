@@ -1,33 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { OpenData, OpenDataMedia, OpenDataFormat, OpenDataTopic } from '../open-data/models/open.data';
 import { BaseService } from './base.service';
 
 @Injectable()
 export class OpendataService extends BaseService{
 
-  constructor(public http: Http) {
+  constructor(public http: HttpClient) {
    super(http);
   }
 
   // GET OPEN DATA
   public getOpenData():any {
-    this.configureGET();
     return this.fakeOpenData;
   }
 
   // GET FORMATS
   public getFormats():any {
-    this.configureGET();
     return this.formats;
   }
   // GET TOPICS
   public getTopics():any {
-    this.configureGET();
     return this.topics;
   }
-
-
 
   formats: Array<OpenDataFormat> = [
     new OpenDataFormat("1", "Spreadsheet", "../../../assets/images/html.png"),

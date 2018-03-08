@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class GisService extends BaseService {
 
-  constructor(public http: Http) { 
+  constructor(public http: HttpClient) {
     super(http);
    }
 
 
   // GET GIS DATA
   public getGISData():any {
-    this.configureGET();
-    return this.http.get(`${this.urlBaseGIS}${this.endPointGIS}`, {headers: this.headers}).map(res => res.json());
+    return this.http.get(`${this.urlBaseGIS}${this.endPointGIS}`);
   }
 }

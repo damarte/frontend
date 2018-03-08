@@ -77,7 +77,7 @@ export function nbOptionsFactory(options) {
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-   // SocialLoginModule.initialize(config),
+    // SocialLoginModule.initialize(config),
     SweetAlert2Module.forRoot({
       buttonsStyling: false,
       customClass: 'modal-content',
@@ -122,10 +122,11 @@ export class NbAuthModule {
           useFactory: nbAuthServiceFactory,
           deps: [NB_AUTH_OPTIONS_TOKEN, NbTokenService, Injector],
         },
+        { provide: NbAuthSimpleToken, useClass: NbAuthSimpleToken },
         NbTokenService,
         NbDummyAuthProvider,
         NbEmailPassAuthProvider,
-       // { provide: AuthServiceConfig, useFactory: provideConfig }       
+       // { provide: AuthServiceConfig, useFactory: provideConfig }
       ],
     };
   }

@@ -44,16 +44,16 @@ import { SendCommandComponent } from './devices/send-command/send-command.compon
 import { BiPredictionComponent } from './bi-prediction/bi-prediction.component';
 import { DxChartModule } from 'devextreme-angular';
 import { StatementsService } from './services/statements.service';
-
+import { InterceptorModule } from '../interceptor/interceptor.module';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
 ];
 
-@NgModule({ 
+@NgModule({
   imports: [
     PagesRoutingModule,
-    ThemeModule,    
+    ThemeModule,
     DashboardModule,
     Ng2SmartTableModule,
     MatButtonModule,
@@ -64,17 +64,18 @@ const PAGES_COMPONENTS = [
     MatInputModule,
     MatListModule,
     MatRadioModule,
-    MatChipsModule, 
+    MatChipsModule,
     MatDialogModule,
     MatExpansionModule,
     RouterModule,
     MatDatepickerModule,
-    MatGridListModule,    
+    MatGridListModule,
     HttpClientModule,
     ImageUploadModule.forRoot(),
-    OwlDateTimeModule, 
+    OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    DxChartModule
+    DxChartModule,
+    InterceptorModule
   ],
   providers: [
     AboutService,
@@ -86,8 +87,8 @@ const PAGES_COMPONENTS = [
     StatementsService
   ],
   declarations: [
-    ...PAGES_COMPONENTS, 
-    DevicesComponent, 
+    ...PAGES_COMPONENTS,
+    DevicesComponent,
     UsersComponent,
     TemplatesComponent,
     AddDevicesComponent,
@@ -95,8 +96,8 @@ const PAGES_COMPONENTS = [
     DevicesFilterComponent,
     AboutComponent,
     RolesComponent,
-    AssetsComponent,    
-    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, ModelsComponent, AddModelsComponent, TestModelsComponent, StatementsComponent, TypesComponent, ExpertComponent, BasicComponent, 
+    AssetsComponent,
+    EditDevicesComponent, AddUsersComponent, AddAssetsComponent, AddRolesComponent, ModelsComponent, AddModelsComponent, TestModelsComponent, StatementsComponent, TypesComponent, ExpertComponent, BasicComponent,
      OpenDataComponent, NotificationsComponent, AddNotificationsComponent, RoutesComponent, ButtonViewComponent, SendCommandComponent, BiPredictionComponent
   ],
   entryComponents: [ButtonViewComponent],
