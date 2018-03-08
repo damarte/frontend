@@ -43,6 +43,66 @@ export class NbLoginComponent implements OnInit {
     this.provider = this.getConfigValue("forms.login.provider");
   }
 
+  login(form: NgForm): void {
+
+    this.form = form;
+    if (form.invalid) {
+      return;
+    }
+
+    this.username = form.value.username;
+    this.password = form.value.password;
+
+    this.doLogin();
+
+    // LOGIN WITH NEBULAR (IN PROCESS)
+    // this.doLoginAuth();
+  }
+
+  // private doLoginAuth(){
+
+  //   let grant_type: string = "grant_type";
+  //   let username: string = "username";
+  //   let password: string = "password";
+
+  //   const body = new HttpParams()
+  //   .set(grant_type, "password")
+  //   .set(password, this.form.value.password)
+  //   .set(username, this.form.value.username);
+
+  //   this.errors = this.messages = [];
+  //   this.submitted = true;
+
+  //   this.service.authenticate(this.provider, body.toString()).subscribe((result: NbAuthResult) => {
+  //     this.submitted = false;
+
+  //     if (result.isSuccess()) {
+  //       this.messages = result.getMessages();
+  //     } else {
+  //       this.errors = result.getErrors();
+  //     }
+
+  //     const redirect = result.getRedirect();
+  //     if (redirect) {
+  //       sweetAlert({
+  //         title: "OK!",
+  //         text: "You have logged in!",
+  //         timer: 5000,
+  //         onOpen: () => {
+  //           sweetAlert.showLoading();
+  //           // window.location.href = "/#/pages/dashboard";
+  //           this.router.navigateByUrl(redirect);
+  //         }
+  //       }).then((res) => {
+  //         sweetAlert.close();
+  //       });
+  //       // setTimeout(() => {
+  //       //   return this.router.navigateByUrl(redirect);
+  //       // }, this.redirectDelay);
+  //     }
+  //   });
+  // }
+
   // private googleUser: SocialUser;
   // private loggedIn: boolean;
 
@@ -65,18 +125,6 @@ export class NbLoginComponent implements OnInit {
   username: string;
   password: string;
   grant_type: string;
-
-  login(form: NgForm) {
-    this.form = form;
-    if (form.invalid) {
-      return;
-    }
-
-    this.username = form.value.username;
-    this.password = form.value.password;
-
-    this.doLogin();
-  }
 
   private doLogin() {
     let grant_type: string = "grant_type";

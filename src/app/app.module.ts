@@ -19,7 +19,8 @@ import { ApiModule as IotModule, Configuration, ConfigurationParameters } from '
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 import { NbAuthModule } from './auth/auth.module';
 import { FiwooService } from './pages/services/fiwoo.service';
-// import { AuthGuard } from './app-guard.service';
+import { AuthGuard } from './app-guard.service';
+import { NbEmailPassAuthProvider } from './auth/index';
 
 
 @NgModule({
@@ -37,19 +38,30 @@ import { FiwooService } from './pages/services/fiwoo.service';
     ThemeModule.forRoot(),
     CoreModule.forRoot(),
     NbAuthModule.forRoot({
+      providers: {
+        email: {
+          service: NbEmailPassAuthProvider,
+          config: {
+            token: {
+              key: 'access_token', // this parameter tells Nebular where to look for the token
+            },
+          },
+        },
+      },
       forms: {
         login: {
           redirectDelay: 10,
         },
       },
+      
     })
   ],
   bootstrap: [AppComponent],
   providers: [
     { provide: APP_BASE_HREF, useValue: '/' },
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     FiwooService,
-    // AuthGuard
+    AuthGuard,
   ],
 })
 export class AppModule {

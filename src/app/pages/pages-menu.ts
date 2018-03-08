@@ -36,12 +36,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
       }, 
       {
         title: 'Density Maps',
-        icon: 'ion-ios-location-outline',
+        icon: 'ion-leaf',
         link: '/pages/routes',    
       }, 
       {
         title: 'Prediction',
-        icon: 'ion-ios-location-outline',
+        icon: 'ion-ios-pulse',
         link: '/pages/bi-prediction',    
       },    
     ]

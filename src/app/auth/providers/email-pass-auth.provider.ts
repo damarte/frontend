@@ -4,7 +4,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { of as observableOf } from 'rxjs/observable/of';
@@ -113,18 +113,19 @@ import { getDeepFromObject } from '../helpers';
 export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
 
   protected defaultConfig: NgEmailPassAuthProviderConfig = {
-    baseEndpoint: '',
+    // TEST
+    baseEndpoint: 'http://stg-sac-fase-dos.emergyalabs.com:7000/users',
     login: {
-      alwaysFail: false,
-      rememberMe: true,
-      endpoint: '/api/auth/login',
+      // alwaysFail: false,
+      // rememberMe: true,
+      endpoint: '/login',
       method: 'post',
       redirect: {
-        success: '/',
+        success: '/pages/dashboards',
         failure: null,
       },
-      defaultErrors: ['Login/Email combination is not correct, please try again.'],
-      defaultMessages: ['You have been successfully logged in.'],
+      // defaultErrors: ['Login/Email combination is not correct, please try again.'],
+      // defaultMessages: ['You have been successfully logged in.'],
     },
     register: {
       alwaysFail: false,
@@ -196,7 +197,18 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
   authenticate(data?: any): Observable<NbAuthResult> {
     const method = this.getConfigValue('login.method');
     const url = this.getActionEndpoint('login');
-    return this.http.request(method, url, {body: data, observe: 'response'})
+
+    var headers = new HttpHeaders();
+    headers = headers.append(
+      "Authorization","Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G"
+    );
+    headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    // let headers = new HttpHeaders();
+    // headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+
+    console.log(headers);
+    return this.http.request(method, url, {body: data, observe: 'response', headers: headers})
       .pipe(
         map((res) => {
           if (this.getConfigValue('login.alwaysFail')) {
@@ -354,6 +366,7 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
             ));
         }),
       );
+
   }
 
   logout(): Observable<NbAuthResult> {
@@ -405,7 +418,14 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
 
   protected validateToken (module: string): any {
     return map((res) => {
-      const token = this.getConfigValue('token.getter')(module, res);
+
+      //PROVISIONAL
+      // var valueJSON = JSON.parse(res["_body"]);
+      // var token = valueJSON.access_token;
+      // token = token.replace(/"([^"]+(?="))"/g, '$1');
+
+      const token = this.getConfigValue('token.getter')(module, res);  
+
       if (!token) {
         const key = this.getConfigValue('token.key');
         console.warn(`NbEmailPassAuthProvider:
