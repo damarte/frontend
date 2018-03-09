@@ -92,6 +92,9 @@ export class NbLoginComponent implements OnInit {
           sweetAlert.close();
         });
       }
+      else{
+        this.router.navigateByUrl('/');
+      }
     });
   }
 

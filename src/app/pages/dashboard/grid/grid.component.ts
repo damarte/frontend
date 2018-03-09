@@ -315,7 +315,7 @@ export class GridComponent {
             if (board && board instanceof Array && board.length) {
 
                 //TODO CHANGE
-                var newData = [];
+                var newData: [any];
                 var i = board.length - 1; //ONLY LAST 3 DASHBOARDS - TEST
                 var limit = i - 3;
                 limit = limit > 0 ? limit : 0;

@@ -59,7 +59,7 @@ export class ConfigurationService extends BaseService{
             });
         } else {
 
-            return this._http.get(this.remoteConfigurationRepository + '/' + name);
+            return this._http.get<[Object]>(this.remoteConfigurationRepository + '/' + name);
         }
     }
 
@@ -71,7 +71,7 @@ export class ConfigurationService extends BaseService{
 
     public getBoards() {
 
-        if (this.demo) {
+        /*if (this.demo) {
             return new Observable(observer => {
                 let data = JSON.parse(localStorage.getItem('board'));
                 if (!data) {
@@ -82,13 +82,13 @@ export class ConfigurationService extends BaseService{
                 };
             });
 
-        } else {
+        } else {*/
             /**
              * todo - this call is based on an internal representation (admin console) of something called a store.
              * That concept requires refactoring.
              */
-            return this._http.get(this.remoteConfigurationRepository);
-        }
+            return this._http.get<[any]>(this.remoteConfigurationRepository);
+        //}
     }
 
     public saveBoard(board: any): any {

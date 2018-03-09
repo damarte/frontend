@@ -31,7 +31,7 @@ export class BaseService {
   // urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi/density';
   urlBaseBI = "http://192.168.14.38:5001/api/bi";
   urlBaseDensityMaps = 'http://192.168.14.38:5000/api/bi';
-  urlBaseDataVisualization = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization';
+  urlBaseDataVisualization = 'http://stg-sac-fase-dos.emergyalabs.com:6000/api/data-visualization';
   urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
   urlBaseDevices = "https://platform.fiwoo.eu/api/device-management";
   urlBaseStatements = "http://us3.fiwoo.eu:5000/api/rules/statements";

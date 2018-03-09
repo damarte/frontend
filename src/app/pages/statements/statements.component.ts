@@ -37,8 +37,8 @@ export class StatementsComponent  {
       deleteButtonContent: '<i class="nb-trash"></i>',
       confirmDelete: true,
     },
-    columns: {     
-      rule_id: { 
+    columns: {
+      rule_id: {
         title: 'Rule Id',
         type: 'text',
       },
@@ -57,12 +57,12 @@ export class StatementsComponent  {
       rule: {
         title: 'Rule',
         type: 'text',
-      }, 
+      },
       orion_id: {
         title: 'Orion Id',
         type: 'text',
-      }   
-    },   
+      }
+    },
   };
 
 
@@ -72,9 +72,9 @@ export class StatementsComponent  {
               private fiwooService: FiwooService) {
      this.loadStatements();
   }
- 
 
-  onModalHidden(reload){   
+
+  onModalHidden(reload){
     if (reload){
      this.loadStatements();
     }
@@ -101,8 +101,8 @@ export class StatementsComponent  {
       if (result.value) {
         console.log(event);
         this.statementsService.deleteUserStatements(event.data.rule_name).subscribe(data => {
-          if (data.perseo.length){
-            if (data.perseo.error.length && data.perseo.error == null){
+          if (data['perseo']){
+            if (data['perseo'].error == null){
               swal(
                 'Deleted!',
                 'Your statement has been deleted.',
@@ -110,7 +110,7 @@ export class StatementsComponent  {
               )
             }
           }
-        });       
+        });
       }
     });
   }
