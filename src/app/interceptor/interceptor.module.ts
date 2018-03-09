@@ -26,7 +26,12 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
     }
 
     if(req.method == 'POST' || req.method == 'PUT'){
-      headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
+      if( req.url.indexOf('users/login') >= 0){
+        headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
+      }
+      else{
+        headers = headers.set('Content-Type', 'application/json');
+      }
     }
 
     const dupReq = req.clone({ headers: headers });
@@ -37,14 +42,13 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
       }
     }, (err: any) => {
       if (err instanceof HttpErrorResponse) {
-        console.log(err.status);
         if (err.status === 401) {
           console.log('Session expired');
           this.tokenService.clear();
           this.router.navigateByUrl('/');
         }
       }
-    });;
+    });
   }
 };
 @NgModule({

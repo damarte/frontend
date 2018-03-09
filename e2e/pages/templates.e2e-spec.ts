@@ -1,7 +1,7 @@
 import { element, browser, by } from 'protractor';
 
 export class TemplatesPage {
-  getPage() {
+  navigateToPage() {
     return browser.get('/#/pages/templates');
   }
 
@@ -53,23 +53,26 @@ export class TemplatesPage {
     return element(by.name('btn-add-property'));
   }
 
-  fillField(field, value) {
+  fillField(field, value, done:() => void) {
     field.clear();
     field.sendKeys(value);
     field.getAttribute('value').then(function(text) {
       expect(text).toEqual(value);
+      done();
     });
   }
 
-  pickRadio(field, index) {
+  pickRadio(field, index, done:() => void) {
     var option = field.all(by.css('.radio_option')).get(index);
     option.click();
+    done();
   }
 
-  pickSelect(field, index) {
+  pickSelect(field, index, done:() => void) {
     field.click().then(function(text) {
       var option = element.all(by.css('.select_option')).get(index);
       option.click();
+      done();
     })
   }
 }
