@@ -24,7 +24,12 @@ export class OpendataService extends BaseService{
   // GET TOPICS
   public getTopics():any {
     this.configureGET();
-    return this.topics;
+
+
+    return this.http.get(`${this.urlBaseOpenData}${this.endPointOpenDataTags}`, {headers: this.headers}).map(res => res.json());
+
+    // return this.topics;
+    
   }
 
 

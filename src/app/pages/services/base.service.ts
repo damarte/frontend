@@ -19,23 +19,29 @@ export class BaseService {
   endPointDashboards = '/dashboards';
   endPointDensisty = '/density';
   endPointPrediction = '/prediction';
-  endPointGIS = '/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices1&outputFormat=JSON' //PROVISIONAL
-  endPointDevices = '/devices'
-  endPointAttrs = '/attrs'
-  endPointHistorics = '/devices/historics'
-  endPointAdvanced = '/advanced'
-  endPointBasic = '/basic'
-  endPointStatementAdd = '/add'
+  endPointGIS = '/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices1&outputFormat=JSON'; //PROVISIONAL
+  endPointDevices = '/devices';
+  endPointAttrs = '/attrs';
+  endPointHistorics = '/devices/historics';
+  endPointAdvanced = '/advanced';
+  endPointBasic = '/basic';
+  endPointStatementAdd = '/add';
+  endPointOpenDataGroups = '/listGroups';
+  endPointOpenDataTags = '/listTags';
+  endPointOpenDataPackages = '/listPackage';
+
+  //PARAMS
+  paramStatementRuleName = 'rule_name';
 
   //TEST
   urlBaseUsers = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-  urlBaseOpenData = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
+  urlBaseOpenData = 'http://stg-sac-fase-dos-instance-02.emergyalabs.com:11000/openData';
   urlBaseLogin = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
   // urlBI = "http://us2.fiwoo.eu:5001/api/bi/";
   // urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi/density';
   urlBaseBI = "http://192.168.14.38:5001/api/bi";
   urlBaseDensityMaps = 'http://192.168.14.38:5000/api/bi';
-  urlBaseDataVisualization = 'http://stg-sac-fase-dos.emergyalabs.com:8000/data-visualization';
+  urlBaseDataVisualization = 'http://stg-sac-fase-dos.emergyalabs.com:6000/api/data-visualization/dashboards';
   urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
   urlBaseDevices = "https://platform.fiwoo.eu/api/device-management";
   urlBaseStatements = "http://us3.fiwoo.eu:5000/api/rules/statements";
@@ -64,6 +70,7 @@ export class BaseService {
   public configureGET() {
     this.headers = new Headers();
     this.headers.append('Authorization', auth);
+    this.headers.append('Accept', "application/json");
   }
 
   public configureLogin() {
@@ -72,12 +79,14 @@ export class BaseService {
       "Authorization",
       "Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G"
     );
+    this.headers.append('Accept', "application/json");
   }
 
   public configureOthers() {
     this.headers = new Headers();
     this.headers.append('Authorization', auth);
     this.headers.append('Content-Type', 'application/json');
+    this.headers.append('Accept', "application/json");
   }
 
 }

@@ -19,9 +19,9 @@ export class StatementsService extends BaseService {
   }
 
   // DELETE UserStatements
-  public deleteUserStatements(statement:any){
+  public deleteUserStatements(statement:any, userId: any){
     this.configureOthers();
-    return this.http.delete(`${this.urlBaseStatements}/${statement}`).map(res => res.json());
+    return this.http.delete(`${this.urlBaseStatements}/${userId}?${this.paramStatementRuleName}=${statement}`).map(res => res.json());
   }
 
   // POST USERS

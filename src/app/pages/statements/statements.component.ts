@@ -13,6 +13,9 @@ import { FiwooService } from '../services/fiwoo.service';
 })
 export class StatementsComponent  {
 
+
+  user:any;
+
   outputs: string;
 
   settings = {
@@ -82,7 +85,8 @@ export class StatementsComponent  {
 
   loadStatements (){
     this.fiwooService.getMe().subscribe(user => {
-      this.statementsService.getUserStatements("select4cities").subscribe(data => {
+      this.user = user;
+      this.statementsService.getUserStatements(user.name).subscribe(data => {
         this.source.load(data);
       });
     });
@@ -100,14 +104,16 @@ export class StatementsComponent  {
     }).then((result) => {
       if (result.value) {
         console.log(event);
-        this.statementsService.deleteUserStatements(event.data.rule_name).subscribe(data => {
-          if (data.perseo.length){
-            if (data.perseo.error.length && data.perseo.error == null){
+        this.statementsService.deleteUserStatements(event.data.rule_name, this.user.name).subscribe(data => {
+          if (data.perseo){
+            if (data.perseo.error == null){
               swal(
                 'Deleted!',
                 'Your statement has been deleted.',
                 'success'
               )
+
+              this.loadStatements();
             }
           }
         });       

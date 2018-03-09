@@ -9,8 +9,8 @@ import { URLSearchParams } from "@angular/http";
 import "rxjs/Rx";
 import sweetAlert from "sweetalert2";
 import { FiwooService } from "../../../pages/services/fiwoo.service";
-// import { AuthService, SocialUser } from "angularx-social-login";
-// import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
+import { AuthService, SocialUser } from "angularx-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 
 @Component({
   selector: "nb-login",
@@ -36,7 +36,7 @@ export class NbLoginComponent implements OnInit {
     protected router: Router,
     protected _usersService: UsersService,
     private fiwooService: FiwooService,
-    // private authService: AuthService
+    private authService: AuthService
   ) {
     this.redirectDelay = this.getConfigValue("forms.login.redirectDelay");
     this.showMessages = this.getConfigValue("forms.login.showMessages");
@@ -103,19 +103,20 @@ export class NbLoginComponent implements OnInit {
   //   });
   // }
 
-  // private googleUser: SocialUser;
-  // private loggedIn: boolean;
+  private googleUser: SocialUser;
+  private loggedIn: boolean;
 
   ngOnInit() {
-    // this.authService.authState.subscribe((user) => {
-    //   this.googleUser = user;
-    //   this.loggedIn = (user != null);
-    // });
+    this.authService.authState.subscribe((user) => {
+      this.googleUser = user;
+      console.log(user);
+      this.loggedIn = (user != null);
+    });
   }
 
-  // signInWithGoogle(): void {
-  //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  // }
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
 
   // signOut(): void {
   //   this.authService.signOut();

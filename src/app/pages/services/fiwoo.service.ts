@@ -26,7 +26,7 @@ export class FiwooService extends BaseService {
   // LOGOUT
   public doLogout():any {
     this.configureGET();
-    return this.http.get(`${this.urlBaseLogin}${this.endPointLogout}`, {headers: this.headers});
+    return this.http.get(`${this.urlBaseUsers}${this.endPointLogout}`, {headers: this.headers});
   }
 
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { defaultBoard } from '../dashboard/models/dashboard-default';
 import { sampleBoardCollection } from '../dashboard/models/dashboard-collection-sample';
@@ -59,14 +59,14 @@ export class ConfigurationService extends BaseService{
                 };
             });
         } else {
-
-            return this._http.get(this.remoteConfigurationRepository + '/' + name).map(res => res.json());
+            this.configureGET();
+            return this._http.get(this.remoteConfigurationRepository + '/' + name, {headers: this.headers}).map(res => res.json());
         }
     }
 
     public getBoardById(id: string) {
-
-        return this._http.get(this.remoteConfigurationRepository + '/' + id).map(res => res.json());
+        this.configureGET();
+        return this._http.get(this.remoteConfigurationRepository + '/' + id, {headers: this.headers}).map(res => res.json());
         
     }
 
@@ -88,7 +88,8 @@ export class ConfigurationService extends BaseService{
              * todo - this call is based on an internal representation (admin console) of something called a store.
              * That concept requires refactoring.
              */
-            return this._http.get(this.remoteConfigurationRepository).map(res => res.json());
+            this.configureGET();
+            return this._http.get(this.remoteConfigurationRepository, {headers: this.headers}).map(res => res.json());
         }
     }
 
@@ -133,15 +134,14 @@ export class ConfigurationService extends BaseService{
              *
              */
 
-            const headers = new Headers();
-            headers.append('Content-Type', 'application/json');
+            this.configureOthers();
+            
             if (board.isNew){
-                return this._http.post(this.remoteConfigurationRepository + '/', JSON.stringify(board), {headers: headers});
+                return this._http.post(this.remoteConfigurationRepository + '/', JSON.stringify(board), {headers: this.headers});
             }else{
                 var sendBoard = Object.assign({},board);
                 sendBoard = this.updateBoardForSend(sendBoard);
-                console.log(JSON.stringify(board));
-                return this._http.put(this.remoteConfigurationRepository + '/' + board.id, JSON.stringify(sendBoard), {headers: headers});
+                return this._http.put(this.remoteConfigurationRepository + '/' + board.id, JSON.stringify(sendBoard), {headers: this.headers});
             }
             
         }
@@ -252,8 +252,8 @@ export class ConfigurationService extends BaseService{
             });
 
         } else {
-
-            return this._http.delete(this.remoteConfigurationRepository + '/' + boardTitle);
+            this.configureOthers();
+            return this._http.delete(this.remoteConfigurationRepository + '/' + boardTitle, {headers: this.headers});
         }
     }
 

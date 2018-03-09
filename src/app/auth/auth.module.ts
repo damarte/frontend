@@ -29,23 +29,24 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { TermsComponent } from './components/terms/terms.component';
 
 // Social signin
-// import { SocialLoginModule } from 'angularx-social-login';
-// import { AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
+import { SocialLoginModule } from 'angularx-social-login';
+import { AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
 
-// const config = new AuthServiceConfig([
-//   {
-//     id: GoogleLoginProvider.PROVIDER_ID,
-//     provider: new GoogleLoginProvider('352539043251-b5p0mmn23qam2qdajjvvfnimq9515ls0.apps.googleusercontent.com')
-//   },
+const config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    // provider: new GoogleLoginProvider('352539043251-b5p0mmn23qam2qdajjvvfnimq9515ls0.apps.googleusercontent.com')
+    provider: new GoogleLoginProvider('699860964573-mduqg0bpsupke9jeo45u2hkurd72nrpi.apps.googleusercontent.com')
+  },
   /*{
     id: FacebookLoginProvider.PROVIDER_ID,
     provider: new FacebookLoginProvider('561602290896109')
   }*/
-// ]);
+]);
 
-// export function provideConfig() {
-//   return config;
-// }
+export function provideConfig() {
+  return config;
+}
 
 
 
@@ -77,7 +78,7 @@ export function nbOptionsFactory(options) {
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-   // SocialLoginModule.initialize(config),
+    SocialLoginModule.initialize(config),
     SweetAlert2Module.forRoot({
       buttonsStyling: false,
       customClass: 'modal-content',
@@ -125,7 +126,7 @@ export class NbAuthModule {
         NbTokenService,
         NbDummyAuthProvider,
         NbEmailPassAuthProvider,
-       // { provide: AuthServiceConfig, useFactory: provideConfig }       
+       { provide: AuthServiceConfig, useFactory: provideConfig }       
       ],
     };
   }
