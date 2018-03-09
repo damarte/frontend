@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { defaultBoard } from '../dashboard/models/dashboard-default';
 import { sampleBoardCollection } from '../dashboard/models/dashboard-collection-sample';
 import { BaseService } from './base.service';
-
 
 @Injectable()
 export class ConfigurationService extends BaseService{
@@ -19,10 +18,10 @@ export class ConfigurationService extends BaseService{
      * todo - fix this hard coded store
      * @type {string}
      */
-    
+
     remoteConfigurationRepository: any;
-    
-    constructor(private _http: Http) {
+
+    constructor(private _http: HttpClient) {
 
         super(_http);
 
@@ -59,20 +58,20 @@ export class ConfigurationService extends BaseService{
                 };
             });
         } else {
-            this.configureGET();
-            return this._http.get(this.remoteConfigurationRepository + '/' + name, {headers: this.headers}).map(res => res.json());
+
+            return this._http.get<[Object]>(this.remoteConfigurationRepository + '/' + name);
         }
     }
 
     public getBoardById(id: string) {
-        this.configureGET();
-        return this._http.get(this.remoteConfigurationRepository + '/' + id, {headers: this.headers}).map(res => res.json());
-        
+
+        return this._http.get(this.remoteConfigurationRepository + '/' + id);
+
     }
 
     public getBoards() {
 
-        if (this.demo) {
+        /*if (this.demo) {
             return new Observable(observer => {
                 let data = JSON.parse(localStorage.getItem('board'));
                 if (!data) {
@@ -83,14 +82,13 @@ export class ConfigurationService extends BaseService{
                 };
             });
 
-        } else {
+        } else {*/
             /**
              * todo - this call is based on an internal representation (admin console) of something called a store.
              * That concept requires refactoring.
              */
-            this.configureGET();
-            return this._http.get(this.remoteConfigurationRepository, {headers: this.headers}).map(res => res.json());
-        }
+            return this._http.get<[any]>(this.remoteConfigurationRepository);
+        //}
     }
 
     public saveBoard(board: any): any {
@@ -133,17 +131,15 @@ export class ConfigurationService extends BaseService{
              * todo - a delete must happen here
              *
              */
-
-            this.configureOthers();
-            
             if (board.isNew){
-                return this._http.post(this.remoteConfigurationRepository + '/', JSON.stringify(board), {headers: this.headers});
-            }else{
+                return this._http.post(this.remoteConfigurationRepository + '/', JSON.stringify(board));
+            } else {
                 var sendBoard = Object.assign({},board);
                 sendBoard = this.updateBoardForSend(sendBoard);
-                return this._http.put(this.remoteConfigurationRepository + '/' + board.id, JSON.stringify(sendBoard), {headers: this.headers});
+                console.log(JSON.stringify(board));
+                return this._http.put(this.remoteConfigurationRepository + '/' + board.id, JSON.stringify(sendBoard));
             }
-            
+
         }
     }
 
@@ -154,7 +150,7 @@ export class ConfigurationService extends BaseService{
             board.rows.forEach(row => {
                 row.columns.forEach(column => {
                     // if (column.gadgets.length == 0){
-                    //     row.columns.pop(column);                           
+                    //     row.columns.pop(column);
                     // }else{
                         column.widgets = Object.assign([], column.gadgets);
                         column.widgets.forEach(widget => {
@@ -172,18 +168,18 @@ export class ConfigurationService extends BaseService{
                                     property._label = property.label;
                                     property._value = property.value;
                                     property._required = property.required;
-                                    property._order = property.order;  
-                                    i++;     
+                                    property._order = property.order;
+                                    i++;
                                 });
                             });
                         });
                     // }
                 });
                 // if (row.columns.length == 0){
-                //     board.rows.pop(row);    
-                // }  
+                //     board.rows.pop(row);
+                // }
             });
-            
+
         }
         return board;
     }
@@ -209,7 +205,7 @@ export class ConfigurationService extends BaseService{
            case "GisMapComponent":
             name = "cards";
            break;
-        
+
        }
        return {"name": name};
    }
@@ -252,8 +248,8 @@ export class ConfigurationService extends BaseService{
             });
 
         } else {
-            this.configureOthers();
-            return this._http.delete(this.remoteConfigurationRepository + '/' + boardTitle, {headers: this.headers});
+
+            return this._http.delete(this.remoteConfigurationRepository + '/' + boardTitle);
         }
     }
 

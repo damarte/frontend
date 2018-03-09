@@ -21,7 +21,12 @@ export class OpenDataComponent implements OnInit {
 
     this.openDataCards = openDataService.getOpenData();
     this.formats = openDataService.getFormats();
-    this.topics = openDataService.getTopics();
+
+    openDataService.getTopics().subscribe(data => {
+        data.forEach(element => {
+          this.formats.push(new OpenDataFormat(element.id, element.name, "../../../assets/images/html.png"));
+        });
+    });
   }
 
   ngOnInit() {

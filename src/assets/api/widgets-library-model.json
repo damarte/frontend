@@ -249,6 +249,41 @@
       "actions":[{
         "name": "Select"
       }]
+    },
+    {
+      "componentType": "InteractiveCommunicationComponent",
+      "name": "Interactive Communication",
+      "description": "", 
+      "icon": "assets/images/line.png",
+      "instanceId": -1,
+      "tags": [        
+        {
+          "facet": "Tables",
+          "name": "Interactive Communication "
+        }
+      ],
+      "config": {
+        "propertyPages": [
+          {
+            "displayName": "Configuration",
+            "groupId": "run",
+            "position": 10,
+            "properties": [              
+              {
+                "controlType": "textbox",
+                "key": "title",
+                "label": "Title",
+                "value": "",
+                "required": false,
+                "order": 1
+              }
+            ]
+          }          
+        ]
+      },
+      "actions":[{
+        "name": "Select"
+      }]
     }
 
   ]

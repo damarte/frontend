@@ -4,7 +4,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { of as observableOf } from 'rxjs/observable/of';
@@ -17,98 +17,6 @@ import { NbAuthResult } from '../services/auth.service';
 import { NbAbstractAuthProvider } from './abstract-auth.provider';
 import { getDeepFromObject } from '../helpers';
 
-/**
- * The most common authentication provider for email/password strategy.
- *
- *
- * @example
- *
- * Default settings object:
- *
- * ```
- * {
- *  baseEndpoint: '',
- *  login: {
- *    alwaysFail: false,
- *    rememberMe: true,
- *    endpoint: '/api/auth/login',
- *    method: 'post',
- *    redirect: {
- *      success: '/',
- *      failure: null,
- *    },
- *    defaultErrors: ['Login/Email combination is not correct, please try again.'],
- *    defaultMessages: ['You have been successfully logged in.'],
- *  },
- *  register: {
- *    alwaysFail: false,
- *    rememberMe: true,
- *    endpoint: '/api/auth/register',
- *    method: 'post',
- *    redirect: {
- *      success: '/',
- *      failure: null,
- *    },
- *    defaultErrors: ['Something went wrong, please try again.'],
- *    defaultMessages: ['You have been successfully registered.'],
- *  },
- *  logout: {
- *    alwaysFail: false,
- *    endpoint: '/api/auth/logout',
- *    method: 'delete',
- *    redirect: {
- *      success: '/',
- *      failure: null,
- *    },
- *    defaultErrors: ['Something went wrong, please try again.'],
- *    defaultMessages: ['You have been successfully logged out.'],
- *  },
- *  requestPass: {
- *    endpoint: '/api/auth/request-pass',
- *    method: 'post',
- *    redirect: {
- *      success: '/',
- *      failure: null,
- *    },
- *    defaultErrors: ['Something went wrong, please try again.'],
- *    defaultMessages: ['Reset password instructions have been sent to your email.'],
- *  },
- *  resetPass: {
- *    endpoint: '/api/auth/reset-pass',
- *    method: 'put',
- *    redirect: {
- *      success: '/',
- *      failure: null,
- *    },
- *    resetPasswordTokenKey: 'reset_password_token',
- *    defaultErrors: ['Something went wrong, please try again.'],
- *    defaultMessages: ['Your password has been successfully changed.'],
- *  },
- *  token: {
- *    key: 'data.token',
- *    getter: (module: string, res: HttpResponse<Object>) => getDeepFromObject(res.body,
- *      this.getConfigValue('token.key')),
- *  },
- *  errors: {
- *    key: 'data.errors',
- *    getter: (module: string, res: HttpErrorResponse) => getDeepFromObject(res.error,
- *      this.getConfigValue('errors.key'),
- *      this.getConfigValue(`${module}.defaultErrors`)),
- *  },
- *  messages: {
- *    key: 'data.messages',
- *    getter: (module: string, res: HttpResponse<Object>) => getDeepFromObject(res.body,
- *      this.getConfigValue('messages.key'),
- *      this.getConfigValue(`${module}.defaultMessages`)),
- *  },
- *}
- *
- * // Note, there is no need to copy over the whole object to change the settings you need.
- * // Also, this.getConfigValue call won't work outside ofthe default config declaration
- * // (which is inside of the `NbEmailPassAuthProvider` class), so you have to replace it with a custom helper function
- * // if you need it.
- * ```
- */
 @Injectable()
 export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
 
@@ -116,16 +24,16 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
     // TEST
     baseEndpoint: 'http://stg-sac-fase-dos.emergyalabs.com:7000/users',
     login: {
-      // alwaysFail: false,
-      // rememberMe: true,
+      alwaysFail: false,
+      rememberMe: true,
       endpoint: '/login',
       method: 'post',
       redirect: {
         success: '/pages/dashboards',
         failure: null,
       },
-      // defaultErrors: ['Login/Email combination is not correct, please try again.'],
-      // defaultMessages: ['You have been successfully logged in.'],
+      defaultErrors: ['Login/Email combination is not correct, please try again.'],
+      defaultMessages: ['You have been successfully logged in.'],
     },
     register: {
       alwaysFail: false,
@@ -141,8 +49,8 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
     },
     logout: {
       alwaysFail: false,
-      endpoint: '/api/auth/logout',
-      method: 'delete',
+      endpoint: '/users/logout',
+      method: 'get',
       redirect: {
         success: '/',
         failure: null,
@@ -198,17 +106,14 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
     const method = this.getConfigValue('login.method');
     const url = this.getActionEndpoint('login');
 
-    var headers = new HttpHeaders();
+    /*var headers = new HttpHeaders();
     headers = headers.append(
       "Authorization","Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G"
     );
     headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    console.log(headers);*/
 
-    // let headers = new HttpHeaders();
-    // headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-
-    console.log(headers);
-    return this.http.request(method, url, {body: data, observe: 'response', headers: headers})
+    return this.http.request(method, url, {body: data, observe: 'response'})
       .pipe(
         map((res) => {
           if (this.getConfigValue('login.alwaysFail')) {
@@ -419,12 +324,7 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
   protected validateToken (module: string): any {
     return map((res) => {
 
-      //PROVISIONAL
-      // var valueJSON = JSON.parse(res["_body"]);
-      // var token = valueJSON.access_token;
-      // token = token.replace(/"([^"]+(?="))"/g, '$1');
-
-      const token = this.getConfigValue('token.getter')(module, res);  
+      const token = this.getConfigValue('token.getter')(module, res);
 
       if (!token) {
         const key = this.getConfigValue('token.key');

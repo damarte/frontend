@@ -123,6 +123,7 @@ export class NbAuthModule {
           useFactory: nbAuthServiceFactory,
           deps: [NB_AUTH_OPTIONS_TOKEN, NbTokenService, Injector],
         },
+        { provide: NbAuthSimpleToken, useClass: NbAuthSimpleToken },
         NbTokenService,
         NbDummyAuthProvider,
         NbEmailPassAuthProvider,

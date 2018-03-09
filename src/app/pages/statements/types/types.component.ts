@@ -2,6 +2,8 @@ import { Component, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit }
 
 declare var jQuery: any;
 
+var context;
+
 @Component({
   selector: 'app-types',
   templateUrl: './types.component.html',
@@ -10,13 +12,22 @@ declare var jQuery: any;
 export class TypesComponent implements AfterViewInit {
 
   @ViewChild('typeStatementModal') typeStatementModal: ElementRef;
-  @Output() onModalHidden = new EventEmitter<boolean>();
+  @Output() onHidden = new EventEmitter<boolean>();
 
   modal: any;
   
-  constructor() {} 
+  constructor() {
+
+    context = this;
+
+  } 
  
   statementToUse: any;
+
+  onModalHidden(reload){ 
+     this.onHidden.emit(true);
+  }
+
 
   showModal(statementToUse) {   
 
@@ -24,9 +35,9 @@ export class TypesComponent implements AfterViewInit {
 
     this.modal.modal({
       closable: true,
-      // onModalHidden: function () {
-      //   context.onHidden.emit(true);
-      // }
+      onHidden: function () {
+        context.onHidden.emit(true);
+      }
     }).modal('show');
   }
 

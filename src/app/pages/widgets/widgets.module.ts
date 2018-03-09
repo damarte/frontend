@@ -26,7 +26,8 @@ import {PolarChartService} from './polar-chart/service';
 import {FacetModule} from '../facet/facet.module';
 import {TypeAheadInputModule} from '../typeahead-input/typeahead-input.module';
 import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectBoxModule, DxSliderModule,DxCheckBoxModule, DxPieChartModule,
-    DxChartModule, DxPolarChartModule, DxMapModule, DxTextBoxModule, DxTemplateModule, DxRangeSelectorModule, DxDateBoxModule} from 'devextreme-angular';
+    DxChartModule, DxPolarChartModule, DxMapModule, DxTextBoxModule, DxTemplateModule, DxRangeSelectorModule, DxDateBoxModule, DxDataGridModule} from 'devextreme-angular';
+import { InteractiveCommunicationComponent } from './interactive-communication/interactive-communication.component';
 
 
 
@@ -63,6 +64,7 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         DxTemplateModule,
         DxRangeSelectorModule,
         DxDateBoxModule,
+        DxDataGridModule,
         MatSelectModule
     ],
     declarations: [
@@ -73,7 +75,8 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         CircularGaugeComponent,
         DoughnutChartComponent,
         PolarChartComponent,
-        GisMapComponent
+        GisMapComponent,
+        InteractiveCommunicationComponent
     ],
 
     providers: [
@@ -90,7 +93,8 @@ import { DxCircularGaugeModule, DxBarGaugeModule, DxLinearGaugeModule, DxSelectB
         CircularGaugeComponent,
         DoughnutChartComponent,
         PolarChartComponent,
-        GisMapComponent
+        GisMapComponent,
+        InteractiveCommunicationComponent
     ]
 })
 export class WidgetsModule {

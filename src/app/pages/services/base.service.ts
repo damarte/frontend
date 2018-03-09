@@ -1,8 +1,4 @@
-import { Http, Headers } from '@angular/http';
-
-let token: any;
-let auth: any;
-
+import { HttpClient } from '@angular/common/http';
 
 export class BaseService {
 
@@ -41,7 +37,7 @@ export class BaseService {
   // urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi/density';
   urlBaseBI = "http://192.168.14.38:5001/api/bi";
   urlBaseDensityMaps = 'http://192.168.14.38:5000/api/bi';
-  urlBaseDataVisualization = 'http://stg-sac-fase-dos.emergyalabs.com:6000/api/data-visualization/dashboards';
+  urlBaseDataVisualization = 'http://stg-sac-fase-dos.emergyalabs.com:6000/api/data-visualization';
   urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
   urlBaseDevices = "https://platform.fiwoo.eu/api/device-management";
   urlBaseStatements = "http://us3.fiwoo.eu:5000/api/rules/statements";
@@ -51,42 +47,15 @@ export class BaseService {
   // urlBaseOpenData = '';
   // urlBaseLogin = 'https://us1.fiwoo.eu:7000/users';
   // urlBaseBI = '';
-  // urlBaseDensityMaps = 'http://us2.fiwoo.eu:5000/api/bi/density'; 
+  // urlBaseDensityMaps = 'http://us2.fiwoo.eu:5000/api/bi/density';
   // urlBaseDataVisualization = 'https://platform.fiwoo.eu/api/data-visualization';
   // urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
   // urlBaseDevices = "https://platform.fiwoo.eu/api/device-management";
   // urlBaseStatements = "http://us3.fiwoo.eu:5000/api/rules/statements";
 
 
-  constructor(public http: Http) {
-    token = localStorage.getItem('access_token');
+  constructor(public http: HttpClient) {
 
-    auth = 'Bearer ' + token;
-    auth = auth.replace(/"([^"]+(?="))"/g, '$1');
-
-    console.log('Headers: ', this.headers);
-  }
-
-  public configureGET() {
-    this.headers = new Headers();
-    this.headers.append('Authorization', auth);
-    this.headers.append('Accept', "application/json");
-  }
-
-  public configureLogin() {
-    this.headers = new Headers();
-    this.headers.append(
-      "Authorization",
-      "Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G"
-    );
-    this.headers.append('Accept', "application/json");
-  }
-
-  public configureOthers() {
-    this.headers = new Headers();
-    this.headers.append('Authorization', auth);
-    this.headers.append('Content-Type', 'application/json');
-    this.headers.append('Accept', "application/json");
   }
 
 }

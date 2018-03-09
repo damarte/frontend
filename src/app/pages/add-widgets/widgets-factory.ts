@@ -6,6 +6,7 @@ import { BarChartComponent } from '../widgets/bar-chart/bar-chart.component';
 import { DoughnutChartComponent } from '../widgets/doughnut-chart/doughnut-chart.component';
 import { PolarChartComponent } from '../widgets/polar-chart/polar-chart.component';
 import { GisMapComponent } from '../widgets/gis-map/gis-map.component';
+import { InteractiveCommunicationComponent } from '../widgets/interactive-communication/interactive-communication.component';
 
 
 export class WidgetsFactory {
@@ -37,6 +38,8 @@ export class WidgetsFactory {
                 return DoughnutChartComponent;
             case 'GisMapComponent':
                 return GisMapComponent;
+            case 'InteractiveCommunicationComponent':
+                return InteractiveCommunicationComponent;
             default:
                 return null;
 

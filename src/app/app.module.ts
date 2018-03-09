@@ -19,9 +19,10 @@ import { ApiModule as IotModule, Configuration, ConfigurationParameters } from '
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 import { NbAuthModule } from './auth/auth.module';
 import { FiwooService } from './pages/services/fiwoo.service';
-import { AuthGuard } from './app-guard.service';
-import { NbEmailPassAuthProvider } from './auth/index';
-
+import { AuthGuard } from './auth-guard.service';
+import { NbEmailPassAuthProvider } from './auth/providers/email-pass-auth.provider';
+import { NB_AUTH_TOKEN_WRAPPER_TOKEN, NbAuthSimpleToken } from '@nebular/auth';
+import { InterceptorModule } from './interceptor/interceptor.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { NbEmailPassAuthProvider } from './auth/index';
     HttpModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    InterceptorModule,
     // ApiModule.forRoot(apiConfigFactory),
     UmApiModule.forRoot(apiConfigFactory),
     IotModule.forRoot(apiConfigFactory),
@@ -50,10 +52,10 @@ import { NbEmailPassAuthProvider } from './auth/index';
       },
       forms: {
         login: {
-          redirectDelay: 10,
+          redirectDelay: 3,
         },
       },
-      
+
     })
   ],
   bootstrap: [AppComponent],
@@ -62,6 +64,7 @@ import { NbEmailPassAuthProvider } from './auth/index';
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     FiwooService,
     AuthGuard,
+    { provide: NB_AUTH_TOKEN_WRAPPER_TOKEN, useValue: NbAuthSimpleToken },
   ],
 })
 export class AppModule {

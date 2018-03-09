@@ -21,6 +21,7 @@ import { TypeAheadInputModule } from '../typeahead-input/typeahead-input.module'
 import { PolarChartComponent } from '../widgets/polar-chart/polar-chart.component';
 import { GisMapComponent } from '../widgets/gis-map/gis-map.component';
 import { ToastModule } from '../toast/toast.module';
+import { InteractiveCommunicationComponent } from '../widgets/interactive-communication/interactive-communication.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { ToastModule } from '../toast/toast.module';
             BarChartComponent,
             DoughnutChartComponent,
             PolarChartComponent,
-            GisMapComponent
+            GisMapComponent,
+            InteractiveCommunicationComponent
 
         ]),
         WidgetsModule,

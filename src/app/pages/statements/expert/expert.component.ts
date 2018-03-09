@@ -50,7 +50,7 @@ export class ExpertComponent implements OnInit, AfterViewInit {
       context = this;
 
       this._fiwooService.getMe().subscribe(user => {
-        this.user_id = user.user_name;
+        this.user_id = user.name;
       });
 
       //TEST
@@ -127,7 +127,8 @@ export class ExpertComponent implements OnInit, AfterViewInit {
       !this.descriptionFormControl.hasError('required')) {
 
       this.statements = {
-        rule: this.statement,
+        rule: JSON.parse(this.statement),
+        // rule: JSON.parse(JSON.minify(this.statement)),
         description: this.description,
         user_id: this.user_id
       };

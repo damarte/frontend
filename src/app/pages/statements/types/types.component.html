@@ -22,8 +22,8 @@
   </div>
 </div>
 
-<app-expert #expertStatementModal>
+<app-expert #expertStatementModal (onHidden)="onModalHidden($event)">
 </app-expert>
 
-<app-basic #basicStatementModal>
+<app-basic #basicStatementModal (onHidden)="onModalHidden($event)">
 </app-basic>

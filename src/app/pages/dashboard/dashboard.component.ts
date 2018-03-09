@@ -23,16 +23,16 @@ export class DashboardComponent implements OnInit {
     constructor(private _configurationService: ConfigurationService,
         public http: Http, router:Router) {
 
-            context = this;
+        context = this;
 
-            //Delete all timers.
-            router.events.subscribe(event => {
-                if(event instanceof NavigationStart) {
-                    for(var i=0; i<10000; i++){
-                        clearInterval(i);
-                    }
+        //Delete all timers.
+        router.events.subscribe(event => {
+            if(event instanceof NavigationStart) {
+                for(var i=0; i<10000; i++){
+                    clearInterval(i);
                 }
-              });
+            }
+          });
     }
 
     onLoadFinished(){
@@ -50,32 +50,13 @@ export class DashboardComponent implements OnInit {
             const me = this;
             if (data && data instanceof Array && data.length) {
                 this.dashboardList.length = 0;
-
-                //TODO CHANGE WHEN STRUCTURE GOES OK
-                // data  = [{"title": data[0].name, "structure": data[0].structure}];
-                if (!this._configurationService.demo){
-                    var newData = [];
-                    var i = data.length - 1; //ONLY LAST 3 DASHBOARDS - TEST
-                    var limit = i - 3;
-                    limit = limit > 0 ? limit : 0;
-                    for (i; i >= limit; i--){
-                        var element = data[i];
-                        if (i >= limit){
-                            newData.push({"title": element.name, "structure": element.structure,
-                            "id": element.id});
-                        }
-                    }
-                    data = newData;
-                }
                 console.log(data);
 
                 // sort boards
                 data.sort((a: any, b: any) => a.id - b.id);
 
                 data.forEach(board => {
-
                     me.dashboardList.push({"title": board.title, "id": board.id});
-
                 });
 
                 if (!selectedBoard.id) {
