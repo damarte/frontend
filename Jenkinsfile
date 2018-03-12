@@ -1,28 +1,24 @@
 node {
- 	// Clean workspace before doing anything
+ 	  // Clean workspace before doing anything
     deleteDir()
 
     try {
-        stage ('Clone') {
-        	checkout scm
+        stage('check tools') {
+            sh "node -v"
+            sh "npm -v"
         }
-        stage ('Build') {
-        	sh "echo 'shell scripts to build project...'"
+
+        stage('checkout') {
+            checkout scm
         }
-        stage ('Tests') {
-	        parallel 'static': {
-	            sh "echo 'shell scripts to run static tests...'"
-	        },
-	        'unit': {
-	            sh "echo 'shell scripts to run unit tests...'"
-	        },
-	        'integration': {
-	            sh "echo 'shell scripts to run integration tests...'"
-	        }
+
+        stage('npm install') {
+            sh "npm install"
         }
-      	stage ('Deploy') {
-            sh "echo 'shell scripts to deploy to server...'"
-      	}
+
+        stage('protractor tests') {
+            sh "npm run e2e"
+        }
     } catch (err) {
         currentBuild.result = 'FAILED'
         throw err
