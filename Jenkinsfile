@@ -8,6 +8,9 @@ pipeline {
     stages {
         stage('Installing') {
             steps {
+                echo 'Cleaning...'
+                deleteDir()
+              
                 echo 'Installing...'
 
                 sh 'node -v'
