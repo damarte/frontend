@@ -2,12 +2,12 @@ pipeline {
     agent any
   
     tools {
-      nodejs "New Node"
+      nodejs "New Node",
       xvfb "Xvfb"
     }
   
     options {
-        timestamps()
+        timestamps(),
         skipDefaultCheckout()      // Don't checkout automatically
     }
   
