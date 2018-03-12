@@ -1,4 +1,11 @@
 node('web-app-build') {
+  
+    agent develop
+  
+    agent {
+        label 'develop'
+    }
+  
     try {
       
         stage('Clean workspace') {
