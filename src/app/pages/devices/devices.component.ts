@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { DevicesService } from 'iot_devices_fiwoo';
 import swal from "sweetalert2";
 import { ViewCell } from 'ng2-smart-table/components/cell/cell-view-mode/view-cell';
 import { SendCommandComponent } from './send-command/send-command.component';
+import { DevicesService } from '../services/devices.service';
 
 declare var require: any;
 const moment = require('moment');
@@ -133,13 +133,13 @@ export class DevicesComponent {
 
   private loadDevices(filterData): void{
     if (filterData != undefined && filterData != null){
-      this.devicesService.listDevices(filterData.name, filterData.entity_name, filterData.protocol,
+      this.devicesService.getDevices(filterData.name, filterData.entity_name, filterData.protocol,
                                                    filterData.entity_type, filterData.transportProtocol,
                                                    filterData.isPublic, filterData.attributes, filterData.owner).subscribe(res => {     
         this.source.load(this.addCommand(res));
       });
     }else{
-      this.devicesService.listDevices().subscribe(res => {     
+      this.devicesService.getDevices().subscribe(res => {     
         this.source.load(this.addCommand(res));
       });
     }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { DevicesService } from 'iot_devices_fiwoo';
 import { LocalDataSource } from 'ng2-smart-table';
 import swal from "sweetalert2";
+import { DevicesService } from '../services/devices.service';
 
 @Component({
   selector: 'app-templates',
@@ -133,7 +133,7 @@ export class TemplatesComponent {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.value) {
-        this._templatesService.deleteTemplateById(event.data._id).subscribe(res => {
+        this._templatesService.deleteTemplate(event.data._id).subscribe(res => {
           //console.log(res);
           this.loadTemplates(null);
         });
@@ -149,7 +149,7 @@ export class TemplatesComponent {
   onSaveConfirm(event) {
     if (window.confirm('Are you sure you want to save?')) {
       // event.newData['name'] += ' + added in code';
-      this._templatesService.createTemplate(event.newData._id, event.newData).subscribe(res => {
+      this._templatesService.updateTemplate(event.newData._id, event.newData).subscribe(res => {
         console.log(res);
       });
       // event.confirm.resolve(event.newData);

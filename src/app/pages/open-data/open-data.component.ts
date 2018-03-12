@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OpendataService } from '../services/opendata.service';
-import { OpenDataFormat, OpenData, OpenDataTopic } from './models/open.data';
+import { OpenDataFormat, OpenData, OpenDataTopic, OpenDataMedia } from './models/open.data';
 
 declare var require: any;
 const moment = require('moment');
@@ -19,12 +19,36 @@ export class OpenDataComponent implements OnInit {
 
   constructor(openDataService: OpendataService) {
 
-    this.openDataCards = openDataService.getOpenData();
-    this.formats = openDataService.getFormats();
+    this.formats = [];
+    this.topics = []; 
+    this.openDataCards = [];
 
     openDataService.getTopics().subscribe(data => {
         data.forEach(element => {
-          this.formats.push(new OpenDataFormat(element.id, element.name, "../../../assets/images/html.png"));
+          this.topics.push(new OpenDataTopic(element.id, element.name, ""));
+        });
+    });
+
+    openDataService.getPackages().subscribe(packages => {
+        packages.forEach(pack => {
+          openDataService.getPackage(pack).subscribe(packageData => {
+            if (packageData.tags){
+              var tags = [];
+              packageData.tags.forEach(tag => {
+                tags.push(new OpenDataTopic(tag.id, tag.name, ""));
+              });
+            }
+            if (packageData.resources){
+              var resources = [];
+              packageData.resources.forEach(resource => {
+                if (resource.url.length > 0){
+                  this.addFormat(new OpenDataFormat(resource.format));
+                  resources.push(new OpenDataMedia(resource, resource.name, resource.url, resource.format));
+                }
+              });
+            }
+            this.openDataCards.push(new OpenData(packageData.id, packageData.title, packageData.notes, new Date(), packageData.maintainer, resources, tags));
+          });
         });
     });
   }
@@ -50,24 +74,33 @@ export class OpenDataComponent implements OnInit {
     return (moment(date).format('DD/MM/YY'));
   }
 
-  getFormatIcon (formatId){
-
-    var result = this.formats.filter(function( format ) {
-      return format.id == formatId;
-    });
-
-    if (result.length){
-      return result[0].icon;
+  getFormatIcon(formatName){
+    var icon;
+    switch (formatName){
+        case "ZIP":
+            icon =  "../../../assets/images/html.png";
+        case "CSV":
+            icon =  "../../../assets/images/html.png";
+        case "JSON":
+            icon =  "../../../assets/images/html.png";
+        case "XML":
+            icon =  "../../../assets/images/html.png";
+        case "HTML":
+            icon = "../../../assets/images/html.png";
     }
-   
+   return icon
+}
 
-
-    // this.formats.forEach(format => {
-    //   if (format.id === formatId){
-    //     return format.icon;
-    //   }
-    // });
-    // return "";
+  addFormat (format: OpenDataFormat){
+    var exists = false;
+    this.formats.forEach(thisFormat => {
+      if (thisFormat.name == format.name){
+        exists = true;
+      }
+    });
+    if (!exists){
+      this.formats.push(format);
+    }
   }
 
 }

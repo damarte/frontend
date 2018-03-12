@@ -3,7 +3,7 @@ import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
-import { DevicesService } from 'iot_devices_fiwoo';
+import { DevicesService } from '../../services/devices.service';
 
 
 export class DeviceAttribute {
@@ -46,7 +46,7 @@ export class InteractiveCommunicationComponent extends WidgetsBase {
     }
 
     private loadData(deviceId) {
-        this.deviceService.readDevice(deviceId).subscribe(res => {
+        this.deviceService.getDeviceAttrs(deviceId).subscribe(res => {
             console.log(res);
         });
     }

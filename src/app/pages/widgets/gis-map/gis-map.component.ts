@@ -10,6 +10,7 @@ import * as L from 'leaflet';
 import '../../../../../node_modules/leaflet-toolbar/dist/leaflet.toolbar.js';
 import { BIService } from '../../services/bi.service';
 import { GisService } from '../../services/gis.service';
+import { DevicesService } from '../../services/devices.service';
 
 
 declare var require: any;
@@ -49,6 +50,7 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy, AfterView
         protected _changeDetectionRef: ChangeDetectorRef,
         private densityService: BIService,
         private gisService: GisService,
+        private devicesService: DevicesService,
         public http: Http) {
 
         super(_runtimeService,
@@ -117,9 +119,9 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy, AfterView
 
     history(event) {
         this.attrHistoric = event;
-        this.http.get(
-            'https://platform.fiwoo.eu/api/device-management/devices/historics/?id=' + this.deviceId + '&attribute=' + event + '')
-            .map(res => res.json()).subscribe(
+
+
+       this.devicesService.getHistorics(this.deviceId, event).subscribe(
             data => {
                 if (data instanceof Array) {
                     this.coordinates = new Array<Coordinate>();
@@ -134,10 +136,11 @@ export class GisMapComponent extends WidgetsBase implements OnDestroy, AfterView
                         i++;
                     });
                 }
-                this.showLineChart = true;
-            },
-            err => { console.log(err); this.showLineChart = false; }
-            );
+            this.showLineChart = true;
+        },
+        err => { console.log(err); this.showLineChart = false; }
+
+        );
     }
 
     private formatDate(date) {

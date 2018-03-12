@@ -4,6 +4,8 @@ import { FiwooService } from '../../services/fiwoo.service';
 import { StatementsService } from '../../services/statements.service';
 import swal from "sweetalert2";
 
+
+
 declare var jQuery: any;
 
 var context;
@@ -54,12 +56,11 @@ export class ExpertComponent implements OnInit, AfterViewInit {
       });
 
       //TEST
-
       this.description = `Sets isHigh to false if temperature is lower than 21`;
 
       this.statement = `{
           "name": "rule_temperature_update_lower",
-          "text": "select *,\"rule_temperature_update_lower\" as ruleName from pattern [every ev=iotEvent(cast(cast(temperature?,String),float)<=21 and type=\"temperature_entity\" and cast(id?,String)=\"temp1\")]",
+          "text": "select *,'rule_temperature_update_lower' as ruleName from pattern [every ev=iotEvent(cast(cast(temperature?,String),float)<=21 and type='temperature_entity' and cast(id?,String)='temp1')]",
           "action": {
               "type": "update",
               "parameters": {
@@ -125,10 +126,8 @@ export class ExpertComponent implements OnInit, AfterViewInit {
 
     if (!this.statementFormControl.hasError('required') &&
       !this.descriptionFormControl.hasError('required')) {
-
       this.statements = {
         rule: JSON.parse(this.statement),
-        // rule: JSON.parse(JSON.minify(this.statement)),
         description: this.description,
         user_id: this.user_id
       };

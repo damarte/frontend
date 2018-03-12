@@ -382,6 +382,8 @@ export class GridComponent {
            return "CircularGaugeComponent";
            case "cards":
            return "GisMapComponent";
+           case "pieChart":
+           return "InteractiveCommunicationComponent";
        }
    }
 

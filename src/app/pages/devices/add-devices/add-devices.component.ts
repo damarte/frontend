@@ -1,7 +1,7 @@
 import { Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { DevicesService, Devices, DevicesDevice } from 'iot_devices_fiwoo';
+import { DevicesService } from '../../services/devices.service';
 
 declare var jQuery: any;
 
@@ -28,7 +28,7 @@ export class AddDevicesComponent implements OnInit, AfterViewInit {
   currentTemplateId: string;
   device_name: string;
   entity_type: string;
-  device: Devices = {};
+  device: any = {};
   modalTitle: string = "";
 
   editedDevice:any = null;
@@ -137,13 +137,13 @@ export class AddDevicesComponent implements OnInit, AfterViewInit {
     this.entity_type = null;
   }
 
-  private generateDevice(): Devices {
-    var deviceDevice: Devices = {};
+  private generateDevice(): any {
+    var deviceDevice: any = {};
     deviceDevice.templateId = this.currentTemplate._id;
-    var device: DevicesDevice = {};
+    var device: any = {};
     device.deviceId = this.entity_type;
     device.name = this.device_name;
-    deviceDevice.device = new Array<DevicesDevice>();
+    deviceDevice.device = new Array<any>();
     deviceDevice.device.push(device);
 
     return deviceDevice;

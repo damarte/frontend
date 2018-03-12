@@ -19,12 +19,12 @@ export class FiwooService extends BaseService {
 
   // LOGIN
   public doLogin(login):any {
-    return this.http.post(`${this.urlBaseLogin}${this.endPointLogin}`, login);
+    return this.http.post(`${this.urlBaseUsers}${this.endPointLogin}`, login);
   }
 
   // LOGOUT
   public doLogout():any {
-    return this.http.get(`${this.urlBaseLogin}${this.endPointLogout}`);
+    return this.http.get(`${this.urlBaseUsers}${this.endPointLogout}`);
   }
 
   // GET USERS

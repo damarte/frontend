@@ -4,8 +4,8 @@ import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
 import { Service, DeviceData } from './service';
-import { DevicesService } from 'iot_devices_fiwoo';
 import { Router } from '@angular/router';
+import { DevicesService } from '../../services/devices.service';
 
 var context;
 
@@ -97,7 +97,7 @@ export class BarGaugeComponent extends WidgetsBase implements OnDestroy {
     loadData() {
         this.deviceData = [];
         this.devices.forEach(device => {
-            this.deviceService.readAttrDevice(device.device_id, device.attribute).subscribe(res => {
+            this.deviceService.getDeviceAttrById(device.device_id, device.attribute).subscribe(res => {
                 if (res.value != undefined) {
                     this.deviceData.push(
                         {

@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http/src/params';
 
 export class BaseService {
 
@@ -17,6 +18,7 @@ export class BaseService {
   endPointPrediction = '/prediction';
   endPointGIS = '/ows?service=wfs&version=2.0.0&request=Getfeature&typeName=s4c:devices1&outputFormat=JSON'; //PROVISIONAL
   endPointDevices = '/devices';
+  endPointTemplates = '/templates';
   endPointAttrs = '/attrs';
   endPointHistorics = '/devices/historics';
   endPointAdvanced = '/advanced';
@@ -25,22 +27,28 @@ export class BaseService {
   endPointOpenDataGroups = '/listGroups';
   endPointOpenDataTags = '/listTags';
   endPointOpenDataPackages = '/listPackage';
+  endPointOpenDataPackageInfo = '/package';
 
   //PARAMS
   paramStatementRuleName = 'rule_name';
 
+  //GOOGLE LOGIN
+  // http://stg-sac-fase-dos.emergyalabs.com:7000/users/login/google/{idToken}
+
   //TEST
-  urlBaseUsers = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-  urlBaseOpenData = 'http://stg-sac-fase-dos-instance-02.emergyalabs.com:11000/openData';
-  urlBaseLogin = 'http://stg-sac-fase-dos.emergyalabs.com:7000/users';
-  // urlBI = "http://us2.fiwoo.eu:5001/api/bi/";
-  // urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi/density';
-  urlBaseBI = "http://192.168.14.38:5001/api/bi";
-  urlBaseDensityMaps = 'http://192.168.14.38:5000/api/bi';
-  urlBaseDataVisualization = 'http://stg-sac-fase-dos.emergyalabs.com:6000/api/data-visualization';
-  urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
-  urlBaseDevices = "https://platform.fiwoo.eu/api/device-management";
-  urlBaseStatements = "http://us3.fiwoo.eu:5000/api/rules/statements";
+  urlBase = 'http://stg-sac-fase-dos.emergyalabs.com:4000/api/';
+  urlBaseUsers = this.urlBase.concat('user-management');
+  urlBaseOpenData = this.urlBase.concat('openData');
+  // urlBaseOpenData = 'http://stg-sac-fase-dos-instance-02.emergyalabs.com:11000/openData';
+  urlBaseBI = "http://us2.fiwoo.eu:5001/api/bi";
+  urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi';
+  urlBaseDataVisualization = this.urlBase.concat('data-visualization');
+  urlBaseGIS = this.urlBase.concat('gis');
+  // urlBaseGIS = 'https://platform.fiwoo.eu/api/gis';
+  // urlBaseDevices = "https://platform.fiwoo.eu/api/device-management";
+  urlBaseDevices = this.urlBase.concat('device-management');
+  urlBaseStatements = this.urlBase.concat('rules/statements');
+  // urlBaseStatements = "http://stg-sac-fase-dos.emergyalabs.com:6000/api/rules/statements";
 
   //PROD
   // urlBaseUsers = 'https://platform.fiwoo.eu/api/user-management/users';

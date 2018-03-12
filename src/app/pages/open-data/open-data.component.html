@@ -6,7 +6,7 @@
         <div class="description" style="margin-top: 10px">
             <div class="ui animated list">
               <div class="item" *ngFor="let topic of topics">
-                <img class="ui image" src="{{topic.icon}}">
+                <!-- <img class="ui image" src="{{topic.icon}}"> -->
                 <a (click)="onClickTopic(topic)">
                   <b>{{topic.name}}</b>
                 </a>
@@ -21,7 +21,7 @@
         <div class="description" style="margin-top: 10px">
             <div class="ui animated list">
               <div class="item" *ngFor="let format of formats">
-                <img class="ui image" src="{{format.icon}}">
+                <img class="ui image" src="{{getFormatIcon(format.name)}}">
                 <a (click)="onClickFormat(format)">
                   <b>{{format.name}}</b>
                 </a>

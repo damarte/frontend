@@ -6,8 +6,8 @@ import 'rxjs/add/operator/take';
 import { AddWidgetsService } from './service';
 import { Facet } from '../facet/facet-model';
 import { FacetTagProcessor } from '../facet/facet-tag-processor';
-import { DevicesService } from "iot_devices_fiwoo";
 import { FormControl } from '@angular/forms';
+import { DevicesService } from '../services/devices.service';
 
 declare var jQuery: any;
 
@@ -16,7 +16,8 @@ enum WIDGET_TYPES {
     TYPE_SINGLE_HISTORIC,
     TYPE_MULTIPLE,
     TYPE_MULTIPLE_HISTORIC,
-    TYPE_MAP
+    TYPE_MAP,
+    TYPE_TABLE
 };
 
 enum WIDGET_MICRO_SERVICE_TYPES {
@@ -107,14 +108,14 @@ export class AddWidgetsComponent implements AfterViewInit {
     isMultiple = true;
 
     constructor(private _addWidgetsService: AddWidgetsService,
-                private _devicesServices: DevicesService) {
+                private devicesService: DevicesService) {
 
         this.getObjectList();
 
         this.fromDate = new Date();
         this.fromDate.setDate(this.fromDate.getDate()-7);
 
-        this._devicesServices.listDevices().subscribe(res => {
+        this.devicesService.getDevices().subscribe(res => {
             this.sensors = res;
             this.resetSensors();
         });
@@ -139,6 +140,8 @@ export class AddWidgetsComponent implements AfterViewInit {
             return WIDGET_TYPES.TYPE_SINGLE;
             case "GisMapComponent":
             return WIDGET_TYPES.TYPE_MAP;
+            case "InteractiveCommunicationComponent":
+            return WIDGET_TYPES.TYPE_TABLE;
         }
     }
 
@@ -168,20 +171,18 @@ export class AddWidgetsComponent implements AfterViewInit {
         switch(componentType){
             case "BarChartComponent":
             return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.barChart];
-            // case "DoughnutChartComponent":
-            // return WIDGET_MICRO_SERVICE_TYPES.TYPE_MULTIPLE;
             case "LinearGaugeComponent":
             return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.controlWidgets];
             case "LineChartComponent":
             return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.lineChart];
             case "BarGaugeComponent":
             return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.alarmWidget];
-            // case "PolarChartComponent":
-            // return WIDGET_MICRO_SERVICE_TYPES.TYPE_MULTIPLE;
             case "CircularGaugeComponent":
             return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.analogGauge];
             case "GisMapComponent":
             return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.cards];
+            case "InteractiveCommunicationComponent":
+            return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.pieChart];
         }
     }
 
@@ -210,7 +211,7 @@ export class AddWidgetsComponent implements AfterViewInit {
         }
         
         this.attributes = [];
-        this._devicesServices.readDevice(valueToCheck.entity_name).subscribe(res => {  
+        this.devicesService.getDeviceAttrs(valueToCheck.entity_name).subscribe(res => {  
             if (res != undefined && res != null && !res.error){
                 this.attributes = this.getAttributes(res);
             }else{

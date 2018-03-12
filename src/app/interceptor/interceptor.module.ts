@@ -16,17 +16,23 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let headers: HttpHeaders = req.headers.set('Authorization', 'Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G');
-    headers = headers.set('Accept', 'application/json');
+    let headers: HttpHeaders = req.headers.set('Accept', 'application/json');
 
     var token = localStorage.getItem('auth_app_token');
-
     if(token !== null) {
       headers = headers.set('Authorization', 'Bearer ' + token);
     }
+    else{
+      headers = headers.set('Authorization', 'Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G');
+    }
 
     if(req.method == 'POST' || req.method == 'PUT'){
-      headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
+      if( req.url.indexOf('user-management/login') >= 0){
+        headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
+      }
+      else{
+        headers = headers.set('Content-Type', 'application/json');
+      }
     }
 
     const dupReq = req.clone({ headers: headers });
@@ -37,14 +43,13 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
       }
     }, (err: any) => {
       if (err instanceof HttpErrorResponse) {
-        console.log(err.status);
         if (err.status === 401) {
           console.log('Session expired');
-          this.tokenService.clear();
-          this.router.navigateByUrl('/');
+          /*this.tokenService.clear();
+          this.router.navigateByUrl('/');*/
         }
       }
-    });;
+    });
   }
 };
 @NgModule({

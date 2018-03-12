@@ -4,8 +4,8 @@ import { RuntimeService } from '../../services/runtime.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
 import { LineChartService, Coordinate } from './service';
-import { DevicesService } from 'iot_devices_fiwoo';
 import { DxChartComponent } from 'devextreme-angular';
+import { DevicesService } from '../../services/devices.service';
 
 declare var require: any;
 const moment = require('moment');

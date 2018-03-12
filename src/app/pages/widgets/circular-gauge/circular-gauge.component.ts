@@ -6,8 +6,8 @@ import { WidgetsBase } from '../_common/widgets-base';
 import { CircularGaugeService } from './service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
-import { DevicesService } from 'iot_devices_fiwoo';
 import { Router } from '@angular/router';
+import { DevicesService } from '../../services/devices.service';
 
 declare var context;
 

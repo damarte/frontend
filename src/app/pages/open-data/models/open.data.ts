@@ -19,14 +19,11 @@ export class OpenData {
 }
 
 export class OpenDataFormat {
-    id: string;
     name: string;
     icon: string;
 
-    constructor (id: string, name: string, icon: string){
-        this.id = id;
+    constructor (name: string){
         this.name = name;
-        this.icon = icon;
     }
 }
 

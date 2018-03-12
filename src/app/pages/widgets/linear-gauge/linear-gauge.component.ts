@@ -5,8 +5,8 @@ import { WidgetsInstanceService } from '../../dashboard/grid/grid.service';
 import { WidgetsPropertyService } from '../_common/widgets-property.service';
 import { WidgetsBase } from '../_common/widgets-base';
 import { LinearGaugeService } from './service';
-import { DevicesService } from 'iot_devices_fiwoo';
 import { Router } from '@angular/router';
+import { DevicesService } from '../../services/devices.service';
 
 var context;
 

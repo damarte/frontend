@@ -205,6 +205,9 @@ export class ConfigurationService extends BaseService{
            case "GisMapComponent":
             name = "cards";
            break;
+           case "InteractiveCommunicationComponent":
+            name = "pieChart";
+           break;
 
        }
        return {"name": name};

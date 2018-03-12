@@ -1,9 +1,10 @@
 import { Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Template, DevicesService } from 'iot_devices_fiwoo';
+import { Template } from 'iot_devices_fiwoo';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatDialog } from '@angular/material';
+import { DevicesService } from '../../services/devices.service';
 
 declare var jQuery: any;
 var context: any;
@@ -349,7 +350,7 @@ export class AddTemplateComponent implements OnInit, AfterViewInit {
         };
 
         if (this.editedTemplate != undefined){
-          this.devicesService.createTemplate(this.editedTemplate._id, this.template).subscribe(res => {
+          this.devicesService.updateTemplate(this.editedTemplate._id, this.template).subscribe(res => {
             console.log(res);
             this.saved = true;
             this.hideModal();
