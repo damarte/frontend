@@ -16,23 +16,29 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Test') {
-            /*steps {
+        /*stage('Test') {
+            steps {
                 echo 'Testing..'
                 sh 'npm run test:ci'
-            }*/
-        }
+            }
+        }*/
         stage('Build') {
             steps {
                 echo 'Building...'
-                sh 'npm run e2e'
+                sh 'ng build'
             }
         }
-        stage('Deploy') {
+        stage('Test') {
+            steps {
+                echo 'Test e2e...'
+                sh 'ng e2e'
+            }
+        }
+        /*stage('Deploy') {
             steps {
                 echo 'Deploying....'
             }
-        }
+        }*/
     }
 
     post {
