@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
+    /*tools {
         nodejs 'node9'
-    }
+    }*/
 
     stages {
         stage('Installing') {
