@@ -1,4 +1,49 @@
-node {
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'node9'
+    }
+
+    stages {
+        stage('Installing') {
+            steps {
+                echo 'Installing...'
+
+                sh 'node -v'
+                sh 'npm --version'
+                sh "npm i -g @angular/cli"
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+                sh 'npm run test:ci'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                sh 'npm run e2e'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo 'Failed!'
+        }
+    }
+}
+
+
+/*node {
     stage('install node and npm') {
         def nodeHome = tool name: 'node-9.3.0', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
         env.PATH = "${nodeHome}:${nodeHome}/bin:${env.PATH}"
@@ -20,7 +65,7 @@ node {
         sh "npm install"
     }
 
-    /*stage('npm run build dev') {
+    stage('npm run build dev') {
         sh "npm run build:dev"
     }
 
@@ -38,17 +83,17 @@ node {
 
     stage('npm test') {
         sh "xvfb-run npm run test:ci:jenkins"
-    }*/
+    }
 
     stage('npm e2e') {
         sh "xvfb-run npm run e2e:ci"
     }
 
-    /*stage('npm typedoc') {
+    stage('npm typedoc') {
         sh "npm run docs:typedoc"
     }
 
     stage('npm compodoc') {
         sh "npm run docs:compodoc"
-    }*/
-}
+    }
+}*/
