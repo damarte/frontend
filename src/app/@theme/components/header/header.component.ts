@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   user: any;
   provider: string = "";
 
-  userMenu = [{ title: 'Log out', type:"logout" }];
+  userMenu = [{ title: 'Change password', type:"change_password" }, { title: 'Log out', type:"logout" }];
 
   constructor(private sidebarService: NbSidebarService,
               protected authService: NbAuthService,
@@ -34,21 +34,29 @@ export class HeaderComponent implements OnInit {
   }
 
   onMenuClick(value): void {
-    if (value != undefined && value.type == 'logout'){
-      this.authService.logout(this.provider).subscribe((result: NbAuthResult) => {
-        console.log(result);
-        if(result.isSuccess()){
-          const redirect = result.getRedirect();
-          if (redirect) {
-            this.router.navigateByUrl(redirect);
-          }
-          else{
-            this.router.navigateByUrl('/');
-          }
-        } else {
-          console.log('Logout failed');
+    if (value != undefined && value.type != undefined){
+      switch(value.type) {
+        case 'logout': {
+          this.authService.logout(this.provider).subscribe((result: NbAuthResult) => {
+            if(result.isSuccess()){
+              const redirect = result.getRedirect();
+              if (redirect) {
+                this.router.navigateByUrl(redirect);
+              }
+              else{
+                this.router.navigateByUrl('/');
+              }
+            } else {
+              console.log('Logout failed');
+            }
+          });
+
+          break;
         }
-      });
+        case 'change_password': {
+          this.router.navigateByUrl('/auth/reset-password');
+        }
+      }
     }
   }
 
