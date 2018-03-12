@@ -12,15 +12,15 @@ pipeline {
 
                 sh 'node -v'
                 sh 'npm --version'
-                sh "npm i -g @angular/cli"
+                sh "npm i -g @angular/cli@1.7.0"
                 sh 'npm install'
             }
         }
         stage('Test') {
-            steps {
+            /*steps {
                 echo 'Testing..'
                 sh 'npm run test:ci'
-            }
+            }*/
         }
         stage('Build') {
             steps {
