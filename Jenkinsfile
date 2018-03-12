@@ -1,6 +1,10 @@
 pipeline {
     agent any
   
+    tools {
+      nodejs "New Node"
+    }
+  
     stages {
         stage('Installing') {
             steps {
