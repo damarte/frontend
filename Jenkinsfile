@@ -1,14 +1,14 @@
 pipeline {
     agent any
-
-    /*tools {
-        nodejs 'node9'
-    }*/
-
+  
     stages {
         stage('Installing') {
             steps {
                 echo 'Installing...'
+              
+                tools {
+                    nodejs 'node9'
+                }
 
                 sh 'node -v'
                 sh 'npm --version'
