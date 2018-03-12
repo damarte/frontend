@@ -11,6 +11,9 @@ pipeline {
                 echo 'Cleaning...'
                 deleteDir()
               
+                echo 'Cloning...'
+                checkout scm
+              
                 echo 'Installing...'
 
                 sh 'node -v'
