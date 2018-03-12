@@ -9,10 +9,6 @@ pipeline {
         stage('Installing') {
             steps {
                 echo 'Installing...'
-              
-                tools {
-                    nodejs 'node9'
-                }
 
                 sh 'node -v'
                 sh 'npm --version'
