@@ -2,8 +2,7 @@ pipeline {
     agent any
   
     tools {
-      nodejs "New Node",
-      xvfb "Xvfb"
+      nodejs "New Node"
     }
   
     options {
