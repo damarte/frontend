@@ -5,18 +5,21 @@ pipeline {
       nodejs "New Node"
     }
   
+    options {
+        timestamps()
+        skipDefaultCheckout()      // Don't checkout automatically
+    }
+  
     stages {
         stage('Installing') {
             steps {
                 echo 'Cleaning...'
-                //deleteDir()
-                rm -r node_modules
+                deleteDir()
               
-                //echo 'Cloning...'
-                //checkout scm
+                echo 'Cloning...'
+                checkout scm
               
                 echo 'Installing...'
-
                 sh 'node -v'
                 sh 'npm --version'
                 sh "npm i -g @angular/cli@1.7.0"
