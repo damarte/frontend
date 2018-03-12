@@ -45,8 +45,8 @@ export class HttpsRequestInterceptor implements HttpInterceptor {
       if (err instanceof HttpErrorResponse) {
         if (err.status === 401) {
           console.log('Session expired');
-          /*this.tokenService.clear();
-          this.router.navigateByUrl('/');*/
+          this.tokenService.clear();
+          this.router.navigateByUrl('/');
         }
       }
     });
