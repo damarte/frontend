@@ -163,11 +163,15 @@ export class AddWidgetsComponent implements AfterViewInit {
                 this.showDateControls = false;
                 this.isMultiple = true;
                 return "Select multiple devices, an attribute and the data range"
+            case WIDGET_TYPES.TYPE_TABLE:
+                this.showDateControls = false;
+                this.isMultiple = false;
+                return "Select one device"
         }
     }
 
     getCustomWidgetType (){
-         var componentType = this.widgetSelected.componentType;
+        var componentType = this.widgetSelected.componentType;
         switch(componentType){
             case "BarChartComponent":
             return WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.barChart];
@@ -211,14 +215,18 @@ export class AddWidgetsComponent implements AfterViewInit {
         }
         
         this.attributes = [];
-        this.devicesService.getDeviceAttrs(valueToCheck.entity_name).subscribe(res => {  
-            if (res != undefined && res != null && !res.error){
-                this.attributes = this.getAttributes(res);
-            }else{
-                this.attributes = [];
-            }
-        });
-        
+
+        var type = this.getCustomWidgetType();
+        //TABLE WIDGET HAS ALL ATTRIBUTTES
+        if (type != WIDGET_MICRO_SERVICE_TYPES[WIDGET_MICRO_SERVICE_TYPES.pieChart]){
+            this.devicesService.getDeviceAttrs(valueToCheck.entity_name).subscribe(res => {  
+                if (res != undefined && res != null && !res.error){
+                    this.attributes = this.getAttributes(res);
+                }else{
+                    this.attributes = [];
+                }
+            });
+        }
     }
 
     private getAttributes (properties){

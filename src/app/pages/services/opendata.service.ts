@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { OpenData, OpenDataMedia, OpenDataFormat, OpenDataTopic } from '../open-data/models/open.data';
 import { BaseService } from './base.service';
 
 @Injectable()

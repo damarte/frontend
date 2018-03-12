@@ -30,7 +30,7 @@ import { TermsComponent } from './components/terms/terms.component';
 
 // Social signin
 import { SocialLoginModule } from 'angularx-social-login';
-import { AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
+import { AuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
 
 const config = new AuthServiceConfig([
   {
@@ -50,8 +50,8 @@ export function provideConfig() {
 
 
 
-export function nbAuthServiceFactory(config: any, tokenService: NbTokenService, injector: Injector) {
-  const providers = config.providers || {};
+export function nbAuthServiceFactory(conf: any, tokenService: NbTokenService, injector: Injector) {
+  const providers = conf.providers || {};
 
   for (const key in providers) {
     if (providers.hasOwnProperty(key)) {

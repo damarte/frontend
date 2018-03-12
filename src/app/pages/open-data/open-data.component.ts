@@ -79,14 +79,19 @@ export class OpenDataComponent implements OnInit {
     switch (formatName){
         case "ZIP":
             icon =  "../../../assets/images/html.png";
+            break;
         case "CSV":
             icon =  "../../../assets/images/html.png";
+            break;
         case "JSON":
             icon =  "../../../assets/images/html.png";
+            break;
         case "XML":
             icon =  "../../../assets/images/html.png";
+            break;
         case "HTML":
             icon = "../../../assets/images/html.png";
+            break;
     }
    return icon
 }

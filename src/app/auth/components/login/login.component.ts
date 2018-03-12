@@ -9,7 +9,7 @@ import { HttpParams } from '@angular/common/http';
 import "rxjs/Rx";
 import sweetAlert from "sweetalert2";
 import { AuthService, SocialUser } from "angularx-social-login";
-import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
+import { GoogleLoginProvider } from "angularx-social-login";
 
 @Component({
   selector: "nb-login",

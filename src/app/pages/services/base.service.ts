@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { HttpParams } from '@angular/common/http/src/params';
 
 export class BaseService {
 
@@ -40,7 +39,7 @@ export class BaseService {
   urlBaseUsers = this.urlBase.concat('user-management');
   urlBaseOpenData = this.urlBase.concat('openData');
   // urlBaseOpenData = 'http://stg-sac-fase-dos-instance-02.emergyalabs.com:11000/openData';
-  urlBaseBI = "http://us2.fiwoo.eu:5001/api/bi";
+  urlBaseBI = "http://us2.fiwoo.eu:7000/api/bi";
   urlBaseDensityMaps: string = 'http://us2.fiwoo.eu:5000/api/bi';
   urlBaseDataVisualization = this.urlBase.concat('data-visualization');
   urlBaseGIS = this.urlBase.concat('gis');
