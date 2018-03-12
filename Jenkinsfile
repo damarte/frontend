@@ -9,10 +9,11 @@ pipeline {
         stage('Installing') {
             steps {
                 echo 'Cleaning...'
-                deleteDir()
+                //deleteDir()
+                rm -r node_modules
               
-                echo 'Cloning...'
-                checkout scm
+                //echo 'Cloning...'
+                //checkout scm
               
                 echo 'Installing...'
 
@@ -22,12 +23,6 @@ pipeline {
                 sh 'npm install'
             }
         }
-        /*stage('Test') {
-            steps {
-                echo 'Testing..'
-                sh 'npm run test:ci'
-            }
-        }*/
         stage('Build') {
             steps {
                 echo 'Building...'
@@ -37,14 +32,9 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Test e2e...'
-                sh 'ng e2e'
+                sh 'xvfb-run ng e2e'
             }
         }
-        /*stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }*/
     }
 
     post {
