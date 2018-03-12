@@ -23,6 +23,7 @@ pipeline {
                 sh 'node -v'
                 sh 'npm --version'
                 sh "npm i -g @angular/cli@1.7.0"
+                sh "npm install protractor -g"
                 sh 'npm install'
             }
         }
