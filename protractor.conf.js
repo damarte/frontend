@@ -13,9 +13,9 @@ exports.config = {
   ],
   capabilities: {
     'browserName': 'chrome',
-    /*'chromeOptions': {
-      'args': ['show-fps-counter=true', '--no-sandbox']
-    }*/
+    'chromeOptions': {
+      'args': ['show-fps-counter=true', '--no-sandbox', '--disable-browser-side-navigation']
+    }
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',

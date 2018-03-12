@@ -22,11 +22,11 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
 
   protected defaultConfig: NgEmailPassAuthProviderConfig = {
     // TEST
-    baseEndpoint: 'http://stg-sac-fase-dos.emergyalabs.com:7000/users',
+    baseEndpoint: 'http://stg-sac-fase-dos.emergyalabs.com:4000/api',
     login: {
       alwaysFail: false,
       rememberMe: true,
-      endpoint: '/login',
+      endpoint: '/user-management/login',
       method: 'post',
       redirect: {
         success: '/pages/dashboards',
@@ -59,7 +59,7 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
       defaultMessages: ['You have been successfully logged out.'],
     },
     requestPass: {
-      endpoint: '/api/auth/request-pass',
+      endpoint: '/users/resetPasswordRandom',
       method: 'post',
       redirect: {
         success: '/',
@@ -69,8 +69,8 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
       defaultMessages: ['Reset password instructions have been sent to your email.'],
     },
     resetPass: {
-      endpoint: '/api/auth/reset-pass',
-      method: 'put',
+      endpoint: '/users/resetPasswordLink',
+      method: 'post',
       redirect: {
         success: '/',
         failure: null,
@@ -105,13 +105,6 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
   authenticate(data?: any): Observable<NbAuthResult> {
     const method = this.getConfigValue('login.method');
     const url = this.getActionEndpoint('login');
-
-    /*var headers = new HttpHeaders();
-    headers = headers.append(
-      "Authorization","Basic c2VsZWN0NGNpdGllczp3LUB5N0ZDKX55IzlLdWouYkBfTHRyM24mYW1G"
-    );
-    headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    console.log(headers);*/
 
     return this.http.request(method, url, {body: data, observe: 'response'})
       .pipe(
@@ -195,7 +188,8 @@ export class NbEmailPassAuthProvider extends NbAbstractAuthProvider {
   requestPassword(data?: any): Observable<NbAuthResult> {
     const method = this.getConfigValue('requestPass.method');
     const url = this.getActionEndpoint('requestPass');
-    return this.http.request(method, url, {body: data, observe: 'response'})
+
+    return this.http.request(method, url, {body: data['email'], observe: 'response'})
       .pipe(
         map((res) => {
           if (this.getConfigValue('requestPass.alwaysFail')) {

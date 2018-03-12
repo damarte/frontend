@@ -52,7 +52,18 @@ import { InterceptorModule } from './interceptor/interceptor.module';
       },
       forms: {
         login: {
-          redirectDelay: 3,
+          redirectDelay: 0,
+        },
+        requestPassword: {
+          redirectDelay: 6000,
+        },
+        resetPass: {
+          redirectDelay: 6000,
+          validation:  {
+            oldPassword: {
+              required: true,
+            }
+          }
         },
       },
 
