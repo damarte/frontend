@@ -3,6 +3,7 @@ pipeline {
   
     tools {
       nodejs "New Node"
+      xvfb "Xvfb"
     }
   
     options {
