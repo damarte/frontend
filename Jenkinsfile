@@ -4,7 +4,7 @@ node {
 
     try {
         stage('check tools') {
-            sh "node -v"
+            //sh "node -v"
             sh "npm -v"
         }
 
