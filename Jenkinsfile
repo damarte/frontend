@@ -1,8 +1,9 @@
-node('node') {
- 	  // Clean workspace before doing anything
-    deleteDir()
-  
+node('web-app-build') {
     try {
+      
+        stage('Clean workspace') {
+            deleteDir()
+        }
       
         stage('Install NodeJS and NPM') {
             def nodeHome = tool name: 'NodeJS 7.2.0', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
@@ -25,7 +26,7 @@ node('node') {
             sh "npm install protractor -g"
         }
 
-        stage('protractor tests') {
+        stage('Protractor tests') {
             sh "webdriver-manager update --versions.chrome=2.30 --gecko=false"
             sh "ng e2e"
         }
