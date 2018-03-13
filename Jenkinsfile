@@ -6,7 +6,7 @@ pipeline {
     }
   
     options {
-        timestamps(),
+        timestamps()
         skipDefaultCheckout()      // Don't checkout automatically
     }
   
