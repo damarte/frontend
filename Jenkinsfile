@@ -1,3 +1,4 @@
+#!groovy
 pipeline {
     agent any
   
@@ -34,10 +35,12 @@ pipeline {
             }
         }
         stage('Test') {
+          wrap([$class: 'Xvfb']) {
             steps {
                 echo 'Test e2e...'
                 sh 'xvfb-run ng e2e'
             }
+          }
         }
         stage('Deploy') {
             steps {
