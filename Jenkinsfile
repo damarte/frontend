@@ -3,7 +3,7 @@ pipeline {
     agent any
   
     tools {
-      nodejs "New Node"
+      nodejs "default"
     }
   
     options {
